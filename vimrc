@@ -8,7 +8,7 @@
 " Please don't hesitate to correct my english :)
 " Send corrections to <host8@kepler.fmph.uniba.sk>
 
-" $Id: vimrc,v 1.44 2002/02/17 04:31:15 host8 Exp $
+" $Id: vimrc,v 1.45 2002/02/20 19:11:51 host8 Exp $
 
 " Settings {{{
 " To be secure & Vi nocompatible
@@ -67,8 +67,8 @@ let g:makeflags=""
 " Settings for AutoLastMod {{{
 " Set this to 1 if you will automaticaly change date of modification of file.
 let g:autolastmod=1
-" Modification is made on line like this variable:
-let g:autolastmodtext="Last modified: "
+" Modification is made on line like this variable (regular expression!):
+let g:autolastmodtext="^\\([ 	]*Last modified: \\)"
 " }}}
 
 
@@ -294,15 +294,19 @@ augroup END
 
 " Autocommands for *.html *.cgi {{{
 " Automatic updates date of last modification in HTML files. File must
-" contain line "^Last modified: ", else will be date writtend on the current
-" line.
-augroup HtmlCgi
+" contain line "^\([<space><Tab>]*\)Last modified: ",
+" else will be date writtend on the current " line.
+augroup HtmlCgiPHP
 	autocmd!
 " Appending right part of tag in HTML files.
 	autocmd BufEnter                 *.html	imap <buffer> QQ </><Esc>2F<lywf>f/pF<i
 	autocmd BufWritePre,FileWritePre *.html	call AutoLastMod()
 	autocmd BufEnter                 *.cgi	imap <buffer> QQ </><Esc>2F<lywf>f/pF<i
 	autocmd BufWritePre,FileWritePre *.cgi	call AutoLastMod()
+	autocmd BufEnter                 *.php	imap <buffer> QQ </><Esc>2F<lywf>f/pF<i
+	autocmd BufWritePre,FileWritePre *.php	call AutoLastMod()
+	autocmd BufEnter                 *.php3	imap <buffer> QQ </><Esc>2F<lywf>f/pF<i
+	autocmd BufWritePre,FileWritePre *.php3	call AutoLastMod()
 augroup END
 " }}}
 
@@ -409,13 +413,14 @@ endfun
 "
 fun! LastMod(text, ...)
 	mark d
-	let line = a:text . strftime("%Y %b %d %X") " text of changed line
-	let find = "g/^" . a:text                   " regexpr to find line
-	let matx = "^" . a:text                     " ...if line was found
+	let line = "\\1" . strftime("%Y %b %d %X") " text of changed line
+	let find = "g/" . a:text           " regexpr to find line
+	let matx = a:text . ".*"            " ...if line was found
 	exec find
 	let curr_line = getline(".")
 	if match(curr_line, matx) == 0
-		call setline(line("."), line)
+		" call setline(line("."), line)
+		call setline(line("."), substitute(getline("."), matx, line, ""))
 		exec "'d"
 	endif
 endfun
