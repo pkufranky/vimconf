@@ -1,14 +1,24 @@
-" Vim configuration file
-" Language:		Vim 6.0 script
-" Maintainer:	Lubomir Host <host8@kepler.fmph.uniba.sk>
-" Bugs Reports:	Lubomir Host <host8@kepler.fmph.uniba.sk>
-" License:		GNU GPL
-" Version:		2002.02.05
+"
+" vimconfig - project of powerful ViM 6.0 configuration files
 " 
+" vimrc - main configuration file
+" ____________________________________________________________
+"
+" Developed by Lubomir Host <8host@pauli.fmph.uniba.sk>
+" Copyright (c) 2000-2002 Platon SDG, http://www.platon.sk/
+" All rights reserved.
+"
+" See README file for more information about this software.
+" See COPYING file for license information.
+"
+" Download the latest version from
+" http://www.platon.sk/projects/vimconfig/
+"
+
 " Please don't hesitate to correct my english :)
 " Send corrections to <host8@kepler.fmph.uniba.sk>
 
-" $Id: vimrc,v 1.52 2002/04/21 17:02:36 host8 Exp $
+" $Id: vimrc,v 1.53 2002/04/21 17:21:07 host8 Exp $
 
 " Settings {{{
 " To be secure & Vi nocompatible
