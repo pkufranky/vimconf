@@ -20,7 +20,7 @@
 "
 "        Lubomir Host 'rajo' <rajo AT platon.sk>
 
-" Version: $Platon: vimconfig/vimrc,v 1.92 2003-11-14 16:21:32 rajo Exp $
+" Version: $Platon: vimconfig/vimrc,v 1.93 2003-11-27 18:01:06 rajo Exp $
 
 " Debian uses compressed helpfiles. We must inform vim that the main
 " helpfiles is compressed. Other helpfiles are stated in the tags-file.
@@ -687,8 +687,23 @@ endfunction
 
 " Function UseDiacritics() {{{
 function! UseDiacritics()
-	call Source("~/.vim/modules/diacritics.vim")
 	let b:disable_imap=0
+	let g:available_methods = "&Tex-universal\n&tex-iso8859-2\n&iso8859-2\n&windows-1250\nunicode-&Html"
+
+	let choice = confirm("Choose encoding:", g:available_methods, 0)
+	if choice == 1
+		let b:input_method="tex-universal"
+	elseif choice == 2
+		let b:input_method="tex-iso8859-2"
+	elseif choice == 3
+		let b:input_method="iso8859-2"
+	elseif choice == 4
+		let b:input_method="windows-1250"
+	elseif choice == 5
+		let b:input_method="unicode-html"
+	endif
+
+	call Source("~/.vim/modules/diacritics.vim")
 endfunction
 " }}}
 
