@@ -20,7 +20,7 @@
 "
 "        Lubomir Host 'rajo' <rajo AT platon.sk>
 
-" Version: $Platon: vimconfig/gvimrc,v 1.8 2003-11-03 08:20:20 rajo Exp $
+" Version: $Platon: vimconfig/gvimrc,v 1.9 2003-11-28 10:17:11 rajo Exp $
 
 function! Source(File)
 	silent! execute "source " . a:File
@@ -71,6 +71,15 @@ if &t_Co > 2 || has("gui_running")
 	hi NonText      guibg=Black
 	hi Constant                                 gui=NONE 
 	hi Special                                  gui=NONE
+endif
+
+if has("gui_running")
+	amenu 300 &Keyboard.Input\ &mapping.&none 			:call ChooseInputMethod(1)
+	amenu 300 &Keyboard.Input\ &mapping.&Tex-universal 	:call ChooseInputMethod(2)
+	amenu 300 &Keyboard.Input\ &mapping.&tex-iso8859-2 	:call ChooseInputMethod(3)
+	amenu 300 &Keyboard.Input\ &mapping.&iso8859-2 		:call ChooseInputMethod(4)
+	amenu 300 &Keyboard.Input\ &mapping.&windows-1250 	:call ChooseInputMethod(5)
+	amenu 300 &Keyboard.Input\ &mapping.unicode-&Html 	:call ChooseInputMethod(6)
 endif
 
 call Source(GVIMRC_EXTRA.".post")
