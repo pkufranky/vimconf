@@ -3,11 +3,11 @@
 " Maintainer:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " Bugs Reports:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " License:		GNU GPL
-" Last Change:	2001 Nov 21 10:11:46 PM
+" Last Change:	2001 Nov 26 21:14:06
 " Version:		01.09.08
 " Language Of Comments:	English
 
-" $Id: vimrc,v 1.18 2001/11/09 23:37:07 host8 Exp $
+" $Id: vimrc,v 1.19 2001/11/21 23:29:59 jombik9 Exp $
 
 " Settings {{{1
 " To be secure & Vi nocompatible
@@ -100,11 +100,9 @@
 " Vim beeping go to the hell...
 :set vb t_vb=
 
-:if version >= 600
-":	set foldmethod=expr
-":	set foldexpr=strlen(substitute(getline(v:lnum),'^\{300\,}$','x',\"g\"))
-:	set foldexpr=FoldLevel(v:lnum)
-:endif
+" Set this, if you will open all windows for files specified
+" on the commandline at vim startup.
+:let g:open_all_win=1
 
 "################################################################# }}}1
 " Keybord mappings {{{1
@@ -163,6 +161,7 @@
 :command! -nargs=0 FoldLongLines call FoldLongLines()
 :command! -nargs=0 Indent call Indent()
 :command! -nargs=0 CallProg call CallProg()
+:command! -nargs=0 OpenAllWin call OpenAllWin()
 :command! -nargs=0 UnquoteMailBody call UnquoteMailBody()
 :command! -nargs=* ReadFileAboveCursor call ReadFileAboveCursor(<f-args>)
 :command! -nargs=* R call ReadFileAboveCursor(<f-args>)
@@ -493,17 +492,18 @@ endfun
 :fun! OpenAllWin()
 :let i = 0
 :if !exists("opened")
-:echo
-:while i < argc() - 1
-:	echo
-:	split
-:	n
-":	source /usr/local/share/vim/vim60al/scripts.vim
-:	let i = i + 1
-:endwhile
+:	while i < argc() - 1
+:		split
+:		n
+:		let i = i + 1
+:	endwhile
 :endif
 :let opened = 1
 :endfun
+
+:if exists("g:open_all_win")
+:	call OpenAllWin()
+:endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
 " Function CallProg() {{{2
 :fun! CallProg()
