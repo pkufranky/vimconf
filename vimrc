@@ -19,7 +19,7 @@
 " Send corrections to
 "        Lubomir Host 'rajo' <rajo AT platon.sk>
 
-" Version: $Platon: vimconfig/vimrc,v 1.87 2003-10-08 15:24:30 rajo Exp $
+" Version: $Platon: vimconfig/vimrc,v 1.88 2003-11-03 08:07:51 rajo Exp $
 
 " Debian uses compressed helpfiles. We must inform vim that the main
 " helpfiles is compressed. Other helpfiles are stated in the tags-file.
@@ -326,9 +326,9 @@ map ,f :set paste!<CR>:set paste?<CR>
 " Open one foldlevel of folds in whole file
 " Note: 'Z' works like 'z' but for all lines in file
 noremap Zo mzggvGzo'z
-noremap ZO mzggvGzO'z " same as 'zR' 
+noremap ZO zR
 noremap Zc mzggvGzc'z
-noremap ZC mzggvGzC'z
+noremap ZC zM
 noremap Zd mzggvGzd'z
 noremap ZD mzggvGzD'z
 noremap Za mzggvGza'z
