@@ -1,4 +1,5 @@
 :MatchDebug	matchit.txt	/*:MatchDebug*
+MatchError	matchit.txt	/*MatchError*
 [%	matchit.txt	/*[%*
 ]%	matchit.txt	/*]%*
 b:match_col	matchit.txt	/*b:match_col*
@@ -78,6 +79,8 @@ matchit-choose	matchit.txt	/*matchit-choose*
 matchit-configure	matchit.txt	/*matchit-configure*
 matchit-debug	matchit.txt	/*matchit-debug*
 matchit-details	matchit.txt	/*matchit-details*
+matchit-highlight	matchit.txt	/*matchit-highlight*
+matchit-hl	matchit.txt	/*matchit-hl*
 matchit-intro	matchit.txt	/*matchit-intro*
 matchit-languages	matchit.txt	/*matchit-languages*
 matchit-modes	matchit.txt	/*matchit-modes*
@@ -91,10 +94,14 @@ matchit-troubleshoot	matchit.txt	/*matchit-troubleshoot*
 matchit-v_%	matchit.txt	/*matchit-v_%*
 matchit.txt	matchit.txt	/*matchit.txt*
 matchit.vim	matchit.txt	/*matchit.vim*
+o_[%	matchit.txt	/*o_[%*
+o_]%	matchit.txt	/*o_]%*
+o_g%	matchit.txt	/*o_g%*
 taglist-commands	taglist.txt	/*taglist-commands*
 taglist-configure	taglist.txt	/*taglist-configure*
 taglist-extend	taglist.txt	/*taglist-extend*
 taglist-faq	taglist.txt	/*taglist-faq*
+taglist-functions	taglist.txt	/*taglist-functions*
 taglist-install	taglist.txt	/*taglist-install*
 taglist-internet	taglist.txt	/*taglist-internet*
 taglist-intro	taglist.txt	/*taglist-intro*
@@ -103,6 +110,10 @@ taglist-requirement	taglist.txt	/*taglist-requirement*
 taglist-todo	taglist.txt	/*taglist-todo*
 taglist-using	taglist.txt	/*taglist-using*
 taglist.txt	taglist.txt	/*taglist.txt*
+v_[%	matchit.txt	/*v_[%*
+v_]%	matchit.txt	/*v_]%*
+v_a%	matchit.txt	/*v_a%*
+v_g%	matchit.txt	/*v_g%*
 vimconfig	FEATURES.txt	/*vimconfig*
 vimconfig-autocommands	FEATURES.txt	/*vimconfig-autocommands*
 vimconfig-com-Calendar	FEATURES.txt	/*vimconfig-com-Calendar*
