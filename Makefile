@@ -5,7 +5,7 @@
 # (c) rajo <host8@kepler.fmph.uniba.sk>
 #
 
-# $Id: Makefile,v 1.16 2002/04/22 18:45:21 host8 Exp $
+# $Id: Makefile,v 1.17 2002/04/22 18:46:02 host8 Exp $
 
 PACKAGE = vimconfig
 VERSION = 1.7-2.unstable
@@ -75,7 +75,7 @@ tags: *.txt
 clean-tags:
 	rm -f tags
 
-clean-dist:
+clean-dist: clean-dist-template-plugin
 	-rm -rf $(distdir)
 	-rm -f $(distdir).tar.gz $(distdir).zip
 
