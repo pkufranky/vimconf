@@ -1,0 +1,30 @@
+COMMON features
+---------------
+
+- improved status bar
+- ability to open multiple files at ViM strtup when they are specified at
+  command line
+- when opening new file a common used strings are inserted according to file
+  type; ie. #include directives in *.c files and so on
+- automatic 'perltidy' detection and usage for Perl source codes indentation
+
+KEYS (INSERT mode)
+------------------
+
+Ctrl-a - move to beginning of line
+Ctrl-e - move to end of line
+Ctrl-d - delete current line without saving it to buffer and without
+possibility of Undo; use with care!
+
+KEYS (NORMAL mode)
+------------------
+
+Ctrl-o - open file
+
+FUNCTIONS
+---------
+
+:Indent - indents whole document; especially usable for C source codes
+:UnquoteMailBody - removes starting '>' characters from every line
+
+
