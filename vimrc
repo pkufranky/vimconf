@@ -6,7 +6,7 @@
 " Version:		01.09.08
 " Language Of Comments:	English
 
-" $Id: vimrc,v 1.29 2002/01/15 19:42:26 host8 Exp $
+" $Id: vimrc,v 1.30 2002/01/18 21:38:38 host8 Exp $
 
 " Settings {{{
 " To be secure & Vi nocompatible
@@ -144,6 +144,9 @@ imap <C-O><C-T> <Esc>:split ~/.tcshrc<CR>
 " Open new window with file ~/.vimrc (ViM configuration file)
 map <C-O><C-K> :split ~/.vimrc<CR>
 imap <C-O><C-K> <Esc>:split ~/.vimrc<CR>
+" Open new window with dir ~/.vim (ViM configuration dir)
+map <C-O><C-V> :split ~/.vim<CR>
+imap <C-O><C-V> <Esc>:split ~/.vim<CR>
 
 " Safe delete line (don't add line to registers)
 ":imap <C-D> <Esc>"_ddi
@@ -179,9 +182,6 @@ if has("autocmd")
 " Autocomands for ~/.vimrc {{{
 augroup VimConfig
 	autocmd!
-" Update line 'Last Change:'
-	autocmd BufWritePre,FileWritePre ~/.vimrc	call LastMod("\" Last Change:	")
-	autocmd BufWritePre,FileWritePre vimrc	call LastMod("\" Last Change:	")
 " Reread configuration of ViM if file ~/.vimrc is saved
 	autocmd BufWritePost ~/.vimrc	so ~/.vimrc
 	autocmd BufWritePost vimrc	so ~/.vimrc
