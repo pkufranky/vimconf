@@ -18,7 +18,7 @@
 " Please don't hesitate to correct my english :)
 " Send corrections to <8host AT pauliDOTfmph.uniba.sk>
 
-" $Id: vimrc,v 1.71 2002/08/12 02:17:52 rajo Exp $
+" $Id: vimrc,v 1.72 2002/08/15 22:44:44 rajo Exp $
 
 " Settings {{{
 " To be secure & Vi nocompatible
@@ -317,6 +317,18 @@ noremap ZA mzggvGzA'z
 noremap Zx mzggvGzx'z
 noremap ZX mzggvGzX'z
 " }}}
+
+" }}}
+" Settings for IMAP input method (IMAP plugin) {{{
+
+" set variable "g:tex_input_method" to change input method
+let g:tex_input_method = "latin2"
+
+" you may disable actions of IMAP plugin with variable g:disable_imap
+" 0 - enabled
+" 1 - disabled
+let g:disable_imap = 0
+
 
 " }}}
 

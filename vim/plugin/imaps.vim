@@ -47,7 +47,7 @@
 "
 " Consider a working example:
 "
-" let s:tex_bit  = "\\begin{itemize}\<cr>\\item ä\<cr>\\end{itemize}"
+" let s:tex_bit  = "\\begin{itemize}\<cr>\\item ää\<cr>\\end{itemize}"
 " 
 " This effectively sets up the map
 " 
@@ -60,15 +60,19 @@
 " \item *
 " \end{itemize}
 "
-" where * shows the cursor position. The special character ä (typed as
+" where * shows the cursor position. The special characters "ää" (typed as
 " CTRL-K + a + :) decides the cursor placement after the expansion. If there
-" is no ä, then the cursor is left at the end.
+" is no "ää", then the cursor is left at the end.
 "
 " however, unlike in mappings, it is not necessary to enter the keys
 " b,i,t,<leader> in quick succession. this works by just mapping the last
 " character, which is chosen to be <leader> instead of all the characters. a
 " check is then made to see if the characters entered before match the total
 " LHS of the required mapping.
+" 
+" NOTE: some functions may confuse user. Therefore if exists variable
+" "g:disable_imap" and is set to ":let g:disable_imap=1", all functions
+" returns ASAP. This feature was added by Lubomir Host <rajo AT host.sk>
 " 
 " NOTE: There are other plugins out there which do the same thing. For
 " example, Dr. Chip's Cabbr script at 
@@ -106,6 +110,11 @@
 "       the previously typed characters and erased and the right hand side is
 "       inserted.
 function! IMAP(lhs, rhs, ft)
+	if exists("g:disable_imap")
+		if g:disable_imap == 1
+			return
+		endif
+	endif
 	let lastLHSChar = a:lhs[strlen(a:lhs)-1]
 	" s:charLens_<ft>_<char> contains the lengths of the left hand sides of
 	" the various mappings for filetype <ft> which end in <char>. its a comma
@@ -173,6 +182,14 @@ endfunction
 " character and then if a possible match exists, ereases the left-hand side
 " and inserts the right hand side instead.
 silent! function! <SID>LookupCharacter(char)
+	if exists("g:disable_imap")
+		if g:disable_imap == 1
+			echo "LookupCharacter(\"" . a:char . "\") - disabled (g:disabled=1)"
+			" here we must return parameter 
+			return a:char
+		endif
+	endif
+	echo "LookupCharacter(\"" . a:char . "\") - enabled (g:disabled=0)"
 	let charHash = char2nr(a:char)
 
 	if !exists('s:charLens_'.&ft.'_'.charHash)
@@ -232,9 +249,15 @@ endfunction
 " IMAP_PutTextWithMovement: appends movement commands to a text  {{{
 " 		This enables which cursor placement.
 function! IMAP_PutTextWithMovement(text)
+	if exists("g:disable_imap")
+		if g:disable_imap == 1
+			return
+		endif
+	endif
+			
 	" if the text contains a ä or a «label», then get to the first one of
 	" those. 
-	let fc = match(a:text, 'ä\|«[^»]*»')
+	let fc = match(a:text, 'ää\|«[^»]*»')
 	if fc < 0
 		let initial = ""
 		let movement = ""
@@ -242,7 +265,7 @@ function! IMAP_PutTextWithMovement(text)
 	" search will do...
 	elseif fc == 0
 		let initial = ""
-		let movement = "\<esc>?ä\<cr>:call SAImaps_RemoveLastHistoryItem()\<cr>s"
+		let movement = "\<esc>?ää\<cr>:call SAImaps_RemoveLastHistoryItem()\<cr>s"
 	" however, if its somewhere in the middle, then we need to go back to the
 	" beginning of the pattern and then do a forward lookup from that point.
 	else
@@ -252,14 +275,14 @@ function! IMAP_PutTextWithMovement(text)
 		" delete that dummy part. we are left at the very beginning.
 		let movement = "\<esc>?¡¡Start!!\<cr>v8l\"_x"
 		" now proceed with the forward search for cursor placement
-		let movement = movement."/ä\\|«[^»]*»\<cr>"
+		let movement = movement."/ää\\|«[^»]*»\<cr>"
 		" we needed 2 searches to get here. remove them from the search
 		" history.
 		let movement = movement.":call SAImaps_RemoveLastHistoryItem()\<cr>"
 		let movement = movement.":call SAImaps_RemoveLastHistoryItem()\<cr>"
 		" if its a ä or «», then just delete it
-		if a:text[fc] == 'ä'
-			let movement = movement."\"_s"
+		if strpart(a:text, fc, 2) == 'ää'
+			let movement = movement."\"_2s"
 		elseif strpart(a:text, fc, 2) == '«»'
 			let movement = movement."\"_2s"
 		" otherwise enter select mode...
@@ -273,9 +296,14 @@ endfunction
 " }}}
 " Strntok: extract the n^th token from a list {{{
 " example: Strntok('1,23,3', ',', 2) = 23
-fun! <SID>Strntok(s, tok, n)
+function! <SID>Strntok(s, tok, n)
+	if exists("g:disable_imap")
+		if g:disable_imap == 1
+			return
+		endif
+	endif
 	return matchstr( a:s.a:tok[0], '\v(\zs([^'.a:tok.']*)\ze['.a:tok.']){'.a:n.'}')
-endfun
+endfunction
 
 " }}}
 " extract the leader character. the mappings need to go *after* the functio
@@ -291,7 +319,7 @@ call IMAP ('latexs'.s:ml, "http://robotics.eecs.berkeley.edu/~srinath/vim/latexS
 call IMAP ('homep'.s:ml, "http://robotics.eecs.berkeley.edu/~srinath", '')
 " End general purpose mappings }}}
 " Vim Mappings {{{
-call IMAP ('while'.s:ml, "let i = ä\<cr>while i <= \<cr>\<cr>\tlet i = i + 1\<cr>\<bs>endwhile", 'vim')
+call IMAP ('while'.s:ml, "let i = ää\<cr>while i <= \<cr>\<cr>\tlet i = i + 1\<cr>\<bs>endwhile", 'vim')
 call IMAP ('fdesc'.s:ml, "\"Description: ", 'vim')
 " end vim mappings }}}
 
@@ -304,6 +332,11 @@ call IMAP ('fdesc'.s:ml, "\"Description: ", 'vim')
 "   pleasing alternative instead of hardcoding a length.
 "-------------------------------------%<-------------------------------------
 function! <SID>Snip() range
+	if exists("g:disable_imap")
+		if g:disable_imap == 1
+			return
+		endif
+	endif
 	let i = a:firstline
 	let maxlen = -2
 	" find out the maximum virtual length of each line.
@@ -330,8 +363,13 @@ com! -nargs=0 -range Snip :<line1>,<line2>call <SID>Snip()
 " Description: This function needs to be globally visible because its
 "              called from outside the script during expansion.
 function! SAImaps_RemoveLastHistoryItem()
-  call histdel("/", -1)
-  let @/ = histget("/", -1)
+	if exists("g:disable_imap")
+		if g:disable_imap == 1
+			return
+		endif
+	endif
+	call histdel("/", -1)
+	let @/ = histget("/", -1)
 endfunction
 " }}}
 " IMAP_Jumpfunc: takes user to next «place-holder» {{{
@@ -339,6 +377,11 @@ endfunction
 "                taken from mu-template.vim by him This idea is originally
 "                from Stephen Riehm's bracketing system.
 function! IMAP_Jumpfunc()
+	if exists("g:disable_imap")
+		if g:disable_imap == 1
+			return
+		endif
+	endif
 	if !search('«.\{-}»','W') "no more marks
 		return "\<CR>"
 	else
@@ -351,8 +394,8 @@ function! IMAP_Jumpfunc()
 endfunction
 " map only if there is no mapping already. allows for user customization.
 if !hasmapto('IMAP_Jumpfunc')
-    inoremap <C-J> <c-r>=IMAP_Jumpfunc()<CR>
-    nmap <C-J> i<C-J>
+	inoremap <C-J> <c-r>=IMAP_Jumpfunc()<CR>
+	nmap <C-J> i<C-J>
 end
 " }}}
 

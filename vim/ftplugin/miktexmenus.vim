@@ -70,15 +70,15 @@ exe pA1a.'nRightarrow             <plug>\nRightarrow '
 " }}}
 " MATH Fonts {{{
 let pA2a = pA."&MathFonts."
-exe pA2a.'mathbf{}                <plug><C-r>=TeX_PutText("\\mathbf{ä}«»")<cr>'
-exe pA2a.'mathrm{}                <plug><C-r>=TeX_PutText("\\mathrm{ä}«»")<cr>'
-exe pA2a.'mathsf{}                <plug><C-r>=TeX_PutText("\\mathsf{ä}«»")<cr>'
-exe pA2a.'mathtt{}                <plug><C-r>=TeX_PutText("\\mathtt{ä}«»")<cr>'
-exe pA2a.'mathit{}                <plug><C-r>=TeX_PutText("\\mathit{ä}«»")<cr>'
-exe pA2a.'mathfrak{}              <plug><C-r>=TeX_PutText("\\mathfrak{ä}«»")<cr>'
-exe pA2a.'mathcal{}               <plug><C-r>=TeX_PutText("\\mathcal{ä}«»")<cr>'
-exe pA2a.'mathscr{}               <plug><C-r>=TeX_PutText("\\mathscr{ä}«»")<cr>'
-exe pA2a.'mathbb{}                <plug><C-r>=TeX_PutText("\\mathbb{ä}«»")<cr>'
+exe pA2a.'mathbf{}                <plug><C-r>=TeX_PutText("\\mathbf{ää}«»")<cr>'
+exe pA2a.'mathrm{}                <plug><C-r>=TeX_PutText("\\mathrm{ää}«»")<cr>'
+exe pA2a.'mathsf{}                <plug><C-r>=TeX_PutText("\\mathsf{ää}«»")<cr>'
+exe pA2a.'mathtt{}                <plug><C-r>=TeX_PutText("\\mathtt{ää}«»")<cr>'
+exe pA2a.'mathit{}                <plug><C-r>=TeX_PutText("\\mathit{ää}«»")<cr>'
+exe pA2a.'mathfrak{}              <plug><C-r>=TeX_PutText("\\mathfrak{ää}«»")<cr>'
+exe pA2a.'mathcal{}               <plug><C-r>=TeX_PutText("\\mathcal{ää}«»")<cr>'
+exe pA2a.'mathscr{}               <plug><C-r>=TeX_PutText("\\mathscr{ää}«»")<cr>'
+exe pA2a.'mathbb{}                <plug><C-r>=TeX_PutText("\\mathbb{ää}«»")<cr>'
 " }}}
 " Greek Letters small {{{
 let pA2 = pA."&Greek.&Small."
@@ -452,18 +452,18 @@ exe pA11.'scriptscriptstyle       <plug>\scriptscriptstyle'
 " }}}
 " {{{ MathDiacritics
 let pA12 = pA."&MathDiacritics."
-exe pA12.'acute{}                 <plug><C-r>=TeX_PutText("\\acute{ä}«»")<cr>'
-exe pA12.'bar{}                   <plug><C-r>=TeX_PutText("\\bar{ä}«»")<cr>'
-exe pA12.'breve{}                 <plug><C-r>=TeX_PutText("\\breve{ä}«»")<cr>'
-exe pA12.'check{}                 <plug><C-r>=TeX_PutText("\\check{ä}«»")<cr>'
-exe pA12.'ddot{}                  <plug><C-r>=TeX_PutText("\\ddot{ä}«»")<cr>'
-exe pA12.'dot{}                   <plug><C-r>=TeX_PutText("\\dot{ä}«»")<cr>'
-exe pA12.'grave{}                 <plug><C-r>=TeX_PutText("\\grave{ä}«»")<cr>'
-exe pA12.'hat{}                   <plug><C-r>=TeX_PutText("\\hat{ä}«»")<cr>'
-exe pA12.'tilde{}                 <plug><C-r>=TeX_PutText("\\tilde{ä}«»")<cr>'
-exe pA12.'vec{}                   <plug><C-r>=TeX_PutText("\\vec{ä}«»")<cr>'
-exe pA12.'widehat{}               <plug><C-r>=TeX_PutText("\\widehat{ä}«»")<cr>'
-exe pA12.'widetilde{}             <plug><C-r>=TeX_PutText("\\widetilde{ä}«»")<cr>'
+exe pA12.'acute{}                 <plug><C-r>=TeX_PutText("\\acute{ää}«»")<cr>'
+exe pA12.'bar{}                   <plug><C-r>=TeX_PutText("\\bar{ää}«»")<cr>'
+exe pA12.'breve{}                 <plug><C-r>=TeX_PutText("\\breve{ää}«»")<cr>'
+exe pA12.'check{}                 <plug><C-r>=TeX_PutText("\\check{ää}«»")<cr>'
+exe pA12.'ddot{}                  <plug><C-r>=TeX_PutText("\\ddot{ää}«»")<cr>'
+exe pA12.'dot{}                   <plug><C-r>=TeX_PutText("\\dot{ää}«»")<cr>'
+exe pA12.'grave{}                 <plug><C-r>=TeX_PutText("\\grave{ää}«»")<cr>'
+exe pA12.'hat{}                   <plug><C-r>=TeX_PutText("\\hat{ää}«»")<cr>'
+exe pA12.'tilde{}                 <plug><C-r>=TeX_PutText("\\tilde{ää}«»")<cr>'
+exe pA12.'vec{}                   <plug><C-r>=TeX_PutText("\\vec{ää}«»")<cr>'
+exe pA12.'widehat{}               <plug><C-r>=TeX_PutText("\\widehat{ää}«»")<cr>'
+exe pA12.'widetilde{}             <plug><C-r>=TeX_PutText("\\widetilde{ää}«»")<cr>'
 exe pA12.'imath                   <plug><C-r>=TeX_PutText("\\imath")<cr>'
 exe pA12.'jmath                   <plug><C-r>=TeX_PutText("\\jmath")<cr>'
 " }}}
@@ -746,11 +746,11 @@ exe pC2.'thetotalnumber   <plug>\thetotalnumber'
 " }}}
 " {{{ Type
 let pC3 = pC.'&Type.'
-exe pC3.'alph{}           <plug><C-r>=TeX_PutText("\\alph{ä}«»")<cr>'
-exe pC3.'Alph{}           <plug><C-r>=TeX_PutText("\\Alph{ä}«»")<cr>'
-exe pC3.'arabic{}         <plug><C-r>=TeX_PutText("\\arabic{ä}«»")<cr>'
-exe pC3.'roman{}          <plug><C-r>=TeX_PutText("\\roman{ä}«»")<cr>'
-exe pC3.'Roman{}          <plug><C-r>=TeX_PutText("\\Roman{ä}«»")<cr>'
+exe pC3.'alph{}           <plug><C-r>=TeX_PutText("\\alph{ää}«»")<cr>'
+exe pC3.'Alph{}           <plug><C-r>=TeX_PutText("\\Alph{ää}«»")<cr>'
+exe pC3.'arabic{}         <plug><C-r>=TeX_PutText("\\arabic{ää}«»")<cr>'
+exe pC3.'roman{}          <plug><C-r>=TeX_PutText("\\roman{ää}«»")<cr>'
+exe pC3.'Roman{}          <plug><C-r>=TeX_PutText("\\Roman{ää}«»")<cr>'
 " }}}
 " }}}
 " Fonts {{{
@@ -760,16 +760,16 @@ let pD1 = pD.'&Family.'
 exe pD1.'rmfamily        <plug><C-r>=TeX_PutText("\\rmfamily ")<cr>'
 exe pD1.'sffamily        <plug><C-r>=TeX_PutText("\\sffamily ")<cr>'
 exe pD1.'ttfamily        <plug><C-r>=TeX_PutText("\\ttfamily ")<cr>'
-exe pD1.'textrm{}        <plug><C-r>=TeX_PutText("\\textrm{ä}«»")<cr>'
-exe pD1.'textsf{}        <plug><C-r>=TeX_PutText("\\textsf{ä}«»")<cr>'
-exe pD1.'texttt{}        <plug><C-r>=TeX_PutText("\\texttt{ä}«»")<cr>'
+exe pD1.'textrm{}        <plug><C-r>=TeX_PutText("\\textrm{ää}«»")<cr>'
+exe pD1.'textsf{}        <plug><C-r>=TeX_PutText("\\textsf{ää}«»")<cr>'
+exe pD1.'texttt{}        <plug><C-r>=TeX_PutText("\\texttt{ää}«»")<cr>'
 " }}}
 " {{{ Series
 let pD2 = pD.'&Series.'
 exe pD2.'bfseries        <plug>\bfseries '
 exe pD2.'mdseries        <plug>\mdseries '
-exe pD2.'textbf{}        <plug><C-r>=TeX_PutText("\textbf{ä}«»")<cr>'
-exe pD2.'textmd{}        <plug><C-r>=TeX_PutText("\textmd{ä}«»")<cr>'
+exe pD2.'textbf{}        <plug><C-r>=TeX_PutText("\\textbf{ää}«»")<cr>'
+exe pD2.'textmd{}        <plug><C-r>=TeX_PutText("\\textmd{ää}«»")<cr>'
 " }}}
 " {{{ S&hape.
 let pD3 = pD.'S&hape.'
@@ -777,28 +777,27 @@ exe pD3.'itshape         <plug>\itshape '
 exe pD3.'scshape         <plug>\scshape '
 exe pD3.'slashape        <plug>\slashape '
 exe pD3.'upshape         <plug>\upshape '
-exe pD3.'textit{}        <plug><C-r>=TeX_PutText("\textit{ä}«»")<cr>'
-exe pD3.'textsc{}        <plug><C-r>=TeX_PutText("\textsc{ä}«»")<cr>'
-exe pD3.'textsl{}        <plug><C-r>=TeX_PutText("\textsl{ä}«»")<cr>'
-exe pD3.'textup{}        <plug><C-r>=TeX_PutText("\textup{ä}«»")<cr>'
+exe pD3.'textit{}        <plug><C-r>=TeX_PutText("\\textit{ää}«»")<cr>'
+exe pD3.'textsc{}        <plug><C-r>=TeX_PutText("\\textsc{ää}«»")<cr>'
+exe pD3.'textsl{}        <plug><C-r>=TeX_PutText("\\textsl{ää}«»")<cr>'
+exe pD3.'textup{}        <plug><C-r>=TeX_PutText("\\textup{ää}«»")<cr>'
 " }}}
 " {{{ &Diacritics.
 let pD4 = pD.'&Diacritics.'
-exe pD4.'Acute           <plug><C-r>=TeX_PutText("\\\"{ä}«»")<cr>'
-exe pD4.'Breve           <plug><C-r>=TeX_PutText("\\u{ä}«»")<cr>'
-exe pD4.'Kó³ko           <plug><C-r>=TeX_PutText("\\r{ä}«»")<cr>'
-exe pD4.'Daszek          <plug><C-r>=TeX_PutText("\\^{ä}«»")<cr>'
-exe pD4.'Umlaut          <plug><C-r>=TeX_PutText("\\"{ä}«»")<cr>'
-exe pD4.'HUmlaut         <plug><C-r>=TeX_PutText("\\H{ä}«»")<cr>'
-exe pD4.'Kropka          <plug><C-r>=TeX_PutText("\\ nad \.{ä}«»")<cr>'
-exe pD4.'Grave           <plug><C-r>=TeX_PutText("\\`{ä}«»")<cr>'
-exe pD4.'Szewron         <plug><C-r>=TeX_PutText("\\v{\ä}«»")<cr>'
-exe pD4.'Makron          <plug><C-r>=TeX_PutText("\\={\ä}«»")<cr>'
-exe pD4.'Tylda           <plug><C-r>=TeX_PutText("\\~{ä}«»")<cr>'
-exe pD4.'Podkreœlenie    <plug><C-r>=TeX_PutText("\\b{ä}«»")<cr>'
-exe pD4.'Cedilla         <plug><C-r>=TeX_PutText("\\c{ä}«»")<cr>'
-exe pD4.'Kropka\\ nad    <plug><C-r>=TeX_PutText("\.{ä}«»")<cr>'
-exe pD4.'Ligatura        <plug><C-r>=TeX_PutText("\\t{ä}«»")<cr>'
+exe pD4.'Acute           <plug><C-r>=TeX_PutText("\\\"{ää}«»")<cr>'
+exe pD4.'Breve           <plug><C-r>=TeX_PutText("\\u{ää}«»")<cr>'
+exe pD4.'Kó³ko           <plug><C-r>=TeX_PutText("\\r{ää}«»")<cr>'
+exe pD4.'Daszek          <plug><C-r>=TeX_PutText("\\^{ää}«»")<cr>'
+exe pD4.'Umlaut          <plug><C-r>=TeX_PutText("\\"{ää}«»")<cr>'
+exe pD4.'HUmlaut         <plug><C-r>=TeX_PutText("\\H{ää}«»")<cr>'
+exe pD4.'Grave           <plug><C-r>=TeX_PutText("\\`{ää}«»")<cr>'
+exe pD4.'Szewron         <plug><C-r>=TeX_PutText("\\v{\ää}«»")<cr>'
+exe pD4.'Makron          <plug><C-r>=TeX_PutText("\\={\ää}«»")<cr>'
+exe pD4.'Tylda           <plug><C-r>=TeX_PutText("\\~{ää}«»")<cr>'
+exe pD4.'Podkreœlenie    <plug><C-r>=TeX_PutText("\\b{ää}«»")<cr>'
+exe pD4.'Cedilla         <plug><C-r>=TeX_PutText("\\c{ää}«»")<cr>'
+exe pD4.'Kropka\ nad     <plug><C-r>=TeX_PutText("\\.{ää}«»")<cr>'
+exe pD4.'Ligatura        <plug><C-r>=TeX_PutText("\\t{ää}«»")<cr>'
 " }}}
 " {{{ &Size.
 let pD5 = pD.'&Size.'
@@ -815,11 +814,11 @@ exe pD5.'Huge            <plug>\Huge '
 " }}}
 " {{{ &font.
 let pD6 = pD.'&font.'
-exe pD6.'fontencoding{}                    <plug><C-r>=TeX_PutText("\\fontencoding{ä}«»")<cr>'
-exe pD6.'fontfamily{qtm}                   <plug><C-r>=TeX_PutText("\\fontfamily{ä}«»")<cr>'
-exe pD6.'fontseries{m\ b\ bx\ sb\ c}       <plug><C-r>=TeX_PutText("\\fontseries{ä}«»")<cr>'
-exe pD6.'fontshape{n\ it\ sl\ sc\ ui}      <plug><C-r>=TeX_PutText("\\fontshape{ä}«»")<cr>'
-exe pD6.'fontsize{8}{10}                   <plug><C-r>=TeX_PutText("\\fontsize{ä}{«»}«»")<cr>'
+exe pD6.'fontencoding{}                    <plug><C-r>=TeX_PutText("\\fontencoding{ää}«»")<cr>'
+exe pD6.'fontfamily{qtm}                   <plug><C-r>=TeX_PutText("\\fontfamily{ää}«»")<cr>'
+exe pD6.'fontseries{m\ b\ bx\ sb\ c}       <plug><C-r>=TeX_PutText("\\fontseries{ää}«»")<cr>'
+exe pD6.'fontshape{n\ it\ sl\ sc\ ui}      <plug><C-r>=TeX_PutText("\\fontshape{ää}«»")<cr>'
+exe pD6.'fontsize{8}{10}                   <plug><C-r>=TeX_PutText("\\fontsize{ää}{«»}«»")<cr>'
 exe pD6.'selectfont                        <plug><C-r>=TeX_PutText("\\selectfont ")<cr>'
 " }}}
 " }}}
@@ -929,13 +928,13 @@ function! TeX_env(env)
     elseif (a:env=="thebibliography")
         return TeX_thebibliography(a:env)
     else
-        return "\\begin{".a:env."}\<cr>ä\<cr>\\end{".a:env.'}«»'
+        return "\\begin{".a:env."}\<cr>ää\<cr>\\end{".a:env.'}«»'
     endif
 endfunction
 " }}}
 " special treatment for `itemize', `enumerate', `theindex', `trivlist' {{{
 function! TeX_itemize(env)
-	let rhs = "\\begin{".a:env."}\<cr>\\item ä\<cr>\\end{".a:env."}«»"
+	let rhs = "\\begin{".a:env."}\<cr>\\item ää\<cr>\\end{".a:env."}«»"
 	return TeX_PutText(rhs)
 endfunction " }}}
 " special treatment for `description' {{{
@@ -944,7 +943,7 @@ function! TeX_description(env)
 	if (itlabel != "")
 		let itlabel = '['.itlabel.']'
 	endif
-	let rhs = "\\begin{".a:env."}\<cr>\\item".itlabel." ä\<cr>\\end{".a:env."}«»"
+	let rhs = "\\begin{".a:env."}\<cr>\\item".itlabel." ää\<cr>\\end{".a:env."}«»"
 	return TeX_PutText(rhs)
 endfunction " }}}
 " special treatment for `figure' {{{
@@ -1024,7 +1023,7 @@ function! TeX_table(env)
         let foo = foo.'['.pos.']'
     endif
     let format = input("Format  ( l r c p{width} | @{text} )? ")
-    let ret = ret.foo.'{'.format."}\<cr>ä\<cr>\\end{tabular}«»\<cr>"
+    let ret = ret.foo.'{'.format."}\<cr>ää\<cr>\\end{tabular}«»\<cr>"
     if (center == "y")
         let ret=ret."\\end{center}\<cr>"
     endif
@@ -1045,7 +1044,7 @@ function! TeX_tabular(env)
         let foo = foo.'['.pos.']'
     endif
     let format = input("Format  ( l r c p{width} | @{text} )? ")
-    return TeX_PutText(foo.'{'.format."}\<cr>ä\<cr>\\end{".a:env.'}«»')
+    return TeX_PutText(foo.'{'.format."}\<cr>ää\<cr>\\end{".a:env.'}«»')
 endfunction " }}}
 " special treatment for `eqnarray' and `equation' {{{
 function! TeX_eqnarray(env)
@@ -1075,7 +1074,7 @@ function! TeX_list(env)
 endfunction " }}}
 " special treatment for `itemize', `enumerate', `theindex', `trivlist' {{{
 function! TeX_itemize2(env)
-	let rhs = "\\begin{".a:env."}\<cr>\\item ä\<cr>\\end{".a:env."}"
+	let rhs = "\\begin{".a:env."}\<cr>\\item ää\<cr>\\end{".a:env."}"
 	return TeX_PutText(rhs)
 endfunction " }}}
 " special treatment for `itemize', `enumerate', `theindex', `trivlist' {{{
@@ -1091,7 +1090,7 @@ function! TeX_description2(env)
     if (itlabel != "")
         let itlabel = '['.itlabel.']'
     endif
-	let rhs = "\\begin{".a:env."}\<cr>\\item".itlabel." ä\<cr>\\end{".a:env."}"
+	let rhs = "\\begin{".a:env."}\<cr>\\item".itlabel." ää\<cr>\\end{".a:env."}"
 	return TeX_PutText(rhs)
 endfunction " }}}
 " special treatment for `description' {{{

@@ -11,14 +11,14 @@ if !exists('s:doneMappings')
 	let s:ml = exists('g:mapleader') ? g:mapleader : '\'
 
 	" HTML commands {{{2
-	call IMAP ('tab'.s:ml, "<table border=2 cellspacing=2 cellpadding=5>\<cr><tr>\<cr>\<tab><td>ה</td>\<cr>\<bs></tr>\<cr></table>", 'html')
-	call IMAP ('ref'.s:ml, "<a href=\"ה\"></a>", 'html')
-	call IMAP ('ol'.s:ml, "<ol>\<cr><li>ה</li>\<cr></ol>", 'html')
-	call IMAP ('ul'.s:ml, "<ul>\<cr><li>ה</li>\<cr></ul>", 'html')
-	call IMAP ('tr'.s:ml, "<tr>\<cr>\<tab><td>ה</td>\<cr>\<bs></tr>", 'html')
-	call IMAP ('td'.s:ml, "<td>ה</td>", 'html')
-	call IMAP ('bb'.s:ml, "<b>ה</b>", 'html')
-	call IMAP ('it'.s:ml, "<i>ה</i>", 'html')
+	call IMAP ('tab'.s:ml, "<table border=2 cellspacing=2 cellpadding=5>\<cr><tr>\<cr>\<tab><td>הה</td>\<cr>\<bs></tr>\<cr></table>", 'html')
+	call IMAP ('ref'.s:ml, "<a href=\"הה\"></a>", 'html')
+	call IMAP ('ol'.s:ml, "<ol>\<cr><li>הה</li>\<cr></ol>", 'html')
+	call IMAP ('ul'.s:ml, "<ul>\<cr><li>הה</li>\<cr></ul>", 'html')
+	call IMAP ('tr'.s:ml, "<tr>\<cr>\<tab><td>הה</td>\<cr>\<bs></tr>", 'html')
+	call IMAP ('td'.s:ml, "<td>הה</td>", 'html')
+	call IMAP ('bb'.s:ml, "<b>הה</b>", 'html')
+	call IMAP ('it'.s:ml, "<i>הה</i>", 'html')
 	" HTML greek characters {{{2
 	call IMAP ('a'.s:ml, "\&alpha;", 'html')
 	call IMAP ('b'.s:ml, "\&beta;", 'html')
