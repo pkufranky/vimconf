@@ -18,7 +18,7 @@
 " Please don't hesitate to correct my english :)
 " Send corrections to <8host AT pauliDOTfmph.uniba.sk>
 
-" $Id: vimrc,v 1.61 2002/05/02 12:56:14 host8 Exp $
+" $Id: vimrc,v 1.62 2002/06/19 16:59:06 host8 Exp $
 
 " Settings {{{
 " To be secure & Vi nocompatible
@@ -528,11 +528,14 @@ endfunction
 
 if exists("g:open_all_win")
 	if g:open_all_win == 1
-		call OpenAllWin()
-		" turn g:open_all_win off after opening all windows
-		" it prevents reopen windows after 2nd sourcing .vimrc
-		let g:open_all_win = 0
+		" Open all windows only if we are not running (g)vimdiff
+		if match(v:progname, "diff") < 0
+			call OpenAllWin()
+		endif
 	endif
+	" turn g:open_all_win off after opening all windows
+	" it prevents reopen windows after 2nd sourcing .vimrc
+	let g:open_all_win = 0
 endif
 " OpenAllWin() }}}
 
