@@ -5,6 +5,8 @@
 "		   URL: 
 "  Last Change: Thu Mar 21 06:00 AM 2002 PST
 "
+" Version: $Platon: vimconfig/vim/ftplugin/html.vim,v 1.4 2003-01-16 12:16:50 rajo Exp $
+
 " HTML mappings {{{
 if !exists('s:doneMappings')
 	let s:doneMappings = 1
@@ -77,7 +79,7 @@ let g:smartBS_html = '\(' .
 
 " This function comes from Benji Fisher <benji AT e-mathDOTAMSDOTorg>
 " http://vim.sourceforge.net/scripts/download.php?src_id=409
-" (modified/patched by: Lubomir Host 'rajo' <host8 AT keplerDOTfmphDOTuniba.sk>
+" (modified/patched by: Lubomir Host 'rajo' <8host AT pauli.fmph.uniba.sk>
 "                       Srinath Avadhanula  <srinath AT fastmailDOTfm> )
 function! s:SmartBS()
 	let init = strpart(getline("."), 0, col(".")-1)

@@ -2,15 +2,15 @@
 # Type 'make dist' for create tar-gziped and zip archiv. 
 
 #
-# (c) rajo <host8@kepler.fmph.uniba.sk>
+# (c) Lubomir Host 'rajo' <8host AT pauli.fmph.uniba.sk>
 #
 
 # $Id: Makefile,v 1.23 2002/08/11 17:31:15 rajo Exp $
 
 PACKAGE = vimconfig
-VERSION = 1.7
+VERSION = 1.8pre1
 PACKAGE_TEMPLATE_PLUGIN = templatefile
-VERSION_TEMPLATE_PLUGIN = 1.7
+VERSION_TEMPLATE_PLUGIN = 1.8pre1
 
 DISTFILES_TEMPLATE_PLUGIN = vim \
 						vim/plugin \

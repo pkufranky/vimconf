@@ -1,6 +1,6 @@
 " Vim syntax file
 " Language:	Vim help file
-" Maintainer:	Lubomir Host <8host AT pauli.fmph.uniba.sk>
+" Maintainer:	Lubomir Host 'rajo' <8host AT pauli.fmph.uniba.sk>
 " Last Change:	2002 Apr 22
 " Based On: help.vim syntax file from Bram Moolenar
 

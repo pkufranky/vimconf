@@ -16,9 +16,10 @@
 "
 
 " Please don't hesitate to correct my english :)
-" Send corrections to <8host AT pauli.fmph.uniba.sk>
+" Send corrections to
+"        Lubomir Host 'rajo' <8host AT pauli.fmph.uniba.sk>
 
-" Version: $Platon: vimconfig/vimrc,v 1.76 2003-01-16 12:15:10 rajo Exp $
+" Version: $Platon: vimconfig/vimrc,v 1.77 2003-01-16 12:16:49 rajo Exp $
 
 " Settings {{{
 " To be secure & Vi nocompatible

@@ -1,8 +1,8 @@
 " Vim filetype plugin file
 " Language:		Perl
-" Maintainer:	Lubomir Host <host8@kepler.fmph.uniba.sk>
+" Maintainer:	Lubomir Host 'rajo' <8host AT pauli.fmph.uniba.sk>
 " License:		GNU GPL
-" Version:		$Id: perl.vim,v 1.3 2002/02/17 01:00:35 host8 Exp $
+" Version:		$Platon: vimconfig/vim/ftplugin/perl.vim,v 1.5 2003-01-16 12:16:50 rajo Exp $
 
 
 " Only do this when not done yet for this buffer

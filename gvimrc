@@ -4,7 +4,7 @@
 " gvimrc - GUI configuration file
 " ____________________________________________________________
 "
-" Developed by Lubomir Host <8host AT pauli.fmph.uniba.sk>
+" Developed by Lubomir Host 'rajo' <8host AT pauli.fmph.uniba.sk>
 " Copyright (c) 2000-2002 Platon SDG, http://www.platon.sk/
 " All rights reserved.
 "
@@ -16,9 +16,11 @@
 "
 
 " Please don't hesitate to correct my english :)
-" Send corrections to <8host AT pauli.fmph.uniba.sk>
+" Send corrections to
+"
+"        Lubomir Host 'rajo' <8host AT pauli.fmph.uniba.sk>
 
-" $Id: gvimrc,v 1.2 2002/05/02 12:56:14 host8 Exp $
+" Version: $Platon: vimconfig/gvimrc,v 1.4 2003-01-16 12:16:49 rajo Exp $
 
 function! Source(File)
 	silent! execute "source " . a:File
