@@ -18,7 +18,7 @@
 " Please don't hesitate to correct my english :)
 " Send corrections to <8host AT pauliDOTfmph.uniba.sk>
 
-" $Id: vimrc,v 1.54 2002/04/22 10:14:04 jombik9 Exp $
+" $Id: vimrc,v 1.55 2002/04/22 13:20:50 host8 Exp $
 
 " Settings {{{
 " To be secure & Vi nocompatible
@@ -295,6 +295,7 @@ command! -nargs=0 OpenAllWin call OpenAllWin()
 command! -nargs=0 UnquoteMailBody call UnquoteMailBody()
 command! -nargs=* ReadFileAboveCursor call ReadFileAboveCursor(<f-args>)
 command! -nargs=* R call ReadFileAboveCursor(<f-args>)
+command! -nargs=* Help call Help(<f-args>)
 " }}}
 
 " Autocomands {{{
@@ -384,6 +385,14 @@ endif " if has("autocmd")
 " }}} Autocomands
 
 " Functions {{{
+" Function Help() {{{
+" Function for open help for vimconfig
+function! Help(...)
+	split ~/.vim/../FEATURES.txt
+	execute "/" . a:1
+endfunction
+" }}} Help()
+
 " Function ChangeFoldMethod() {{{
 " Function for changing folding method.
 "

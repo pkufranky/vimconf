@@ -5,7 +5,7 @@
 # (c) rajo <host8@kepler.fmph.uniba.sk>
 #
 
-# $Id: Makefile,v 1.14 2002/04/03 12:02:34 host8 Exp $
+# $Id: Makefile,v 1.15 2002/04/06 18:03:45 host8 Exp $
 
 PACKAGE = vimconfig
 VERSION = 1.7-2.unstable
@@ -21,7 +21,8 @@ DISTFILES_TEMPLATE_PLUGIN = vim \
 						vim/templates/skel.sh \
 						vim/templates/Makefile
 
-DISTFILES = README Makefile vimrc vim \
+DISTFILES = README FEATURES.txt \
+			Makefile vimrc vim \
 			vim/strace.vim \
 			vim/csyntax.vim \
 			vim/latextags \
@@ -42,7 +43,10 @@ DISTFILES = README Makefile vimrc vim \
 			vim/plugin/calendar.vim \
 			vim/plugin/imaps.vim \
 			vim/plugin/matchit.vim \
-			vim/plugin/syntaxFolds.vim $(DISTFILES_TEMPLATE_PLUGIN)
+			vim/plugin/syntaxFolds.vim \
+			vim/syntax/ \
+			vim/syntax/FEATURES.vim \
+			$(DISTFILES_TEMPLATE_PLUGIN)
 
 
 #TAR = gtar
@@ -61,9 +65,15 @@ top_builddir = .
 #########
 # Targets
 
-all: dist dist-template-plugin
+all: tags dist dist-template-plugin
 
-clean: clean-dist clean-dist-template-plugin
+clean: clean-dist clean-dist-template-plugin clean-tags
+
+tags: *.txt
+	vim -c ":helptags ." -c ":q"
+
+clean-tags:
+	rm -f tags
 
 clean-dist:
 	-rm -rf $(distdir)

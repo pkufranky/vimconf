@@ -5,6 +5,7 @@
 
 The notation used in this manual is explained here: |notation|
 (type ':help notation')
+Note: Use CTRL-] when looking for keyword.
 
 ==============================================================================
 1. Short description				*vimconfig-description*
@@ -17,7 +18,7 @@ COMMON features					*vimconfig-common*
 ---------------
 
 - support for user specific and machine specific settings See
-  |vimconfig-setup|.
+  |vimconfig-specific-setup|.
 - improved status bar |vimconfig-statusbar|.
 - ability to open multiple files at ViM startup when they are specified at
   command line |vimconfig-startup|.
@@ -27,67 +28,205 @@ COMMON features					*vimconfig-common*
 
 KEYS (INSERT mode)				*vimconfig-insert-mode*
 ------------------
-
+						*vimconfig-key-CTRL-a*
 CTRL-a - move to beginning of line
+						*vimconfig-key-CTRL-e*
 CTRL-e - move to end of line
+						*vimconfig-key-CTRL-d*
 CTRL-d - delete current line without saving it to buffer and without
          possibility of Undo; use with care!
 
 KEYS (NORMAL mode)				*vimconfig-normal-mode*
 ------------------
 
+						*vimconfig-key-CTRL-o*
 CTRL-o - open file
+
+
+COMMANDS					*vimconfig-commands*
+--------
+
+Here is a list of defined commands: ~
+-------------------------------------------------------------
+|vimconfig-com-Printf|			:Printf
+|vimconfig-com-FoldLongLines|		:FoldLongLines
+|vimconfig-com-Indent|			:Indent
+|vimconfig-com-CallProg|		:CallProg
+|vimconfig-com-OpenAllWin|		:OpenAllWin
+|vimconfig-com-UnquoteMailBody|		:UnquoteMailBody
+|vimconfig-com-ReadFileAboveCursor|	:ReadFileAboveCursor
+|vimconfig-com-R|			:R
+|vimconfig-com-Help|			:Help
+|vimconfig-com-Calendar|		:Calendar
+|vimconfig-com-CallProg|		:CallProg
+|vimconfig-com-Explore|			:Explore
+|vimconfig-com-FoldLongLines|		:FoldLongLines
+|vimconfig-com-Help|			:Help
+|vimconfig-com-Inc|			:Inc
+|vimconfig-com-IncN|			:IncN
+|vimconfig-com-IncR|			:IncR
+|vimconfig-com-Indent|			:Indent
+|vimconfig-com-LoadFile|		:LoadFile
+|vimconfig-com-LoadTemplateFile|	:LoadTemplateFile
+|vimconfig-com-MatchDebug|		:MatchDebug
+|vimconfig-com-Next|			:Next
+|vimconfig-com-NetUserPass|		:NetUserPass
+|vimconfig-com-Nread|			:Nread
+|vimconfig-com-Nwrite|			:Nwrite
+|vimconfig-com-OpenAllWin|		:OpenAllWin
+|vimconfig-com-Print|			:Print
+|vimconfig-com-Printf|			:Printf
+|vimconfig-com-R|			:R
+|vimconfig-com-ReadFileAboveCursor|	:ReadFileAboveCursor
+|vimconfig-com-Sexplore|		:Sexplore
+|vimconfig-com-Source|			:Source
+|vimconfig-com-Snip|			:Snip
+|vimconfig-com-UnquoteMailBody|		:UnquoteMailBody
+-------------------------------------------------------------
+Note: Use CTRL-] when looking for keyword.
+
 
 FUNCTIONS					*vimconfig-functions*
 ---------
 
-						*vimconfig-func-Calendar*
+Here is a list of defined functions: ~
+-------------------------------------------------------------
+|vimconfig-fun-Help|			Help()
+|vimconfig-fun-ChangeFoldMethod|	ChangeFoldMethod()
+|vimconfig-fun-FoldLongLines|		FoldLongLines()
+|vimconfig-fun-AutoLastMod|		AutoLastMod()
+|vimconfig-fun-LastMod|			LastMod()
+|vimconfig-fun-OpenAllWin|		OpenAllWin()
+|vimconfig-fun-CallProg|		CallProg()
+|vimconfig-fun-Compile|			Compile()
+|vimconfig-fun-Indent|			Indent()
+|vimconfig-fun-UnquoteMailBody|		UnquoteMailBody()
+|vimconfig-fun-SafeLineDelete|		SafeLineDelete()
+|vimconfig-fun-GetID|			GetID()
+|vimconfig-fun-ReadFileAboveCursor|	ReadFileAboveCursor()
+|vimconfig-fun-RemoveAutogroup|		RemoveAutogroup()
+-------------------------------------------------------------
+Note: Use CTRL-] when looking for keyword.
+
+==============================================================================
+
+
+
+
+
+
+						*vimconfig-specific-setup*
+SPECIFIC USER SETUP ~
+-------------------
+
+If you will use specific setup (e.g you are working on multiple machines), you
+can make it withoutch changing main configuration file ~/.vimrc. Simply put 
+your specific setup to one (or multiple) files. These files are automaticaly
+sourced by vim on vim startup (if exists and are readable):
+
+Supported filenames: ~
+   Sourced at begin of ~/.vimrc: (in this order!)
+        ~/.vim/vimrc-local.pre
+        ~/.vim/vimrc-local-<user>.pre
+        ~/.vim/vimrc-local-<server>.pre
+        ~/.vim/vimrc-local-<server>-<user>.pre
+        ~/.vim/vimrc-local
+        ~/.vim/vimrc-local-<user>
+        ~/.vim/vimrc-local-<server>
+        ~/.vim/vimrc-local-<server>-<user>
+   Sourced at end of ~/.vimrc: (in this order!)
+        ~/.vim/vimrc-local.post
+        ~/.vim/vimrc-local-<user>.post
+        ~/.vim/vimrc-local-<server>.post
+        ~/.vim/vimrc-local-<server>-<user>.post
+
+Note: Please substitute '<server>' and '<user>' with your machine name or your
+user name.
+
+
+						*vimconfig-statusbar*
+						*vimconfig-startup*
+
+
+						*vimconfig-com-Calendar*
 :Calendar - 
-						*vimconfig-func-CallProg*
-:CallProg -
-						*vimconfig-func-Explore*
+						*vimconfig-com-CallProg*
+:CallProg
+						*vimconfig-com-Explore*
 :Explore
-						*vimconfig-func-FoldLongLines*
-:FoldLongLines -
-						*vimconfig-func-Inc*
-:Inc -
-						*vimconfig-func-IncN*
-:IncN -
-						*vimconfig-func-IncR*
-:IncR -
-						*vimconfig-func-Indent*
+						*vimconfig-com-FoldLongLines*
+:FoldLongLines
+
+						*vimconfig-com-Help*
+:Help
+
+
+						*vimconfig-com-Inc*
+:Inc
+
+
+						*vimconfig-com-IncN*
+:IncN
+
+
+						*vimconfig-com-IncR*
+:IncR
+
+
+						*vimconfig-com-Indent*
 :Indent - indents whole document; especially usable for C source codes
-						*vimconfig-func-LoadFile*
-:LoadFile -
-						*vimconfig-func-LoadTemplateFile*
-:LoadTemplateFile -
-						*vimconfig-func-MatchDebug*
-:MatchDebug -
-						*vimconfig-func-Next*
-:Next -
-						*vimconfig-func-NetUserPass*
-:NetUserPass -
-						*vimconfig-func-Nread*
-:Nread -
-						*vimconfig-func-Nwrite*
-:Nwrite -
-						*vimconfig-func-OpenAllWin*
-:OpenAllWin -
-						*vimconfig-func-Print*
-:Print -
-						*vimconfig-func-Printf*
-:Printf -
-						*vimconfig-func-ReadFileAboveCursor*
-:ReadFileAboveCursor -
-						*vimconfig-func-Sexplore*
-:Sexplore -
-						*vimconfig-func-Source*
-:Source -
-						*vimconfig-func-Snip*
-:Snip -
+
+						*vimconfig-com-LoadFile*
+:LoadFile
 
 
-:UnquoteMailBody - removes starting '>' characters from every line
+						*vimconfig-com-LoadTemplateFile*
+:LoadTemplateFile
+
+						*vimconfig-com-MatchDebug*
+:MatchDebug
+
+						*vimconfig-com-Next*
+:Next
+
+						*vimconfig-com-NetUserPass*
+:NetUserPass
+
+						*vimconfig-com-Nread*
+:Nread
+
+						*vimconfig-com-Nwrite*
+:Nwrite
+
+						*vimconfig-com-OpenAllWin*
+:OpenAllWin
+
+						*vimconfig-com-Print*
+:Print
+
+						*vimconfig-com-Printf*
+:Printf
+
+						*vimconfig-com-ReadFileAboveCursor*
+						*vimconfig-com-R*
+:R
+:ReadFileAboveCursor
+
+						*vimconfig-com-Sexplore*
+:Sexplore
+
+						*vimconfig-com-Source*
+:Source
+
+						*vimconfig-com-Snip*
+:Snip
+
+
+						*vimconfig-com-UnquoteMailBody*
+:UnquoteMailBody	removes starting '>' characters from every line
+
+
+
 
 ==============================================================================
 x.x Autocommands				*vimconfig-autocommands*
@@ -104,7 +243,7 @@ X.x Thanks					*vimconfig-thanks*
 
 Very thanks to many people which contribute on this Vim configuration files.
 
-Here is a list of contributors (alphabetical order):
+Here is a list of contributors (alphabetical order): ~
 	Srinath Avadhanula <srinath AT fastmail.fm>
 	Ondrej Jombik 'Neptun' <nepto AT pobox.sk>
 	Martin Karas 'Wolcaan' <wolcano AT pobox.sk>
@@ -113,4 +252,4 @@ Here is a list of contributors (alphabetical order):
 
 
 ==============================================================================
-  vim:tw=78:ts=8:ft=FEATURES:norl:
+  vim:tw=78:ts=8:ft=FEATURES:norl:iskeyword=!-~,^*,^|,^"
