@@ -2,7 +2,7 @@
 " Language:		Mail
 " Maintainer:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " License:		GNU GPL
-" Version:		$Id: mail.vim,v 1.1 2001/12/24 01:45:25 host8 Exp $
+" Version:		$Id: mail.vim,v 1.1 2002/01/04 10:37:41 host8 Exp $
 " Language Of Comments:	English
 
 
@@ -19,9 +19,9 @@ setlocal nomodeline
 setlocal textwidth=72
 
 " Set 'formatoptions' to break text lines and keep the comment leader ">".
-setlocal formatoptions+=croqt
+setlocal formatoptions=crqt12
 
-setlocal noautoindent
+setlocal autoindent
 
 " Add mappings, unless the user didn't want this.
 if !exists("no_plugin_maps") && !exists("no_mail_maps")
