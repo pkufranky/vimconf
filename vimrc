@@ -8,7 +8,7 @@
 " Please don't hesitate to correct my english :)
 " Send corrections to <host8@kepler.fmph.uniba.sk>
 
-" $Id: vimrc,v 1.49 2002/04/06 15:15:44 host8 Exp $
+" $Id: vimrc,v 1.50 2002/04/06 17:25:28 host8 Exp $
 
 " Settings {{{
 " To be secure & Vi nocompatible
@@ -197,8 +197,7 @@ set t_vb=
 
 " Set this, if you will open all windows for files specified
 " on the commandline at vim startup.
-"let g:open_all_win=1
-let g:open_all_win=0
+let g:open_all_win=1
 
 " Settings for folding long lines
 let g:fold_long_lines=300
@@ -460,20 +459,34 @@ endfunction
 " reload.
 "
 function! OpenAllWin()
-	let i = 0
-	if !exists("opened")
-		while i < argc() - 1
-			split
-			n
-			let i = i + 1
+	" save Vim option to variable
+	let s:save_split = &splitbelow
+	set splitbelow
+
+	let s:i = 1
+	if g:open_all_win == 1
+		while s:i < argc()
+			if bufwinnr(argv(s:i)) == -1	" buffer doesn't exists or doesn't have window
+				exec ":split " . argv(s:i)
+			endif
+			let s:i = s:i + 1
 		endwhile
 	endif
-	let opened = 1
+
+	" restore Vim option from variable
+	if s:save_split
+		set splitbelow
+	else
+		set nosplitbelow
+	endif
 endfunction
 
 if exists("g:open_all_win")
 	if g:open_all_win == 1
 		call OpenAllWin()
+		" turn g:open_all_win off after opening all windows
+		" it prevents reopen windows after 2nd sourcing .vimrc
+		let g:open_all_win = 0
 	endif
 endif
 " OpenAllWin() }}}
