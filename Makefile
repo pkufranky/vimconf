@@ -9,7 +9,7 @@
 # All rights reserved.
 #
 
-# $Platon: vimconfig/Makefile,v 1.34 2003-11-03 16:18:37 rajo Exp $
+# $Platon: vimconfig/Makefile,v 1.35 2003-11-06 17:04:55 rajo Exp $
 
 PACKAGE = vimconfig
 VERSION = 1.8
@@ -70,7 +70,7 @@ DISTFILES = README \
 			vim/plugin/increment.vim \
 			vim/plugin/matchit.vim \
 			vim/plugin/syntaxFolds.vim \
-			vim/plugin/taglist.vim
+			vim/plugin/taglist.vim \
 			vim/syntax/ \
 			vim/syntax/FEATURES.vim \
 			$(DISTFILES_TEMPLATE_PLUGIN)
