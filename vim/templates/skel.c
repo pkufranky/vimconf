@@ -11,6 +11,7 @@
  */
 
 /* $Id$ */
+/* $Platon$ */
 
 #include <stdio.h>
 #include "@FILE@.h"

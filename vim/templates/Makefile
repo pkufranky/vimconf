@@ -9,9 +9,17 @@
 #
 
 # $Id$
+# $Platon$ 
 
 PACKAGE = test
 VERSION = 1.0
+
+unexport SUBDIRS
+unexport SUBDIR_OBJECTS
+unexport MAKEFILES
+unexport CONFIGURE_SCRIPTS
+export PACKAGE
+export VERSION
 
 # Directories {{{
 
@@ -25,16 +33,24 @@ top_builddir = .
 
 # Targets {{{
 
+# if you have subdirectories with Makefiles,
+# add names of directories here
+SUBDIRS   =
+
 PROGRAM   = test
 
+# here add names of your source codes
 SOURCES   = $(srcdir)/test.c
 
-OBJECTS   = $(top_builddir)/test.o
-
-DEP_FILES = $(top_builddir)/.deps/test.P
+# name of objects and header files is created
+# _automaticaly_ from $(SOURCES) -- you don't need
+# change this
+OBJECTS         = $(sort $(patsubst %.c,%.o,$(SOURCES)))
+include_HEADERS = $(sort $(patsubst %.c,%.h,$(SOURCES)))
+DEP_FILES       = $(sort $(patsubst %.c,.deps/%.P,$(SOURCES)))
 
 DISTFILES = Makefile \
-			test.c
+			$(SOURCES) $(include_HEADERS)
 
 CONFIG_HEADER   = $(top_builddir)/config.h
 
@@ -76,7 +92,7 @@ DEPS_MAGIC := $(shell mkdir .deps > /dev/null 2>&1 || :)
 .s.o:
 	$(COMPILE) -c $<
 
-%.o: %.c $(CONFIG_HEADER)
+%.o: %.c %.h $(CONFIG_HEADER)
 	@echo '$(COMPILE) -c $<'; \
 	$(COMPILE) -Wp,-MD,.deps/$(*F).pp -o $@ -c $<
 	@-cp .deps/$(*F).pp .deps/$(*F).P; \
@@ -85,12 +101,40 @@ DEPS_MAGIC := $(shell mkdir .deps > /dev/null 2>&1 || :)
 	    >> .deps/$(*F).P; \
 	rm .deps/$(*F).pp
 
-clean:
+#
+# False targets.
+#
+.PHONY: dummy
+
+#
+# A rule to do nothing
+#
+dummy:
+	
+clean: clean-subdirs
 	-rm -f *.o core
 
-.PHONY:	sources
-sources:
-	@echo $(SOURCES:%=cfg/%)
+#
+# A rule to make subdirectories
+#
+subdir-list-all = $(sort $(patsubst %,_subdir_%,$(SUBDIRS)))
+all-subdirs: dummy $(subdir-list-all)
+
+ifdef SUBDIRS
+$(subdir-list-all) : dummy
+	$(MAKE) -C $(patsubst _subdir_%,%,$@)
+endif
+
+#
+# A rule to make clean in subdirectories
+#
+subdir-list-clean = $(sort $(patsubst %,_subdir_clean_%,$(SUBDIRS)))
+clean-subdirs: dummy $(subdir-list-clean)
+
+ifdef SUBDIRS
+$(subdir-list-clean) : dummy
+	$(MAKE) -C $(patsubst _subdir_clean_%,%,$@) clean
+endif
 
 # Distribution targets {{{
 dist: distdir
