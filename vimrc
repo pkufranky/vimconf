@@ -18,7 +18,7 @@
 " Please don't hesitate to correct my english :)
 " Send corrections to <8host AT pauliDOTfmph.uniba.sk>
 
-" $Id: vimrc,v 1.67 2002/08/11 17:46:25 rajo Exp $
+" $Id: vimrc,v 1.68 2002/08/11 19:16:11 rajo Exp $
 
 " Settings {{{
 " To be secure & Vi nocompatible
@@ -321,7 +321,6 @@ noremap ZX mzggvGzX'z
 " }}}
 
 " New commands {{{
-command! -nargs=1 Printf call libcallnr("/lib/libc.so.6", "printf", <args>)
 command! -nargs=0 FoldLongLines call FoldLongLines()
 command! -nargs=0 Indent call Indent()
 command! -nargs=0 CallProg call CallProg()
@@ -444,19 +443,13 @@ endif
 "
 if version >= 600
 	fun! FoldLongLines()
-"		Get screen size:
-		let lines = system("`which tcsh` -f -c telltc | " .
-				\ "grep lines | awk '{print \$6-1}'")
-		let info = "<Esc>[" . lines . ";0HProcessing line "
 "		Set mark for return back
 		exec "normal mF"
-"		Delete line
-		Printf(&t_dl)
+"		Go to the first line
 		exec "1go"
 		let lnum = line(".")
 		let lend = line("$")
 		while lnum <= lend
-			Printf(info . lnum)
 "			Skip closed folds
 			if foldclosed(lnum) != -1
 				let lnum = foldclosedend(lnum) + 1
@@ -474,7 +467,6 @@ if version >= 600
 				break
 			endif
 		endwhile
-		Printf("  --  OK\n")
 "		Skip back to the mark
 		exec "normal 'F"
 		redraw!
