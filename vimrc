@@ -6,7 +6,7 @@
 " Version:		01.09.08
 " Language Of Comments:	English
 
-" $Id: vimrc,v 1.21 2001/11/28 15:28:52 host8 Exp $
+" $Id: vimrc,v 1.22 2001/12/03 16:49:28 jombik9 Exp $
 
 " Settings {{{1
 " To be secure & Vi nocompatible
@@ -27,6 +27,8 @@
 :if filewritable(expand("$HOME/.vim/viminfo")) == 1 || 
 			\ filewritable(expand("$HOME/.vim/")) == 2
 :	set viminfo=!,%,'5000,\"10000,:10000,/10000,n~/.vim/viminfo
+:else
+:	set viminfo=
 :endif
 " Don't save backups of files.
 :set nobackup
@@ -628,6 +630,5 @@ endfun
 " }}}1
 " Modeline {{{1
 " vim:set ts=4:
-" vim600:fdm=marker fdl=0 fdc=3:
+" vim600:fdm=marker fdl=0 fdc=3 vb t_vb=:
 "################################################################# }}}1
-
