@@ -18,7 +18,7 @@
 " Please don't hesitate to correct my english :)
 " Send corrections to <8host AT pauliDOTfmph.uniba.sk>
 
-" $Id: vimrc,v 1.58 2002/04/23 15:13:42 host8 Exp $
+" $Id: vimrc,v 1.59 2002/04/23 18:58:33 host8 Exp $
 
 " Settings {{{
 " To be secure & Vi nocompatible
@@ -299,7 +299,7 @@ if has("autocmd")
 
 	" Autocomands for PlatonCopyright {{{
 	augroup PlatonCopyright
-	autocmd!
+		autocmd!
 		autocmd BufLeave * set titlestring=
 		autocmd BufLeave * silent! call RemoveAutogroup("PlatonCopyright")
 		autocmd WinEnter * set titlestring=
@@ -313,34 +313,33 @@ if has("autocmd")
 
 	" Autocomands for GUIEnter {{{
 	augroup GUIEnter
-	autocmd!
-	"	autocmd GUIEnter * set t_vb=
-	if has("gui_win32")
-		autocmd GUIEnter * simalt ~x
-	endif
+		autocmd!
+		if has("gui_win32")
+			autocmd GUIEnter * simalt ~x
+		endif
 	augroup END
 	" }}}
 
 	" Autocomands for ~/.vimrc {{{
 	augroup VimConfig
-	autocmd!
-	" Reread configuration of ViM if file ~/.vimrc is saved
-	autocmd BufWritePost ~/.vimrc	so ~/.vimrc | exec "normal zv"
-	autocmd BufWritePost vimrc   	so ~/.vimrc | exec "normal zv"
+		autocmd!
+		" Reread configuration of ViM if file ~/.vimrc is saved
+		autocmd BufWritePost ~/.vimrc	so ~/.vimrc | exec "normal zv"
+		autocmd BufWritePost vimrc   	so ~/.vimrc | exec "normal zv"
 	augroup END
 	" }}}
 
 	" Autocommands for *.c, *.h, *.cc *.cpp {{{
 	augroup C
-	autocmd!
-	"formatovanie C-zdrojakov
-	autocmd BufEnter     *.c,*.h,*.cc,*.cpp	map  <buffer> <C-F> mfggvG$='f
-	autocmd BufEnter     *.c,*.h,*.cc,*.cpp	imap <buffer> <C-F> <Esc>mfggvG$='fi
-	autocmd BufEnter     *.c,*.h,*.cc,*.cpp	map <buffer> yii yyp3wdwi
-	autocmd BufEnter     *.c,*.h,*.cc,*.cpp	map <buffer> <C-K> :call CallProg()<CR>
-	autocmd BufRead,BufNewFile  *.c,*.h,*.cc,*.cpp	setlocal cindent
-	autocmd BufRead,BufNewFile  *.c,*.h,*.cc,*.cpp	setlocal cinoptions=>4,e0,n0,f0,{0,}0,^0,:4,=4,p4,t4,c3,+4,(2s,u1s,)20,*30,g4,h4
-	autocmd BufRead,BufNewFile  *.c,*.h,*.cc,*.cpp	setlocal cinkeys=0{,0},:,0#,!<C-F>,o,O,e
+		autocmd!
+		"formatovanie C-zdrojakov
+		autocmd BufEnter     *.c,*.h,*.cc,*.cpp	map  <buffer> <C-F> mfggvG$='f
+		autocmd BufEnter     *.c,*.h,*.cc,*.cpp	imap <buffer> <C-F> <Esc>mfggvG$='fi
+		autocmd BufEnter     *.c,*.h,*.cc,*.cpp	map <buffer> yii yyp3wdwi
+		autocmd BufEnter     *.c,*.h,*.cc,*.cpp	map <buffer> <C-K> :call CallProg()<CR>
+		autocmd BufRead,BufNewFile  *.c,*.h,*.cc,*.cpp	setlocal cindent
+		autocmd BufRead,BufNewFile  *.c,*.h,*.cc,*.cpp	setlocal cinoptions=>4,e0,n0,f0,{0,}0,^0,:4,=4,p4,t4,c3,+4,(2s,u1s,)20,*30,g4,h4
+		autocmd BufRead,BufNewFile  *.c,*.h,*.cc,*.cpp	setlocal cinkeys=0{,0},:,0#,!<C-F>,o,O,e
 	augroup END
 	" }}}
 
@@ -349,31 +348,31 @@ if has("autocmd")
 	" contain line "^\([<space><Tab>]*\)Last modified: ",
 	" else will be date writtend on the current " line.
 	augroup HtmlCgiPHP
-	autocmd!
-	" Appending right part of tag in HTML files.
-	autocmd BufEnter                 *.html	imap <buffer> QQ </><Esc>2F<lywf>f/pF<i
-	autocmd BufWritePre,FileWritePre *.html	call AutoLastMod()
-	autocmd BufEnter                 *.cgi	imap <buffer> QQ </><Esc>2F<lywf>f/pF<i
-	autocmd BufWritePre,FileWritePre *.cgi	call AutoLastMod()
-	autocmd BufEnter                 *.php	imap <buffer> QQ </><Esc>2F<lywf>f/pF<i
-	autocmd BufWritePre,FileWritePre *.php	call AutoLastMod()
-	autocmd BufEnter                 *.php3	imap <buffer> QQ </><Esc>2F<lywf>f/pF<i
-	autocmd BufWritePre,FileWritePre *.php3	call AutoLastMod()
+		autocmd!
+		" Appending right part of tag in HTML files.
+		autocmd BufEnter                 *.html	imap <buffer> QQ </><Esc>2F<lywf>f/pF<i
+		autocmd BufWritePre,FileWritePre *.html	call AutoLastMod()
+		autocmd BufEnter                 *.cgi	imap <buffer> QQ </><Esc>2F<lywf>f/pF<i
+		autocmd BufWritePre,FileWritePre *.cgi	call AutoLastMod()
+		autocmd BufEnter                 *.php	imap <buffer> QQ </><Esc>2F<lywf>f/pF<i
+		autocmd BufWritePre,FileWritePre *.php	call AutoLastMod()
+		autocmd BufEnter                 *.php3	imap <buffer> QQ </><Esc>2F<lywf>f/pF<i
+		autocmd BufWritePre,FileWritePre *.php3	call AutoLastMod()
 	augroup END
 	" }}}
 
 	" Autocomands for *.tcl {{{
 	augroup Tcl
-	autocmd!
-	autocmd WinEnter            *.tcl	map <buffer> <C-K> :call CallProg()<CR>
-	autocmd BufRead,BufNewFile  *.tcl	setlocal autoindent
+		autocmd!
+		autocmd WinEnter            *.tcl	map <buffer> <C-K> :call CallProg()<CR>
+		autocmd BufRead,BufNewFile  *.tcl	setlocal autoindent
 	augroup END
 	" }}}
 
 	" Autocomands for Makefile {{{
 	augroup Makefile
-	autocmd!
-	autocmd BufEnter            [Mm]akefile*	map <buffer> <C-K> :call CallProg()<CR>
+		autocmd!
+		autocmd BufEnter            [Mm]akefile*	map <buffer> <C-K> :call CallProg()<CR>
 	augroup END
 	" }}}
 
@@ -673,24 +672,6 @@ hi User4        term=inverse,bold cterm=inverse,bold ctermfg=LightBlue
 hi User5        term=inverse,bold cterm=inverse,bold ctermfg=Red       ctermbg=Green
 hi Folded       term=standout     cterm=bold         ctermfg=Blue      ctermbg=Black
 hi FoldColumn   term=standout                        ctermfg=DarkBlue  ctermbg=Black 
-" Gvim settings
-if &t_Co > 2 || has("gui_running")
-	hi StatusLine   guibg=White guifg=Black     gui=bold 
-	hi StatusLineNC guibg=Black guifg=White     gui=bold,reverse 
-	hi User1        guibg=Red   guifg=White     gui=bold 
-	hi User2        guibg=Black guifg=Yellow    gui=bold 
-	hi User3        guibg=White guifg=Blue      gui=bold 
-	hi User4        guibg=White guifg=LightBlue gui=bold 
-	hi User5        guibg=Red   guifg=Green     gui=bold 
-	hi Folded       guibg=Black guifg=Blue      gui=bold 
-	hi FoldColumn   guibg=Black guifg=Blue
-	hi Normal       guibg=Black guifg=LightGray 
-	hi Cursor       guibg=Green guifg=NONE
-	hi NonText      guibg=Black
-	hi Constant                                 gui=NONE 
-	hi Special                                  gui=NONE
-endif
-
 " }}}
 
 call Source(VIMRC_EXTRA.".post")

@@ -5,7 +5,7 @@
 # (c) rajo <host8@kepler.fmph.uniba.sk>
 #
 
-# $Id: Makefile,v 1.17 2002/04/22 18:46:02 host8 Exp $
+# $Id: Makefile,v 1.18 2002/04/22 19:02:06 host8 Exp $
 
 PACKAGE = vimconfig
 VERSION = 1.7-2.unstable
@@ -22,7 +22,7 @@ DISTFILES_TEMPLATE_PLUGIN = vim \
 						vim/templates/Makefile
 
 DISTFILES = README FEATURES.txt tags \
-			Makefile vimrc vim \
+			Makefile vimrc gvimrc vim \
 			vim/strace.vim \
 			vim/csyntax.vim \
 			vim/latextags \
