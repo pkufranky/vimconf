@@ -2,13 +2,13 @@
 "
 " File:			database-client.vim
 " Maintainer:	Lubomir Host 'rajo' <rajo AT platon.sk>
-" Version:		$Platon: vimconfig/vim/modules/database-client.vim,v 1.2 2004-02-18 07:59:48 rajo Exp $
+" Version:		$Platon: vimconfig/vim/modules/database-client.vim,v 1.3 2004-02-23 17:52:54 rajo Exp $
 "
 " Copyright (c) 2003 Platon SDG, http://platon.sk/
 " Licensed under terms of GNU General Public License.
 " All rights reserved.
 "
-" $Platon: vimconfig/vim/modules/database-client.vim,v 1.2 2004-02-18 07:59:48 rajo Exp $
+" $Platon: vimconfig/vim/modules/database-client.vim,v 1.3 2004-02-23 17:52:54 rajo Exp $
 " 
 
 " This plugin needs Perl interpreter to be enabled (+perl feature)
@@ -135,6 +135,8 @@ function! SQL_Connect() " {{{
 	perl << EOF
 	use DBI;
 
+	package main;
+
 	# get hostname from user
 	$db_host = "localhost" unless (defined $db_host); # remember server name
 	my ($success, $value) = VIM::Eval("inputdialog('Hostname of your database server', '$db_host')");
@@ -154,6 +156,11 @@ function! SQL_Connect() " {{{
 	else {
 		return;
 	}
+
+	if (exists $main::connections->{"$db_host; $db_user;"}) {
+		VIM::Msg("This connection already exists!");
+		return;
+	}
 	
 	# get password from user
 	my ($success, $value) = VIM::Eval('inputsecret("Password: ")');
@@ -167,14 +174,124 @@ function! SQL_Connect() " {{{
 	$dbh = DBI->connect("DBI:mysql:host=$db_host", $db_user, $db_pass)
 		or die $DBI::errstr;
 
-	$sql = $dbh->prepare("SHOW DATABASES");
+	if (defined $dbh) {
+		$main::connections->{"$db_host; $db_user;"} = {
+			'dbh'	=> $dbh,
+			'desc'	=> "$db_user\@$db_host",
+		};
+		$main::current_conn = "$db_host; $db_user;";
+	}
+	else {
+		undef $main::connections->{"$db_host; $db_user;"}->{dbh};
+		undef $main::connections->{"$db_host; $db_user;"}->{desc};
+		undef $main::connections->{"$db_host; $db_user;"};
+	}
 
-	$sql->execute();
-	$sql->dump_data();
+	my $count = 0;
+	foreach my $key (sort keys %{$main::connections}) {
+		$count++;
+		# reorder connections
+		$main::connections->{$key}->{order} = $count;
+	}
+		
+	VIM::Msg("Connect to database succsesfull");
 
 EOF
 endfunction
 " }}}
+
+" show used connections
+function! SQL_ShowConnections() " {{{
+	perl << EOF
+	use DBI;
+
+	package main;
+
+	my $count = 0;
+	unless (scalar(keys %{$main::connections})) {
+		VIM::Msg("No connections");
+		return;
+	}
+	VIM::Msg("Active connections to database:");
+	foreach my $key (sort keys %{$main::connections}) {
+		$count++;
+		# reorder connections
+		$main::connections->{$key}->{order} = $count;
+		VIM::Msg("$count - $main::connections->{$key}->{desc}");
+	}
+
+EOF
+endfunction
+" }}}
+
+" disconnect from given connection
+function! SQL_Disconnect() " {{{
+
+	" use vertical layout of buttons
+	let s:save_guioptions = &guioptions
+	set guioptions+=v
+
+	perl << EOF
+	use DBI;
+
+	package main;
+
+	my $count = 0;
+	my $choices = "";
+	foreach my $key (sort keys %{$main::connections}) {
+		$count++;
+		# reorder connections
+		$main::connections->{$key}->{order} = $count;
+		$choices .=  '&' . "$count - $main::connections->{$key}->{desc}" . '\n';
+	}
+	#$choices =~ s/\\n$//g;
+	$choices .= "&Cancel";
+	if ($count == 0) {
+		VIM::Msg("No connections...");
+		return;
+	}
+	my ($success, $value) = VIM::Eval('confirm("From which database do you wish to disconnect?", "'
+			. $choices . '", 1, "Question")');
+
+	return unless ($value > 0);
+	my $count = 0;
+	foreach my $key (sort keys %{$main::connections}) {
+		$count++;
+		if ($count == $value) {
+			$main::connections->{$key}->{dbh}->disconnect()
+				or warn "Can't disconnect from database #$count: " . $DBI::errstr;
+			undef $main::connections->{$key}->{dbh};
+			delete $main::connections->{$key};
+		}
+	}
+
+EOF
+
+	let &guioptions = s:save_guioptions
+
+endfunction
+" }}}
+
+" execute SQL command
+function! SQL_Do(sql_cmd) " {{{
+
+	perl << EOF
+	use DBI;
+
+	package main;
+
+	my $dbh = $main::connections->{$main::current_conn}->{dbh};
+	my $sql_cmd = VIM::Eval("a:sql_cmd"); # get function parameter from Vim to Perl
+
+	my $sth = $dbh->prepare($sql_cmd) or warn $DBI::errstr;
+	$sth->execute();
+	$sth->dump_data();
+
+EOF
+
+endfunction
+" }}}
+
 
 "create menu
 function! CreateMenu() " {{{
@@ -182,10 +299,11 @@ function! CreateMenu() " {{{
 	silent! aunmenu SQL
 	amenu 200.10 S&QL.&Connect :call SQL_Connect()<Return>
 	amenu 200.20 S&QL.&Disconnect :call SQL_Disconnect()<Return>
-	amenu 200.30.10 S&QL.&Show.&databases :call SQL_do('SHOW DATABASES')<Return>
-	amenu 200.30.20 S&QL.&Show.&tables :call SQL_do('SHOW TABLES')<Return>
-	amenu 200.30.30 S&QL.&Show.&variables :call SQL_do('SHOW VARIABLES')<Return>
-	amenu 200.30.40 S&QL.&Show.&server\ status :call SQL_do('SHOW STATUS')<Return>
+	amenu 200.30.5  S&QL.&Show.&connections :call SQL_ShowConnections()<Return>
+	amenu 200.30.10 S&QL.&Show.&databases :call SQL_Do('SHOW DATABASES')<Return>
+	amenu 200.30.20 S&QL.&Show.&tables :call SQL_Do('SHOW TABLES')<Return>
+	amenu 200.30.30 S&QL.&Show.&variables :call SQL_Do('SHOW VARIABLES')<Return>
+	amenu 200.30.40 S&QL.&Show.&server\ status :call SQL_Do('SHOW STATUS')<Return>
 endfunction
 " }}}
 call CreateMenu()
