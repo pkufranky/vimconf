@@ -2,7 +2,7 @@
 " Language:		Mail
 " Maintainer:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " License:		GNU GPL
-" Version:		$Id: mail.vim,v 1.3 2002/02/05 22:41:53 host8 Exp $
+" Version:		$Id: mail.vim,v 1.4 2002/02/17 01:00:35 host8 Exp $
 
 
 " Only do this when not done yet for this buffer
@@ -21,6 +21,11 @@ setlocal textwidth=72
 setlocal formatoptions=crqt12
 
 setlocal autoindent
+
+" Replace <Tab> with 4 spaces
+setlocal tabstop=4
+setlocal shiftwidth=4
+setlocal expandtab
 
 " Add mappings, unless the user didn't want this.
 if !exists("no_plugin_maps") && !exists("no_mail_maps")
