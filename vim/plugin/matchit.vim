@@ -1,20 +1,20 @@
 "  matchit.vim: (global plugin) Extended "%" matching
-"  Last Change: August 28, 2001
+"  Last Change: June 12, 2002
 "  Maintainer:  Benji Fisher PhD   <benji@member.AMS.org>
-"  Version:     1.1
+"  Version:     1.7, for Vim 6.1
 
 " Documentation:
 "  The documentation is in a separate file, matchit.txt .
 
 " Credits:
-"  Vim editor   by Bram Moolenaar (Thanks, Bram!)
+"  Vim editor by Bram Moolenaar (Thanks, Bram!)
 "  Original script and design by Raul Segura Acevedo
 "  Support for comments by Douglas Potts
 "  Support for back references and other improvements by Benji Fisher
 "  Support for many languages by Johannes Zellner
 "  Suggestions for improvement, bug reports, and support for additional
-"  languages by Jordi-Albert Batalla, Neil Bird, Mark Collett, Stephen Wall,
-"  and Johannes Zellner.
+"  languages by Jordi-Albert Batalla, Neil Bird, Servatius Brandt, Mark
+"  Collett, Stephen Wall, and Johannes Zellner.
 
 " Debugging:
 "  If you'd like to try the built-in debugging commands...
@@ -23,8 +23,16 @@
 "  variables.  See the MatchDebug() function, below, for details.
 
 " TODO:  I should think about multi-line patterns for b:match_words.
+"   This would require an option:  how many lines to scan (default 1).
+"   This would be useful for Python, maybe also for *ML.
 " TODO:  Maybe I should add a menu so that people will actually use some of
-" the features that I have implemented.
+"   the features that I have implemented.
+" TODO:  Eliminate the MultiMatch function.  Add yet another argument to
+"   Match_wrapper() instead.
+" TODO:  Allow :let b:match_words = '\(\(foo\)\(bar\)\):\3\2:end\1'
+" TODO:  Make backrefs safer by using '\V' (very no-magic).
+" TODO:  Add a level of indirection, so that custom % scripts can use my
+"   work but extend it.
 
 " allow user to prevent loading
 " and prevent duplicate loading
@@ -42,16 +50,18 @@ nnoremap <silent> %  :<C-U>call <SID>Match_wrapper('',1,'n') <CR>
 nnoremap <silent> g% :<C-U>call <SID>Match_wrapper('',0,'n') <CR>
 vnoremap <silent> %  :<C-U>call <SID>Match_wrapper('',1,'v') <CR>m'gv``
 vnoremap <silent> g% :<C-U>call <SID>Match_wrapper('',0,'v') <CR>m'gv``
-onoremap <silent> %  :<C-U>call <SID>Match_wrapper('',1,'o') <CR>
-onoremap <silent> g% :<C-U>call <SID>Match_wrapper('',0,'o') <CR>
+onoremap <silent> %  v:<C-U>call <SID>Match_wrapper('',1,'o') <CR>
+onoremap <silent> g% v:<C-U>call <SID>Match_wrapper('',0,'o') <CR>
 
 " Analogues of [{ and ]} using matching patterns:
 nnoremap <silent> [% :<C-U>call <SID>MultiMatch("bW", "n") <CR>
 nnoremap <silent> ]% :<C-U>call <SID>MultiMatch("W",  "n") <CR>
-vnoremap [% <Esc>[%m'gv``
-vnoremap ]% <Esc>]%m'gv``
-onoremap <silent> [% :<C-U>call <SID>MultiMatch("bW", "o") <CR>
-onoremap <silent> ]% :<C-U>call <SID>MultiMatch("W",  "o") <CR>
+vmap [% <Esc>[%m'gv``
+vmap ]% <Esc>]%m'gv``
+" vnoremap <silent> [% :<C-U>call <SID>MultiMatch("bW", "v") <CR>m'gv``
+" vnoremap <silent> ]% :<C-U>call <SID>MultiMatch("W",  "v") <CR>m'gv``
+onoremap <silent> [% v:<C-U>call <SID>MultiMatch("bW", "o") <CR>
+onoremap <silent> ]% v:<C-U>call <SID>MultiMatch("W",  "o") <CR>
 
 " Auto-complete mappings:  (not yet "ready for prime time")
 " TODO Read :help write-plugin for the "right" way to let the user
@@ -68,42 +78,55 @@ onoremap <silent> ]% :<C-U>call <SID>MultiMatch("W",  "o") <CR>
 "   execute "inoremap " . g:match_gthhoh . ' <C-O>:call <SID>Gthhoh()<CR>'
 " endif " gthhoh = "Get the heck out of here!"
 
-" Highlight group for error messages.  The user may choose to set this
-" to be invisible.
-hi link MatchError WarningMsg
-
 let s:notslash = '\\\@<!\%(\\\\\)*'
 
 function! s:Match_wrapper(word, forward, mode) range
+  " In s:CleanUp(), :execute "set" restore_options .
+  let restore_options = (&ic ? " " : " no") . "ignorecase"
+  if exists("b:match_ignorecase")
+    let &ignorecase = b:match_ignorecase
+  endif
+  let restore_options = " ve=" . &ve . restore_options
+  set ve=
   " If this function was called from Visual mode, make sure that the cursor
   " is at the correct end of the Visual range:
   if a:mode == "v"
     execute "normal! gv\<Esc>"
   endif
+  " In s:CleanUp(), we may need to check whether the cursor moved forward.
+  let startline = line(".")
+  let startcol = col(".")
   " Use default behavior if called with a count or if no patterns are defined.
   if v:count
     exe "normal! " . v:count . "%"
-    return
+    return s:CleanUp(restore_options, a:mode, startline, startcol)
   elseif !exists("b:match_words") || b:match_words == ""
     silent! normal! %
-    return
+    return s:CleanUp(restore_options, a:mode, startline, startcol)
   end
 
   " First step:  if not already done, set the script variables
   "   s:do_BR	flag for whether there are backrefs
   "   s:pat	parsed version of b:match_words
   "   s:all	regexp based on s:pat and the default groups
+  "
+  " Allow b:match_words = "GetVimMatchWords()" .
+  if b:match_words =~ ":"
+    let match_words = b:match_words
+  else
+    execute "let match_words =" b:match_words
+  endif
 " Thanks to Preben "Peppe" Guldberg and Bram Moolenaar for this suggestion!
-  if (b:match_words != s:last_words) || (&mps != s:last_mps) ||
+  if (match_words != s:last_words) || (&mps != s:last_mps) ||
     \ exists("b:match_debug")
-    let s:last_words = b:match_words
+    let s:last_words = match_words
     let s:last_mps = &mps
-    if b:match_words !~ s:notslash . '\\\d'
+    if match_words !~ s:notslash . '\\\d'
       let s:do_BR = 0
-      let s:pat = b:match_words
+      let s:pat = match_words
     else
       let s:do_BR = 1
-      let s:pat = s:ParseWords(b:match_words)
+      let s:pat = s:ParseWords(match_words)
     endif
     " The next several lines were here before
     " BF started messing with this script.
@@ -130,23 +153,18 @@ function! s:Match_wrapper(word, forward, mode) range
   "     suffix    = regexp for end of match to end of line
   " Require match to end on or after the cursor and prefer it to
   " start on or before the cursor.
-  let matchline = getline(".")
-  let startcol = col(".")
+  let matchline = getline(startline)
   if a:word != ''
     " word given
     if a:word !~ s:all
-      echohl MatchError|echo 'Missing rule for word:"'.a:word.'"'|echohl NONE
-      return
+      echohl WarningMsg|echo 'Missing rule for word:"'.a:word.'"'|echohl NONE
+      return s:CleanUp(restore_options, a:mode, startline, startcol)
     endif
     let matchline = a:word
     let curcol = 0
     let prefix = '^\%('
     let suffix = '\)$'
   " Now the case when "word" is not given
-  elseif matchend(matchline, '.*' . s:all) < startcol
-    " there is no special word in this line || it ends before the cursor
-    echohl MatchError | echo "No matching rule applies here" | echohl NONE
-    return
   else	" Find the match that ends on or after the cursor and set curcol.
     let regexp = s:Wholematch(matchline, s:all, startcol-1)
     let curcol = match(matchline, regexp)
@@ -156,8 +174,8 @@ function! s:Match_wrapper(word, forward, mode) range
     " If the match comes from the defaults, bail out.
     if matchline !~ prefix .
       \ substitute(s:pat, s:notslash.'\zs[,:]\+', '\\|', 'g') . suffix
-      norm! %
-      return
+      silent! norm! %
+      return s:CleanUp(restore_options, a:mode, startline, startcol)
     endif
   endif
   if exists("b:match_debug")
@@ -167,16 +185,17 @@ function! s:Match_wrapper(word, forward, mode) range
 
   " Third step:  Find the group and single word that match, and the original
   " (backref) versions of these.  Then, resolve the backrefs.
-  " Set the following local variables:
+  " Set the following local variable:
   " group = colon-separated list of patterns, one of which matches
   "       = ini:mid:fin or ini:fin
   "
   " Reconstruct the version with unresolved backrefs.
-  let patBR = substitute(b:match_words.',',
+  let patBR = substitute(match_words.',',
     \ s:notslash.'\zs[,:]*,[,:]*', ',', 'g')
   let patBR = substitute(patBR, s:notslash.'\zs:\{2,}', ':', 'g')
   " Now, set group and groupBR to the matching group: 'if:endif' or
-  " 'while:endwhile' or whatever.
+  " 'while:endwhile' or whatever.  A bit of a kluge:  s:Choose() returns
+  " group . "," . groupBR, and we pick it apart.
   let group = s:Choose(s:pat, matchline, ",", ":", prefix, suffix, patBR)
   let i = matchend(group, s:notslash . ",")
   let groupBR = strpart(group, i)
@@ -184,6 +203,11 @@ function! s:Match_wrapper(word, forward, mode) range
   " Now, matchline =~ prefix . substitute(group,':','\|','g') . suffix
   if s:do_BR " Do the hard part:  resolve those backrefs!
     let group = s:InsertRefs(groupBR, prefix, group, suffix, matchline)
+  endif
+  if exists("b:match_debug")
+    let b:match_wholeBR = groupBR
+    let i = matchend(groupBR, s:notslash . ":")
+    let b:match_iniBR = strpart(groupBR, 0, i-1)
   endif
 
   " Fourth step:  Set the arguments for searchpair().
@@ -223,17 +247,11 @@ function! s:Match_wrapper(word, forward, mode) range
   endif
 
   " Fifth step:  actually start moving the cursor and call searchpair().
-  " This minimizes screen jumps and avoids using a global mark.
+  " Later, :execute restore_cursor to get to the original screen.
   let restore_cursor = line(".") . "G" . virtcol(".") . "|"
   normal! H
   let restore_cursor = "normal!" . line(".") . "Gzt" . restore_cursor
   execute restore_cursor
-  " Later, :execute restore_cursor to get to the original screen.
-  let restore_options = (&ic ? "" : "no") . "ignorecase"
-  if exists("b:match_ignorecase")
-    let &ignorecase = b:match_ignorecase
-  endif
-  " Instead of the next few lines, could I :execute "normal!".(curcol+1)."|" ?
   normal! 0
   if curcol
     execute "normal!" . curcol . "l"
@@ -245,17 +263,42 @@ function! s:Match_wrapper(word, forward, mode) range
   endif
   let sp_return = searchpair(ini, mid, fin, flag, skip)
   let final_position = line(".") . "normal!" . virtcol(".") . "|"
-  " Restore options, cursor position, and original screen.
-  execute "set " . restore_options
+  " Restore cursor position and original screen.
   execute restore_cursor
-  normal!m'
+  normal! m'
   if sp_return > 0
     execute final_position
-    " Open folds, if appropriate.
-    if a:mode != "o" && &foldopen =~ "percent"
-      normal!zv
-    endif
   endif
+  return s:CleanUp(restore_options, a:mode, startline, startcol, mid.'\|'.fin)
+endfun
+
+" Restore options and do some special handling for Operator-pending mode.
+" The optional argument is the tail of the matching group.
+fun! s:CleanUp(options, mode, startline, startcol, ...)
+  execute "set" a:options
+  " Open folds, if appropriate.
+  if a:mode != "o"
+    if &foldopen =~ "percent"
+      normal! zv
+    endif
+    " In Operator-pending mode, we want to include the whole match
+    " (for example, d%).
+    " This is only a problem if we end up moving in the forward direction.
+  elseif (a:startline < line(".")) ||
+        \ (a:startline == line(".") && a:startcol < col("."))
+    if a:0
+      " Check whether the match is a single character.  If not, move to the
+      " end of the match.
+      let matchline = getline(".")
+      let currcol = col(".")
+      let regexp = s:Wholematch(matchline, a:1, currcol-1)
+      let endcol = matchend(matchline, regexp)
+      if endcol > currcol  " This is NOT off by one!
+        execute "normal!" . (endcol - currcol) . "l"
+      endif
+    endif " a:0
+  endif " a:mode != "o" && etc.
+  return 0
 endfun
 
 " Example (simplified HTML patterns):  if
@@ -361,12 +404,8 @@ endfun
 " let j      = matchend(getline("."), regexp)
 " let match  = matchstr(getline("."), regexp)
 fun! s:Wholematch(string, pat, start)
-  if a:pat =~ '^\\%\=(.*\\)$'
-    let group = a:pat
-  else
-    let group = '\(' . a:pat . '\)'
-  endif
-  let prefix = (a:start ? '\(^.\{,' . a:start . '}\)\@<=' : '^')
+  let group = '\%(' . a:pat . '\)'
+  let prefix = (a:start ? '\(^.\{,' . a:start . '}\)\zs' : '^')
   let len = strlen(a:string)
   let suffix = (a:start+1 < len ? '\(.\{,'.(len-a:start-1).'}$\)\@=' : '$')
   if a:string !~ prefix . group . suffix
@@ -587,6 +626,12 @@ fun! s:MultiMatch(spflag, mode)
   if !exists("b:match_words") || b:match_words == ""
     return ""
   end
+  let restore_options = (&ic ? "" : "no") . "ignorecase"
+  if exists("b:match_ignorecase")
+    let &ignorecase = b:match_ignorecase
+  endif
+  let startline = line(".")
+  let startcol = col(".")
 
   " First step:  if not already done, set the script variables
   "   s:do_BR	flag for whether there are backrefs
@@ -595,16 +640,22 @@ fun! s:MultiMatch(spflag, mode)
   " This part is copied and slightly modified from s:Match_wrapper().
   let default = escape(&mps, '[$^.*~\\/?]') . (strlen(&mps) ? "," : "") .
     \ '\/\*:\*\/,#if\%(def\)\=:$else\>:#elif\>:#endif\>'
-  if (b:match_words != s:last_words) || (&mps != s:last_mps) ||
+  " Allow b:match_words = "GetVimMatchWords()" .
+  if b:match_words =~ ":"
+    let match_words = b:match_words
+  else
+    execute "let match_words =" b:match_words
+  endif
+  if (match_words != s:last_words) || (&mps != s:last_mps) ||
     \ exists("b:match_debug")
-    let s:last_words = b:match_words
+    let s:last_words = match_words
     let s:last_mps = &mps
-    if b:match_words !~ s:notslash . '\\\d'
+    if match_words !~ s:notslash . '\\\d'
       let s:do_BR = 0
-      let s:pat = b:match_words
+      let s:pat = match_words
     else
       let s:do_BR = 1
-      let s:pat = s:ParseWords(b:match_words)
+      let s:pat = s:ParseWords(match_words)
     endif
     let s:all = '\%(' . substitute(s:pat . (strlen(s:pat)?",":"") . default,
       \	'[,:]\+','\\|','g') . '\)'
@@ -634,10 +685,6 @@ fun! s:MultiMatch(spflag, mode)
   normal! H
   let restore_cursor = "normal!" . line(".") . "Gzt" . restore_cursor
   execute restore_cursor
-  let restore_options = (&ic ? "" : "no") . "ignorecase"
-  if exists("b:match_ignorecase")
-    let &ignorecase = b:match_ignorecase
-  endif
 
   " Third step: call searchpair().
   " Replace '\('--but not '\\('--with '\%(' and ',' with '\|'.
@@ -654,18 +701,14 @@ fun! s:MultiMatch(spflag, mode)
   let level = v:count1
   while level
     if searchpair(openpat, '', closepat, a:spflag, skip) < 1
-      execute "set " . restore_options
+      call s:CleanUp(restore_options, a:mode, startline, startcol)
       return ""
     endif
     let level = level - 1
   endwhile
 
-  " Open folds, if appropriate.
-  if a:mode != "o" && &foldopen =~ "percent"
-    normal!zv
-  endif
   " Restore options and return a string to restore the original position.
-  execute "set " . restore_options
+  call s:CleanUp(restore_options, a:mode, startline, startcol)
   return restore_cursor
 endfun
 
@@ -799,7 +842,7 @@ aug Matchit
   \ '\<!loopondimensions\>\|\<!looponselected\>:\<!endloop\>'
   \ | endif
   " HTML:  thanks to Johannes Zellner.
-    au FileType html,jsp if !exists("b:match_words") |
+    au FileType html,jsp,php if !exists("b:match_words") |
       \	let b:match_ignorecase = 1 |
       \	let b:match_skip = 's:Comment' |
       \ let b:match_words = '<:>,' .
@@ -826,16 +869,6 @@ aug Matchit
     \ '^%package:^%preun:^%postun:^%changelog'
     \ | endif
   " Tcsh:  see Csh
-  " Verilog:  thanks to Mark Collett
-  au FileType verilog if !exists("b:match_words") |
-    \ let b:match_ignorecase = 0
-      \ | let b:match_words =
-      \ '\<begin\>:\<end\>,'.
-      \ '\<case\>\|\<casex\>\|\<casez\>:\<endcase\>,'.
-      \ '\<module\>:\<endmodule\>,'.
-      \ '\<function\>:\<endfunction\>,'.
-      \ '`ifdef\>:`else\>:`endif\>'
-      \ | endif
   " XML:  thanks to Johannes Zellner and Akbar Ibrahim
   " - case sensitive
   " - don't match empty tags <fred/>
@@ -843,7 +876,8 @@ aug Matchit
   " - match <!, > inlined dtd's. This is not perfect, as it
   "   gets confused for example by
   "       <!ENTITY gt ">">
-  au! FileType xml,sgml,entity if !exists("b:match_words") |
+  au! FileType xml,sgml,entity,xslt,svg,xhtml,xsl,xsd
+    \ if !exists("b:match_words") |
     \ let b:match_ignorecase=0 | let b:match_words =
     \ '<:>,' .
     \ '<\@<=!\[CDATA\[:]]>,'.
@@ -857,4 +891,4 @@ aug END
 
 let &cpo = s:save_cpo
 
-" vim:sts=2:sw=2:
+" vim:sts=2:sw=2:ff=unix:
