@@ -2,7 +2,8 @@ vimconfig
 ---------
 
 Project of powerful ViM configuration files. ViM is a quality text
-editor with huge set of features.
+editor with huge set of features. Vimconfig is project of highly
+tuned ViM configuration files for ViM developed over 5 years.
 
 See vim/doc/FEATURES.txt file for getting help. Read this file with ViM for
 better reading.
@@ -42,6 +43,22 @@ Visit also website of vimconfig project at
 
 	http://platon.sk/projects/vimconfig/
 	http://platon.sk/cvs/cvs.php/vimconfig/
+
+
+OTHER SCRIPTS
+-------------
+
+More scripts/plugins for ViM can be found at http://www.vim.org/ .
+Some scripts has been included into vimconfig distribution, because
+they are handy. Some of them may be changed, some not updated over
+long time. You can check new versions at these links:
+
+calendar.vim	http://www.vim.org/scripts/script.php?script_id=52
+imaps.vim		http://www.vim.org/scripts/script.php?script_id=244
+matchit.vim		http://www.vim.org/scripts/script.php?script_id=39
+taglist.vim		http://www.vim.org/scripts/script.php?script_id=273
+
+Thanks to all authors and contributors of these scripts.
 
 --
 Developed by Lubomir Host 'rajo' <rajo AT platon.sk>
