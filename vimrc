@@ -19,7 +19,7 @@
 " Send corrections to
 "        Lubomir Host 'rajo' <rajo AT platon.sk>
 
-" Version: $Platon: vimconfig/vimrc,v 1.84 2003-04-29 13:11:03 rajo Exp $
+" Version: $Platon: vimconfig/vimrc,v 1.85 2003-04-29 13:27:57 rajo Exp $
 
 " Debian uses compressed helpfiles. We must inform vim that the main
 " helpfiles is compressed. Other helpfiles are stated in the tags-file.
@@ -137,10 +137,12 @@ set suffixes+=.aux
 set suffixes+=.bbl
 set suffixes+=.blg
 set suffixes+=.log
-set wildignore+=.dvi
-set wildignore+=.eps
-set wildignore+=.ps
-set wildignore+=.pdf
+set suffixes+=.eps
+set suffixes+=.ps
+set suffixes+=.pdf
+
+set wildignore+=*.dvi
+set wildignore+=*.pdf
 " }}}
 
 " The cursor is kept in the same column (if possible).  This applies to the
