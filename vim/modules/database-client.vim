@@ -2,13 +2,13 @@
 "
 " File:			database-client.vim
 " Maintainer:	Lubomir Host 'rajo' <rajo AT platon.sk>
-" Version:		$Platon: vimconfig/vim/modules/database-client.vim,v 1.6 2004-03-08 10:55:18 rajo Exp $
+" Version:		$Platon: vimconfig/vim/modules/database-client.vim,v 1.7 2004-03-12 08:13:09 rajo Exp $
 "
 " Copyright (c) 2003 Platon SDG, http://platon.sk/
 " Licensed under terms of GNU General Public License.
 " All rights reserved.
 "
-" $Platon: vimconfig/vim/modules/database-client.vim,v 1.6 2004-03-08 10:55:18 rajo Exp $
+" $Platon: vimconfig/vim/modules/database-client.vim,v 1.7 2004-03-12 08:13:09 rajo Exp $
 " 
 
 " This plugin needs Perl interpreter to be enabled (+perl feature)
@@ -143,12 +143,19 @@ function! SQL_Init() " {{{
 
 	package main;
 
+	# list of available database drivers
+	@available_drivers = reverse sort DBI->available_drivers; # make "mysql" first!
+
 	# return reference to array with database names
 	sub SQL_database_list($;)
 	{ # {{{
 		my ($dbh) = @_;
 
 		my $sth = $dbh->prepare("SHOW DATABASES");
+		unless (defined $sth) {
+			VIM::Msg("Error", $dbh->errstr);
+			return;
+		}
 		$sth->execute();
 		my @arr;
 
@@ -183,47 +190,85 @@ endfunction
 call SQL_Init()
 
 " connect to database
-function! SQL_Connect() " {{{
-	perl << EOF
+" :call SQL_Connect("database_type", "server", "user", "password")
+function! SQL_Connect(...) " {{{
 
+
+	perl << EOF
+	
 	package main;
 
-	# get hostname from user
-	$db_host = "localhost" unless (defined $db_host); # remember server name
-	my ($success, $value) = VIM::Eval("inputdialog('Hostname of your database server', '$db_host')");
-	#VIM::Msg("success = $success value = $value");
-	if ($success and $value ne '') {
-		$db_host = $value;
-	}
-	else {
-		return;
-	}
-	
-	# get username from user
-	$db_user = $ENV{"USER"} unless (defined $db_user); # remember username
-	my ($success, $value) = VIM::Eval("inputdialog('Login', '$db_user')");
-	if ($success and $value ne '') {
-		$db_user = $value;
-	}
-	else {
-		return;
-	}
+	my $param_count = VIM::Eval("a:0"); # number of function parameters
+	my ($db_type, $db_host, $db_user, $db_pass);
 
-	# get password from user
-	my ($success, $value) = VIM::Eval('inputsecret("Password: ")');
-	if ($success) {
-		$db_pass = $value;
+	if ($param_count == 0) { # {{{ check for db_type
+		my ($success, $value) = VIM::Eval("confirm('Please, choose type of database server: ', "
+			. " '\&" . join("\n&", @main::available_drivers) . "\n')");
+		if ($success and $value ne '') {
+			$db_type = $main::available_drivers[--$value];
+		}
+		else {
+			return;
+		}
 	}
 	else {
+		$db_type = VIM::Eval("a:1"); # get first function parameter
+	} # }}}
+	if ($param_count < 2) { # {{{ check for db_host
+		# get hostname from user
+		$db_host = "localhost" unless (defined $db_host); # remember server name
+		my ($success, $value) = VIM::Eval("inputdialog('Hostname of your database server: ', '$db_host')");
+		#VIM::Msg("success = $success value = $value");
+		if ($success and $value ne '') {
+			$db_host = $value;
+		}
+		else {
+			return;
+		}
+	}
+	else {
+		$db_host = VIM::Eval("a:2"); # get second function parameter
+	} # }}}
+	if ($param_count < 3) { # {{{ check fro db_user
+		# get username from user
+		$db_user = $ENV{"USER"} unless (defined $db_user); # remember username
+		my ($success, $value) = VIM::Eval("inputdialog('Login: ', '$db_user')");
+		if ($success and $value ne '') {
+			$db_user = $value;
+		}
+		else {
+			return;
+		}
+	}
+	else {
+		$db_host = VIM::Eval("a:3");
+	} # }}}
+	if ($param_count < 4) { # {{{ check for db_pass
+		# get password from user
+		my ($success, $value) = VIM::Eval('inputsecret("Password: ")');
+		if ($success) {
+			$db_pass = $value;
+		}
+		else {
+			return;
+		}
+		}
+	else {
+		$db_host = VIM::Eval("a:4");
+	} # }}}
+
+
+	$dbh = DBI->connect("DBI:$db_type:host=$db_host", $db_user, $db_pass,
+		{ RaiseError => 0, AutoCommit => 1});
+	unless (defined $dbh) {
+		VIM::Msg("Error", $DBI::errstr);
 		return;
 	}
-	
-	$dbh = DBI->connect("DBI:mysql:host=$db_host", $db_user, $db_pass,
-		{ RaiseError => 0, AutoCommit => 1})
-		or die $DBI::errstr;
 	# reconnect to database if the connection is lost
-	$dbh->{mysql_auto_reconnect} = 1;
-
+	if ($db_type =~ m/^mysql$/i) {
+		$dbh->{mysql_auto_reconnect} = 1;
+	}
+	
 	my $key   = "$db_host; $db_user;";
 	my $ext   = "";
 	my $index = 2;
@@ -236,15 +281,14 @@ function! SQL_Connect() " {{{
 	if (defined $dbh) {
 		$main::connections->{$key} = {
 			'dbh'	=> $dbh,
-			'desc'	=> "$db_user\@$db_host$ext",
+			'type'	=> $db_type,
+			'desc'	=> "$db_user\@$db_host$ext [$db_type]",
 			'list_databases'	=> 1,
 			'databases'	=> SQL_database_list($dbh),
 		};
 		$main::current_conn = $key;
 	}
 	else {
-		undef $main::connections->{$key}->{dbh};
-		undef $main::connections->{$key}->{desc};
 		undef $main::connections->{$key};
 	}
 	undef $key, $ext, $index; # cleanup
@@ -442,15 +486,6 @@ endfunction
 " }}}
 call SQL_CreateMenu()
 
-function! s:CloseWindow(winnum) " {{{
-	" if window exists
-	if a:winnum >= 0
-		execute "normal \<c-w>" . a:winnum . "w"
-		silent! close
-	endif
-endfunction
-" }}}
-
 " create windows
 function! SQL_CreateWindows() " {{{
 	let s:main_winnum = bufwinnr(g:SQL_main_window_title)
@@ -530,6 +565,16 @@ function! s:SQL_Display_Help()
 		call append(1, '" U : Update database list')
 		call append(2, '" h : Remove help text')
 		call append(3, '')
+	endif
+endfunction
+" }}}
+
+" s:CloseWindow() {{{
+function! s:CloseWindow(winnum)
+	" if window exists
+	if a:winnum >= 0
+		execute "normal \<c-w>" . a:winnum . "w"
+		silent! close
 	endif
 endfunction
 " }}}
