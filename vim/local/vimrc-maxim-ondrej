@@ -5,7 +5,7 @@
 " Copyright (c) 2000-2003 Platon SDG, http://platon.sk/
 " All rights reserved.
 "
-" $Platon: vimconfig/vim/local/vimrc-Maxim-ondrej,v 1.5 2003-08-19 08:10:52 nepto Exp $
+" $Platon: vimconfig/vim/local/vimrc-maxim-ondrej,v 1.1 2003-11-09 19:36:59 nepto Exp $
 
 let g:author  = "Ondrej Jombik"
 let g:email   = "nepto@platon.sk"
