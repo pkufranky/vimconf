@@ -20,7 +20,7 @@
 "
 "        Lubomir Host 'rajo' <rajo AT platon.sk>
 
-" Version: $Platon: vimconfig/vimrc,v 1.94 2003-11-28 10:15:12 rajo Exp $
+" Version: $Platon: vimconfig/vimrc,v 1.95 2003-11-28 10:16:02 rajo Exp $
 
 " Debian uses compressed helpfiles. We must inform vim that the main
 " helpfiles is compressed. Other helpfiles are stated in the tags-file.
@@ -713,7 +713,6 @@ function! ChooseInputMethod(method)
 	if choice == 1
 		let b:disable_imap = 1
 	elseif choice != 0
-		echo "Sourcing ..."
 		call UseDiacritics()
 	endif
 
