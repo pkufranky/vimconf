@@ -1,30 +1,31 @@
-
 vimconfig
+---------
 
 Project of powerful ViM configuration files. ViM is a quality text
 editor with huge set of features.
 
-This file is fast howto install this vimconfig.
+This document is fast howto install this vimconfig.
 
 
 Copy content of vimconfig/ directory somewhere in your home directory.
-Imagine that it will be ~/prog/vimconfig/. Than create symlinks in
+Suppose that it will be ~/prog/vimconfig/. Than create symlinks in
 root of your home directory:
 
-		cd $HOME
-		ln -s prog/vimconfig/vimrc .vimrc
-		ln -s prog/vimconfig/vim/ .vim    
+	cd $HOME
+	ln -s prog/vimconfig/vimrc .vimrc
+	ln -s prog/vimconfig/vim/ .vim    
 
 Installation is done.
 
-For further updates simply goes to directory ~/prog/vimconfig/ and
-type this command:
+If you get vimconfig from our CVS repository, than further updating is
+very simple. Go to directory ~/prog/vimconfig/ and type this command:
 
-		cvs update
+	cvs update
 
 And that's all folks.
 
 
+Developed by Lubomir Host <8host@pauli.fmph.uniba.sk>
 Copyright (c) 2000-2002 Platon SDG, http://www.platon.sk/
 
 Comments, suggestions, bug reports and patches are always welcome.
