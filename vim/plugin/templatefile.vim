@@ -3,7 +3,7 @@
 " File: templatefile.vim
 " Maintainer:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " Last Change: 2002/02/05
-" Version: $Id: templatefile.vim,v 1.3 2002/02/06 01:13:40 host8 Exp $
+" Version: $Id: templatefile.vim,v 1.4 2002/09/13 18:16:17 rajo Exp $
 " Thanks:
 " 	Scott Urban:	First version of templatefile.vim
 " 		        	http://vim.sourceforge.net/scripts/script.php?script_id=198
@@ -61,8 +61,12 @@ fun! LoadTemplateFile()
 	let myfile_ext = substitute(myfile_ext, "/", "@PATH_SEP@", "")
 	let inc_gaurd = substitute(myfile, "\\.", "_", "g")
 	let inc_gaurd = toupper(inc_gaurd)
-	let Author = g:author
-	let Email  = g:email
+	if exists("g:author")
+		let Author = g:author
+	endif
+	if exists("g:email")
+		let Email  = g:email
+	endif
 	silent! execute "%s/@DATE@/" .  date . "/g"
 	silent! execute "%s/@YEAR@/" .  year . "/g"
 	silent! execute "%s/@LASTDIR@/"  .  lastdir    . "/g"
