@@ -7,3 +7,4 @@
 "
 let g:author="Lubomir Host 'rajo'"
 let g:email="8host AT pauli.fmph.uniba.sk"
+set guifont=-misc-fixed-bold-r-normal-*-*-140-*-*-c-*-iso8859-2
