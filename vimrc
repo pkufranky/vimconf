@@ -19,7 +19,7 @@
 " Send corrections to
 "        Lubomir Host 'rajo' <rajo AT platon.sk>
 
-" Version: $Platon: vimconfig/vimrc,v 1.88 2003-11-03 08:07:51 rajo Exp $
+" Version: $Platon: vimconfig/vimrc,v 1.89 2003-11-03 08:11:10 rajo Exp $
 
 " Debian uses compressed helpfiles. We must inform vim that the main
 " helpfiles is compressed. Other helpfiles are stated in the tags-file.
@@ -783,6 +783,37 @@ if has("autocmd")
 	augroup Makefile
 	autocmd!
 	autocmd BufEnter            [Mm]akefile*	map <buffer> <C-K> :call CallProg()<CR>
+	augroup END
+	" }}}
+
+	" Autocomands for GnuPG (gpg) {{{ 
+	" Transparent editing of gpg encrypted files.
+	" By Wouter Hanegraaff <wouter@blub.net>,
+	" enhanced by Lubomir Host 'rajo' <rajo AT platon.sk>
+	" 
+	augroup GnuPG
+		autocmd!
+
+		" First make sure nothing is written to ~/.viminfo while editing
+		" an encrypted file.
+		" viminfo doesn't have local value, set global value instead
+		autocmd BufReadPre,FileReadPre		*.gpg,*.asc set viminfo=
+		" We don't want a swap file, as it writes unencrypted data to disk
+		autocmd BufReadPre,FileReadPre		*.gpg,*.asc setlocal noswapfile
+		" Switch to binary mode to read the encrypted file
+		autocmd BufReadPre,FileReadPre		*.gpg,*.asc setlocal bin
+		autocmd BufReadPre,FileReadPre		*.gpg,*.asc let ch_save = &ch | setlocal ch=2
+		autocmd BufReadPost,FileReadPost	*.gpg,*.asc '[,']!gpg --decrypt -q -a 2>/dev/null
+		" Switch to normal mode for editing
+		autocmd BufReadPost,FileReadPost	*.gpg,*.asc setlocal nobin
+		autocmd BufReadPost,FileReadPost	*.gpg,*.asc let &ch = ch_save | unlet ch_save
+		autocmd BufReadPost,FileReadPost	*.gpg,*.asc execute ":doautocmd BufReadPost " . expand("%:r")
+
+		" Convert all text to encrypted text before writing
+		autocmd BufWritePre,FileWritePre	*.gpg,*.asc '[,']!gpg --encrypt --default-recipient-self -q -a
+		" Undo the encryption so we are back in the normal text, directly
+		" after the file has been written.
+		autocmd BufWritePost,FileWritePost	*.gpg,*.asc undo
 	augroup END
 	" }}}
 
