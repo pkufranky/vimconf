@@ -1,26 +1,34 @@
-# Makefile for creating distribution of vim configfiles.
+# 
+# Makefile for creating distribution of vim config files.
 # Type 'make dist' for create tar-gziped and zip archiv. 
-
 #
-# (c) Lubomir Host 'rajo' <8host AT pauli.fmph.uniba.sk>
+# Developed by Lubomir Host 'rajo' <8host AT pauli.fmph.uniba.sk>
+# Copyright (c) 2001 - 2003 Platon SDG
+# Licensed under terms of GNU General Public License.
+# All rights reserved.
 #
 
-# $Id: Makefile,v 1.23 2002/08/11 17:31:15 rajo Exp $
+# $Platon: vimconfig/Makefile,v 1.26 2003-01-16 12:20:38 rajo Exp $
 
 PACKAGE = vimconfig
 VERSION = 1.8pre1
 PACKAGE_TEMPLATE_PLUGIN = templatefile
-VERSION_TEMPLATE_PLUGIN = 1.8pre1
+VERSION_TEMPLATE_PLUGIN = $(VERSION)
 
-DISTFILES_TEMPLATE_PLUGIN = vim \
-						vim/plugin \
-						vim/plugin/templatefile.vim \
-						vim/templates/ \
-						vim/templates/skel.c \
-						vim/templates/skel.h \
-						vim/templates/skel.sh \
-						vim/templates/Makefile
+# DISTFILES_TEMPLATE_PLUGIN {{{
+DISTFILES_TEMPLATE_PLUGIN = vim    \
+							vim/plugin \
+							vim/plugin/templatefile.vim \
+							vim/templates/         \
+							vim/templates/skel.c   \
+							vim/templates/skel.h   \
+							vim/templates/skel.sh  \
+							vim/templates/skel.tex \
+							vim/templates/Makefile
 
+# DISTFILES_TEMPLATE_PLUGIN }}}
+
+# DISTFILES {{{
 DISTFILES = README \
 			Makefile vimrc gvimrc vim \
 			vim/strace.vim \
@@ -41,10 +49,13 @@ DISTFILES = README \
 			vim/ftplugin/perl.vim \
 			vim/ftplugin/sgml.vim \
 			vim/ftplugin/tex.vim \
+			vim/ftplugin/txt.vim \
 			vim/ftplugin/vim.vim \
 			vim/indent/ \
 			vim/indent/php.vim \
 			vim/indent/tex.vim \
+			vim/local \
+			vim/local/README \
 			vim/plugin \
 			vim/plugin/CmdlineCompl.vim \
 			vim/plugin/calendar.vim \
@@ -56,30 +67,32 @@ DISTFILES = README \
 			vim/syntax/FEATURES.vim \
 			$(DISTFILES_TEMPLATE_PLUGIN)
 
+# DISTFILES }}}
+
 TAR      = tar
 ZIP      = zip
+LN_S     = ln -s
 
 ZIP_ENV  = -r9
 GZIP_ENV = --best
 
-LN_S     = ln -s
 
-
-srcdir = .
-distdir = $(PACKAGE)-$(VERSION)
+srcdir                  = .
+distdir                 = $(PACKAGE)-$(VERSION)
 distdir_template_plugin = $(PACKAGE_TEMPLATE_PLUGIN)-$(VERSION_TEMPLATE_PLUGIN)
-top_distdir = $(distdir)
-top_builddir = .
+top_distdir             = $(distdir)
+top_builddir            = .
 
 #########
 # Targets
 
 all: tags dist dist-template-plugin
 
-clean: clean-dist clean-dist-template-plugin clean-tags
-
 tags:
 	vim -u NONE -U NONE -c ":helptags ./vim/doc" -c ":q"
+
+# Clean {{{
+clean: clean-dist clean-dist-template-plugin clean-tags
 
 clean-tags:
 	rm -f vim/doc/tags
@@ -91,6 +104,8 @@ clean-dist: clean-dist-template-plugin
 clean-dist-template-plugin:
 	-rm -rf $(distdir_template_plugin)
 	-rm -f $(distdir_template_plugin).tar.gz $(distdir_template_plugin).zip
+
+# }}}
 
 # Distribution of template plugin {{{
 dist-template-plugin: distdir_template_plugin
@@ -122,6 +137,7 @@ distdir_template_plugin: $(DISTFILES_TEMPLATE_PLUGIN)
 	done
 # }}} Distribution of template plugin
 
+# Distribution {{{
 dist: distdir
 	GZIP=$(GZIP_ENV) $(TAR) chozf $(distdir).tar.gz $(distdir)
 	ZIP=$(ZIP_ENV) $(ZIP) $(distdir).zip $(distdir)
@@ -149,44 +165,48 @@ distdir: $(DISTFILES)
 	      || cp -p $$d/$$file $(distdir)/$$file ; \
 	  fi; \
 	done
+# }}}
 
+# Install {{{
 install:
-	@here=`pwd`; \
-	backup="bak.`date \"+%y%m%d\"`"; \
-	if [ -d $$HOME/.vim -o -L $$HOME/.vim ]; then \
-		if [ -d $$HOME/.vim\-$$backup -o -L $$HOME/.vim\-$$backup ]; then \
+	@here="`pwd`"; \
+	backup="bak.`date '+%y%m%d'`"; \
+	if [ -d "$$HOME/.vim" -o -L "$$HOME/.vim" ]; then \
+		if [ -d "$$HOME/.vim\-$$backup" -o -L "$$HOME/.vim\-$$backup" ]; then \
 			echo "Moving           $$HOME/.vim	--->   $$HOME/.vim-`date \"+%y%m%d-%X\"`"; \
-			mv $$HOME/.vim $$HOME/.vim-`date "+%y%m%d-%X"` ; \
+			mv "$$HOME/.vim" "$$HOME/.vim-`date '+%y%m%d-%X'`" ; \
 			echo "Creating symlink $$HOME/.vim	--->   $$here/vim"; \
-			$(LN_S) $$here/vim $$HOME/.vim; \
+			$(LN_S) "$$here/vim" "$$HOME/.vim"; \
 		else \
 			echo "Moving           $$HOME/.vim	--->   $$HOME/.vim-$$backup"; \
-			mv $$HOME/.vim $$HOME/.vim-$$backup; \
+			mv "$$HOME/.vim" "$$HOME/.vim-$$backup"; \
 			echo "Creating symlink $$HOME/.vim	--->   $$here/vim"; \
-			$(LN_S) $$here/vim $$HOME/.vim; \
+			$(LN_S) "$$here/vim" "$$HOME/.vim"; \
 		fi \
 	else \
 		echo "Creating symlink $$HOME/.vim	--->   $$here/vim"; \
-		$(LN_S) $$here/vim $$HOME/.vim; \
+		$(LN_S) "$$here/vim" "$$HOME/.vim"; \
 	fi; \
 	for file in vimrc gvimrc; do \
-		if [ -f $$HOME/.$$file -o -L $$HOME/.$$file ]; then \
-			if [ -f $$HOME/.$$file\-$$backup -o -L $$HOME/.$$file\-$$backup ]; then \
+		if [ -f "$$HOME/.$$file" -o -L "$$HOME/.$$file" ]; then \
+			if [ -f "$$HOME/.$$file\-$$backup" -o -L "$$HOME/.$$file\-$$backup" ]; then \
 				echo "Moving           $$HOME/.$$file	--->   $$HOME/.$$file-`date \"+%y%m%d-%X\"`"; \
-				mv $$HOME/.$$file $$HOME/.$$file-`date "+%y%m%d-%X"` ; \
+				mv "$$HOME/.$$file" "$$HOME/.$$file-`date '+%y%m%d-%X'`" ; \
 				echo "Creating symlink $$HOME/.$$file	--->   $$here/$$file"; \
-				$(LN_S) $$here/$$file $$HOME/.$$file; \
+				$(LN_S) "$$here/$$file" "$$HOME/.$$file"; \
 			else \
 				echo "Moving           $$HOME/.$$file	--->   $$HOME/.$$file-$$backup"; \
-				mv $$HOME/.$$file $$HOME/.$$file-$$backup; \
+				mv "$$HOME/.$$file" "$$HOME/.$$file-$$backup;" \
 				echo "Creating symlink $$HOME/.$$file	--->   $$here/$$file"; \
-				$(LN_S) $$here/$$file $$HOME/.$$file; \
+				$(LN_S) "$$here/$$file" "$$HOME/.$$file"; \
 			fi \
 		else \
 			echo "Creating symlink $$HOME/.$$file	--->   $$here/$$file"; \
-			$(LN_S) $$here/$$file $$HOME/.$$file; \
+			$(LN_S) "$$here/$$file" "$$HOME/.$$file"; \
 		fi; \
 	done
+
+# }}}
 
 uninstall:
 	@echo "Please remove instalation files manualy:"; \
