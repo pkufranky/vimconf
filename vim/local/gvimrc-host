@@ -5,6 +5,7 @@
 " Copyright (c) 2000-2003 Platon SDG, http://www.platon.sk/
 " All rights reserved.
 "
-let g:author="Lubomir Host 'rajo'"
-let g:email="rajo AT platon.sk"
 
+set guifont=-misc-fixed-bold-r-normal-*-*-140-*-*-c-*-iso8859-2
+set lines=59
+set columns=139
