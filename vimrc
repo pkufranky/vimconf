@@ -484,7 +484,7 @@ endfun
 		\ "&compile\n" .
 		\ "compile and &debug\n" .
 		\ "compile and &run\n" .
-		\ "compile using first &line\n")
+		\ "compile using first &line")
 
 :	if choice != 0
 :		exec ":wall"
