@@ -2,7 +2,7 @@
 " Language:		Perl
 " Maintainer:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " License:		GNU GPL
-" Version:		$Id: perl.vim,v 1.1 2001/12/24 01:45:25 host8 Exp $
+" Version:		$Id: perl.vim,v 1.1 2002/01/04 10:37:41 host8 Exp $
 " Language Of Comments:	English
 
 
@@ -40,7 +40,7 @@ if !exists("no_plugin_maps") && !exists("no_mail_maps")
 endif
 
 
-" Modeline {{{1
+" Modeline {{{
 " vim:set ts=4:
 " vim600:fdm=marker fdl=0 fdc=3 vb t_vb=:
-"################################################################# }}}1
+" }}}

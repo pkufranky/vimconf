@@ -2,7 +2,7 @@
 " Language:		TeX, LaTeX
 " Maintainer:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " License:		GNU GPL
-" Version:		$Id: tex.vim,v 1.5 2002/01/19 03:57:54 host8 Exp $
+" Version:		$Id: tex.vim,v 1.6 2002/02/02 04:35:41 host8 Exp $
 " Language Of Comments:	English
 
 
@@ -235,4 +235,4 @@ endfun
 " Modeline {{{
 " vim:set ts=4:
 " vim600:fdm=marker fdl=0 fdc=3 vb t_vb=:
-"################################################################# }}}
+" }}}

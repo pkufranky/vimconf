@@ -5,7 +5,7 @@
 " License:		GNU GPL
 " Version:		2002.02.05
 
-" $Id: vimrc,v 1.36 2002/02/05 20:34:15 host8 Exp $
+" $Id: vimrc,v 1.37 2002/02/05 20:38:51 host8 Exp $
 
 " Settings {{{
 " To be secure & Vi nocompatible
@@ -123,7 +123,8 @@ set vb t_vb=
 
 " Set this, if you will open all windows for files specified
 " on the commandline at vim startup.
-let g:open_all_win=1
+"let g:open_all_win=1
+let g:open_all_win=0
 
 " Settings for folding long lines
 let g:fold_long_lines=300
@@ -230,9 +231,6 @@ augroup C
 	autocmd BufRead,BufNewFile  *.c,*.h,*.cc,*.cpp	setlocal cindent
 	autocmd BufRead,BufNewFile  *.c,*.h,*.cc,*.cpp	setlocal cinoptions=>4,e0,n0,f0,{0,}0,^0,:4,=4,p4,t4,c3,+4,(2s,u1s,)20,*30,g4,h4
 	autocmd BufRead,BufNewFile  *.c,*.h,*.cc,*.cpp	setlocal cinkeys=0{,0},:,0#,!<C-F>,o,O,e
-" vytvaranie hlaviciek novych *.c, *.h suborov
-	autocmd BufNewFile  *.c,*.cc,*.cpp	0r ~/.vim/skelet.c
-	autocmd BufNewFile	 *.h	call MakeHeader()
 augroup END
 " }}}
 
@@ -392,33 +390,6 @@ fun! LastMod(text, ...)
 endfun
 " LastMod() }}}
 
-" Function MakeHeader() {{{
-" Prepare header in *.h files.
-"
-fun! MakeHeader() 
-" Line look variables.
-let line = "" . bufname("%")
-let line = substitute(line, "\\\.", "_\0", "")
-let line1 = substitute(line, ".*", "#ifndef _\\U\\0", "")
-let line2 = substitute(line, ".*", "#define _\\U\\0", "")
-let line6 = "#endif /* " . line1 . " */"
-" Writeout of sets variebles.
-":echo line
-" ...
-" Setting appropriate lines according to the prepared variables.
-" In target file there must be sufficient number of lines, else setline() will
-" fails. Function append() appends next line into file, see :help append
-call setline(1, line1)
-call append(1, line2)
-call append(2, "")
-call append(3, "")
-call append(4, "")
-call append(5, "")
-call setline(6, line6)
-call append(6, "")
-endfun
-" MakeHeader() }}}
-
 " Function OpenAllWin() {{{
 " Opens windows for all files in the command line.
 " Variable "opened" is used for testing, if window for file was already opened
@@ -438,7 +409,9 @@ fun! OpenAllWin()
 endfun
 
 if exists("g:open_all_win")
-	call OpenAllWin()
+	if g:open_all_win == 1
+		call OpenAllWin()
+	endif
 endif
 " OpenAllWin() }}}
 
