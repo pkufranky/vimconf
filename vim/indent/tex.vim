@@ -58,7 +58,7 @@ setlocal nolisp
 setlocal nosmartindent
 setlocal autoindent
 "setlocal indentkeys+=},=\\item,=\\bibitem
-setlocal indentkeys+==\\item,=\\bibitem
+setlocal indentkeys+==\\item,=\\bibitem,=\\end
 
 
 " Only define the function once
