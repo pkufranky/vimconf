@@ -5,7 +5,7 @@
 # Author: Lubomir Host 'rajo' <host8@kepler.fmph.uniba.sk
 #
 
-# $Id: $
+# $Id$
 
 PACKAGE = test
 VERSION = 1.0
@@ -43,10 +43,11 @@ dist-all: distdir
 distdir: $(DISTFILES)
 	-rm -rf $(distdir)
 	mkdir $(distdir)
-	here=`cd $(top_builddir) && pwd`; \
+	@here=`cd $(top_builddir) && pwd`; \
 	top_distdir=`cd $(distdir) && pwd`; \
 	distdir=`cd $(distdir) && pwd`;
-	@for file in $(DISTFILES); do \
+	@FILES=`echo "$(DISTFILES)" | awk 'BEGIN{RS=" "}{print}' | sort -u`; \
+	for file in $$FILES; do \
 	  d=$(srcdir); \
 	  if test -d $$d/$$file; then \
 	    mkdir $(distdir)/$$file; \

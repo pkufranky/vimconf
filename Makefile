@@ -5,7 +5,7 @@
 # (c) rajo <host8@kepler.fmph.uniba.sk
 #
 
-# $Id: Makefile,v 1.7 2002/02/17 03:27:41 host8 Exp $
+# $Id: Makefile,v 1.8 2002/02/18 19:53:23 host8 Exp $
 
 PACKAGE = vimconfig
 VERSION = 1.4
@@ -15,7 +15,6 @@ VERSION_TEMPLATE_PLUGIN = 1.4
 DISTFILES_TEMPLATE_PLUGIN = vim \
 						vim/plugin \
 						vim/plugin/templatefile.vim \
-						vim/templates \
 						vim/templates/ \
 						vim/templates/skel.c \
 						vim/templates/skel.h \
@@ -29,7 +28,7 @@ DISTFILES = Makefile vimrc vim \
 			vim/ftplugin/mail.vim \
 			vim/ftplugin/perl.vim \
 			vim/ftplugin/tex.vim \
-			vim/plugin/ \
+			vim/plugin \
 			vim/plugin/CmdlineCompl.vim \
 			vim/plugin/calendar.vim \
 			vim/plugin/matchit.vim $(DISTFILES_TEMPLATE_PLUGIN)
@@ -77,10 +76,11 @@ dist-template-plugin-all: distdir_template_plugin
 distdir_template_plugin: $(DISTFILES_TEMPLATE_PLUGIN)
 	-rm -rf $(distdir_template_plugin)
 	mkdir $(distdir_template_plugin)
-	here=`cd $(top_builddir) && pwd`; \
+	@here=`cd $(top_builddir) && pwd`; \
 	top_distdir_template_plugin=`cd $(distdir_template_plugin) && pwd`; \
 	distdir_template_plugin=`cd $(distdir_template_plugin) && pwd`;
-	@for file in $(DISTFILES_TEMPLATE_PLUGIN); do \
+	@FILES=`echo "$(DISTFILES_TEMPLATE_PLUGIN)" | awk 'BEGIN{RS=" "}{print}' | sort -u`; \
+	for file in $$FILES; do \
 	  d=$(srcdir); \
 	  if test -d $$d/$$file; then \
 	    mkdir $(distdir_template_plugin)/$$file; \
@@ -105,10 +105,11 @@ dist-all: distdir
 distdir: $(DISTFILES)
 	-rm -rf $(distdir)
 	mkdir $(distdir)
-	here=`cd $(top_builddir) && pwd`; \
+	@here=`cd $(top_builddir) && pwd`; \
 	top_distdir=`cd $(distdir) && pwd`; \
 	distdir=`cd $(distdir) && pwd`;
-	@for file in $(DISTFILES); do \
+	@FILES=`echo "$(DISTFILES)" | awk 'BEGIN{RS=" "}{print}' | sort -u`; \
+	for file in $$FILES; do \
 	  d=$(srcdir); \
 	  if test -d $$d/$$file; then \
 	    mkdir $(distdir)/$$file; \
