@@ -18,7 +18,7 @@
 " Please don't hesitate to correct my english :)
 " Send corrections to <8host AT pauliDOTfmph.uniba.sk>
 
-" $Id: vimrc,v 1.56 2002/04/22 18:45:21 host8 Exp $
+" $Id: vimrc,v 1.57 2002/04/22 19:39:22 host8 Exp $
 
 " Settings {{{
 " To be secure & Vi nocompatible
@@ -250,10 +250,6 @@ imap <C-O><C-O> <Esc>:split
 " diakritika 
 ":map <C-D><C-D> :so ~/.vim/diakritika.vim
 ":imap <C-D><C-D> <Esc>:so ~/.vim/diakritika.vim
-
-" Open new window with the file ~/.tcshrc (my shell configuration file)
-map <C-O><C-T> :split ~/.tcshrc<CR>
-imap <C-O><C-T> <Esc>:split ~/.tcshrc<CR>
 
 " Open new window with file ~/.vimrc (ViM configuration file)
 map <C-O><C-K> :split ~/.vimrc<CR>
