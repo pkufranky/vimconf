@@ -3,11 +3,11 @@
 " Maintainer:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " Bugs Report:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " Copyright:	GNU GPL
-" Last Change:	2001 Oct 14 01:11:55 AM
+" Last Change:	2001 Oct 23 15:28:19
 " Version:		01.09.08
 " Language Of Comments:	Slovak
 
-" $Id: vimrc,v 1.8 2001/10/13 23:14:20 host8 Exp $
+" $Id: vimrc,v 1.9 2001/10/16 16:22:48 host8 Exp $
 
 " Settings {{{1
 " ... to be secure & Vi nocompatible
@@ -238,20 +238,24 @@
 :augroup END
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
 " Autocommands for *.gz {{{2
-:augroup gzip
-:  autocmd!
-:  autocmd BufReadPre,FileReadPre	*.gz set bin
-:  autocmd BufReadPost,FileReadPost	*.gz '[,']!gunzip
-:  autocmd BufReadPost,FileReadPost	*.gz set nobin
-:  autocmd BufReadPost,FileReadPost	*.gz execute ":doautocmd BufReadPost " . expand("%:r")
-:  autocmd BufWritePost,FileWritePost	*.gz !mv <afile> <afile>:r
-:  autocmd BufWritePost,FileWritePost	*.gz !gzip <afile>:r
-:  autocmd FileAppendPre		*.gz !gunzip <afile>
-:  autocmd FileAppendPre		*.gz !mv <afile>:r <afile>
-:  autocmd FileAppendPost		*.gz !mv <afile> <afile>:r
-:  autocmd FileAppendPost		*.gz !gzip <afile>:r
-:augroup END
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
+:if version < 600
+:  augroup gzip
+:    autocmd!
+:    autocmd BufReadPre,FileReadPre	*.gz set bin
+:    autocmd BufReadPost,FileReadPost	*.gz '[,']!gunzip
+:    autocmd BufReadPost,FileReadPost	*.gz set nobin
+:    autocmd BufReadPost,FileReadPost	*.gz execute ":doautocmd BufReadPost " . expand("%:r")
+:    autocmd BufWritePost,FileWritePost	*.gz !mv <afile> <afile>:r
+:    autocmd BufWritePost,FileWritePost	*.gz !gzip <afile>:r
+:    autocmd FileAppendPre		*.gz !gunzip <afile>
+:    autocmd FileAppendPre		*.gz !mv <afile>:r <afile>
+:    autocmd FileAppendPost		*.gz !mv <afile> <afile>:r
+:    autocmd FileAppendPost		*.gz !gzip <afile>:r
+:  augroup END
+:else
+:  " empty
+:endif
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
 " Autocommands for *.bz2 {{{2
 :augroup bzip2
 :  autocmd!
