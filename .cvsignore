@@ -4,3 +4,4 @@ viminfo
 *.zip
 *.tar.gz
 vimrc-local*
+*.md5sums
