@@ -2,7 +2,7 @@
 " Language:		TeX, LaTeX
 " Maintainer:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " License:		GNU GPL
-" Version:		$Id: tex.vim,v 1.1 2002/01/04 10:37:41 host8 Exp $
+" Version:		$Id: tex.vim,v 1.2 2002/01/15 02:33:29 host8 Exp $
 " Language Of Comments:	English
 
 
@@ -10,16 +10,89 @@
 if exists("b:did_ftplugin")
 	finish
 endif
-" Variable b:did_ftplugin is not yet set, because I will load 
-" also $VIMRUNTIME/ftplugin/tex.vim file.
-"let b:did_ftplugin = 1
-
-let loaded_matchit = 1
+let b:did_ftplugin = 1
 
 setlocal textwidth=72
 setlocal formatoptions=croqt
 setlocal iskeyword="a-z,A-Z,48-57,_,-,>,\\,{.}"
 
+" These lines come from $VIMRUNTIME/ftplugin/tex.vim (modified) {{{
+" Thanks to Benji Fisher, Ph.D. <benji@member.AMS.org>
+let s:save_cpo = &cpo
+set cpo&vim
+
+" Set 'comments' to format dashed lists in comments
+setlocal comments=sO:%\ -,mO:%\ \ ,eO:%%,:%
+
+" Allow "[d" to be used to find a macro definition:
+" Recognize plain TeX \def as well as LaTeX \newcommand and \renewcommand .
+setlocal define=\\\\def\\\\|\\\\\\(re\\)\\=newcommand{
+
+" Tell Vim how to recognize LaTeX \include{foo} and plain \input bar :
+setlocal include=\\\\input\\\\|\\\\include{
+setlocal includeexpr=s:TexIncludeExpr()
+if !exists("*s:TexIncludeExpr")
+	fun! s:TexIncludeExpr()
+		" On some file systems, "}" is inluded in 'isfname'.  In case the
+		" TeX file has \include{fname} (LaTeX only), strip the "}" and
+		" any other trailing characters.
+		let fname = substitute(v:fname, '}.*', '', '')
+		" Now, add ".tex" if there is no other file extension.
+		if fname !~ '\.'
+			let fname = fname . '.tex'
+		endif
+		return fname
+	endfun
+endif
+
+" The following lines enable the macros/matchit.vim plugin for
+" extended matching with the % key.
+if exists("loaded_matchit")
+	let b:match_ignorecase = 0
+		\ | let b:match_skip = 'r:\\\@<!\%(\\\\\)*%'
+		\ | let b:match_words = '(:),\[:],{:},\\(:\\),\\\[:\\],' .
+		\ '\\begin\s*\({\a\+\*\=}\):\\end\s*\1'
+endif " exists("loaded_matchit")
+
+let &cpo = s:save_cpo
+" }}} end cut&paste form $VIMRUNTIME/ftplugin/tex.vim
+
+" These lines comes from file $VIMRUNTIME/compiler/tex.vim  {{{
+" Thanks to Artem Chuprina <ran@ran.pp.ru>
+let s:cpo_save = &cpo
+set cpo-=C
+setlocal errorformat=%E!\ LaTeX\ %trror:\ %m,
+	\%E!\ %m,
+	\%+WLaTeX\ %.%#Warning:\ %.%#line\ %l%.%#,
+	\%+W%.%#\ at\ lines\ %l--%*\\d,
+	\%WLaTeX\ %.%#Warning:\ %m,
+	\%Cl.%l\ %m,
+	\%+C\ \ %m.,
+	\%+C%.%#-%.%#,
+	\%+C%.%#[]%.%#,
+	\%+C[]%.%#,
+	\%+C%.%#%[{}\\]%.%#,
+	\%+C<%.%#>%.%#,
+	\%C\ \ %m,
+	\%-GSee\ the\ LaTeX%m,
+	\%-GType\ \ H\ <return>%m,
+	\%-G\ ...%.%#,
+	\%-G%.%#\ (C)\ %.%#,
+	\%-G(see\ the\ transcript%.%#),
+	\%-G\\s%#,
+	\%+O(%f)%r,
+	\%+P(%f%r,
+	\%+P\ %\\=(%f%r,
+	\%+P%*[^()](%f%r,
+	\%+P[%\\d%[^()]%#(%f%r,
+	\%+Q)%r,
+	\%+Q%*[^()])%r,
+	\%+Q[%\\d%*[^()])%r
+let &cpo = s:cpo_save
+unlet s:cpo_save
+" }}} end cut&paste from $VIMRUNTIME/compiler/tex/vim
+
+" Mappings {{{
 " Add mappings, unless the user didn't want this.
 if !exists("no_plugin_maps") && !exists("no_tex_maps")
 	" Ctrl-F reformat paragraph
@@ -136,7 +209,8 @@ if !exists("no_plugin_maps") && !exists("no_tex_maps")
 	imap <buffer> =Z \'{Z}
 	imap <buffer> +Z \v{Z}
 endif
-	
+" }}} end mappings	
+
 " Modeline {{{1
 " vim:set ts=4:
 " vim600:fdm=marker fdl=0 fdc=3 vb t_vb=:
