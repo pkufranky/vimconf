@@ -2,7 +2,7 @@
 " Language:		TeX, LaTeX
 " Maintainer:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " License:		GNU GPL
-" Version:		$Id: tex.vim,v 1.8 2002/02/17 01:00:35 host8 Exp $
+" Version:		$Id: tex.vim,v 1.9 2002/02/17 03:24:58 host8 Exp $
 
 
 " Only do this when not done yet for this buffer
@@ -220,18 +220,22 @@ if !exists("no_plugin_maps") && !exists("no_tex_maps")
 endif
 " }}} end mappings	
 
+let g:smartBS_tex = '\(' .
+			\ "\\\\[\"^'=v]{\\S}"      . '\|' .
+			\ "\\\\[\"^'=]\\S"         . '\|' .
+			\ '\\v \S'                 . '\|' .
+			\ "\\\\[\"^'=v]{\\\\[iI]}" . '\|' .
+			\ '\\v \\[iI]'             . '\|' .
+			\ '\\q \S'                 . '\|' .
+			\ '\\-'                    .
+			\ '\)' . "$"
+
 " This function comes from Benji Fisher <benji@e-math.AMS.org>
 " http://vim.sourceforge.net/scripts/download.php?src_id=409 
+" (modified)
 fun! s:SmartBS()
   let init = strpart(getline("."), 0, col(".")-1)
-  let len = strlen(matchstr(init, '\(' .
-				\ '\\[^\"]{\S}'     . '\|' .
-				\ '\\[^\"]{\\[iI]}' . '\|' .
-				\ '\\q \S'      . '\|' .
-				\ '\\[^\"]\S'  . '\|' .
-				\ '\\-'  . '\|' .
-				\ '\\v \S'      .
-				\ '\)' . "$")) - 1
+  let len = strlen(matchstr(init, g:smartBS_tex)) - 1
   if len > 0
     execute "normal!" . len . "X"
   endif
