@@ -20,7 +20,7 @@
 "
 "        Lubomir Host 'rajo' <rajo AT platon.sk>
 
-" Version: $Platon: vimconfig/vimrc,v 1.101 2004-03-12 08:23:52 rajo Exp $
+" Version: $Platon: vimconfig/vimrc,v 1.102 2004-08-30 10:05:14 rajo Exp $
 
 " Debian uses compressed helpfiles. We must inform vim that the main
 " helpfiles is compressed. Other helpfiles are stated in the tags-file.
@@ -506,7 +506,7 @@ function! OpenAllWin()
 	if g:open_all_win == 1
 		while s:i < argc()
 			if bufwinnr(argv(s:i)) == -1	" buffer doesn't exists or doesn't have window
-				exec ":split " . argv(s:i)
+				exec ":split " . escape(argv(s:i), ' \')
 			endif
 			let s:i = s:i + 1
 		endwhile
