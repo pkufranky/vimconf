@@ -1,8 +1,8 @@
 " Vim filetype plugin file
 " Language:		CVS
-" Maintainer:	Lubomir Host 'rajo' <8host AT pauli.fmph.uniba.sk>
+" Maintainer:	Lubomir Host 'rajo' <rajo AT platon.sk>
 " License:		GNU GPL
-" Version:		$Platon: vimconfig/vim/ftplugin/cvs.vim,v 1.4 2003-01-16 12:16:50 rajo Exp $
+" Version:		$Platon: vimconfig/vim/ftplugin/cvs.vim,v 1.5 2003-02-28 02:02:26 rajo Exp $
 
 
 " Only do this when not done yet for this buffer
