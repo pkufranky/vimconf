@@ -20,7 +20,7 @@
 "
 "        Lubomir Host 'rajo' <rajo AT platon.sk>
 
-" Version: $Platon: vimconfig/vimrc,v 1.99 2003-12-09 07:18:06 rajo Exp $
+" Version: $Platon: vimconfig/vimrc,v 1.100 2004-02-11 09:16:01 rajo Exp $
 
 " Debian uses compressed helpfiles. We must inform vim that the main
 " helpfiles is compressed. Other helpfiles are stated in the tags-file.
@@ -232,7 +232,7 @@ set wildchar=<Tab>
 set wildmenu
 set wildmode=longest:full,full
 
-set clipboard=unnamed
+"set clipboard=unnamed
 
 " Allow specified keys that move the cursor left/right to wrap to the
 " previous/next line when the cursor is on the first/last character in the
