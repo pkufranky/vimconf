@@ -1,9 +1,11 @@
 " 
 " User's local vim configuration
 "  
-" Developed by Lubomir Host <8host AT pauli.fmph.uniba.sk>
-" Copyright (c) 2000-2002 Platon SDG, http://www.platon.sk/
+" Developed by Lubomir Host 'rajo' <rajo AT platon.sk>
+" Copyright (c) 2000-2003 Platon SDG, http://www.platon.sk/
 " All rights reserved.
 "
+" $Platon: vimconfig/vim/local/vimrc,v 1.2 2003-02-28 04:12:04 rajo Exp $
 
 let g:company="Platon SDG"
+
