@@ -1,5 +1,5 @@
 "
-" vimconfig - project of powerful ViM 6.0 configuration files
+" vimconfig - project of powerful ViM 6.3 configuration files
 " 
 " vimrc - main configuration file
 " ____________________________________________________________
@@ -20,7 +20,7 @@
 "
 "        Lubomir Host 'rajo' <rajo AT platon.sk>
 
-" Version: $Platon: vimconfig/vimrc,v 1.105 2005-03-09 19:50:06 rajo Exp $
+" Version: $Platon: vimconfig/vimrc,v 1.106 2005-03-09 20:51:54 rajo Exp $
 
 " Debian uses compressed helpfiles. We must inform vim that the main
 " helpfiles is compressed. Other helpfiles are stated in the tags-file.
@@ -34,7 +34,7 @@ endif
 " To be secure & Vi nocompatible
 :set secure nocompatible
 :if version < 600
-:	echo "Please update your vim to 6.0 version (version 6.1 already available!)"
+:	echo "Please update your vim to 6.x version (version 6.3 is available, version 7.0 vill be soon!)"
 :	finish
 :endif
 

@@ -1,5 +1,5 @@
 "
-" vimconfig - project of powerful ViM 6.0 configuration files
+" vimconfig - project of powerful ViM 6.3 configuration files
 " 
 " gvimrc - GUI configuration file
 " ____________________________________________________________
@@ -20,7 +20,7 @@
 "
 "        Lubomir Host 'rajo' <rajo AT platon.sk>
 
-" Version: $Platon: vimconfig/gvimrc,v 1.11 2005-03-09 19:50:06 rajo Exp $
+" Version: $Platon: vimconfig/gvimrc,v 1.12 2005-03-09 20:51:54 rajo Exp $
 
 function! Source(File)
 	silent! execute "source " . a:File
