@@ -2,7 +2,7 @@
 " Language:		SGML (DocBook)
 " Maintainer:	Ondrej Jombík <nepto@pobox.sk>
 " License:		GNU GPL
-" Version:		$Id: sgml.vim,v 1.1 2002/05/18 18:17:52 jombik9 Exp $
+" Version:		$Platon: vimconfig/vim/ftplugin/sgml.vim,v 1.3 2003-02-28 04:05:23 rajo Exp $
 
 
 " Only do this when not done yet for this buffer
@@ -12,7 +12,7 @@ endif
 let b:did_ftplugin = 1
 
 " Set window width to 80
-setlocal tw=80
+setlocal tw=78
 setlocal autoindent
 
 " Modeline {{{
