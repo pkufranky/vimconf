@@ -2,11 +2,15 @@
 // XXX XXX XXX  THIS IS A NEW FILE XXX XXX XXX
 
 /*
- * '@FILE_EXT@' created: @DATE@
+ * @FILE_EXT@
  *
- * Copyright @YEAR@ by @AUTHOR@ @EMAIL@
+ * Developed by @AUTHOR@ <@EMAIL@>
+ * Copyright (c) @YEAR@ @COMPANY@
+ * Licensed under terms of GNU General Public License.
+ * All rights reserved.
  *
- * License: GNU GPL (GNU Public License)
+ * Changelog:
+ * @DATE@ - created
  *
  */
 
@@ -16,14 +20,12 @@
 #include <stdio.h>
 #include "@FILE@.h"
 
-/* Function int main(int argc, char **argv) {{{ */
-int main(int argc, char **argv)
+int main(int argc, char **argv) /* {{{ */
 {
 
 
 	return 0;
 } /* }}} */
-
 
 /* Modeline for ViM {{{
  * vim: set ts=4:

@@ -2,11 +2,15 @@
 // XXX XXX XXX  THIS IS A NEW FILE XXX XXX XXX
 
 /*
- * '@FILE_EXT@' created: @DATE@
+ * @FILE_EXT@
  *
- * Copyright @YEAR@ by @AUTHOR@ @EMAIL@
+ * Developed by @AUTHOR@ <@EMAIL@>
+ * Copyright (c) @YEAR@ @COMPANY@
+ * Licensed under terms of GNU General Public License.
+ * All rights reserved.
  *
- * License: GNU GPL (GNU Public License)
+ * Changelog:
+ * @DATE@ - created
  *
  */
 
@@ -18,3 +22,4 @@
 
 
 #endif /* ifndef @INCLUDE_GAURD@_H */
+
