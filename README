@@ -4,6 +4,9 @@ vimconfig
 Project of powerful ViM configuration files. ViM is a quality text
 editor with huge set of features.
 
+See FEATURES.txt file for getting help. Read this file with ViM for
+better reading.
+
 This document is fast howto install this vimconfig.
 
 
@@ -25,11 +28,11 @@ very simple. Go to directory ~/prog/vimconfig/ and type this command:
 And that's all folks.
 
 
-Developed by Lubomir Host <8host@pauli.fmph.uniba.sk>
+Developed by Lubomir Host <8host AT pauliDOTfmph.uniba.sk>
 Copyright (c) 2000-2002 Platon SDG, http://www.platon.sk/
 
 Comments, suggestions, bug reports and patches are always welcome.
-Please e-mail them to the following address: <platon@pobox.sk>
+Please e-mail them to the following address: <platon AT pobox.sk>
 
 The latest official release of vimconfig is available from:
 http://www.platon.sk/projects/vimconfig/
