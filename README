@@ -9,7 +9,8 @@ better reading.
 
 This document is fast howto install this vimconfig.
 
-
+INSTALLATION
+------------
 Copy content of vimconfig/ directory somewhere in your home directory.
 Suppose that it will be ~/prog/vimconfig/. Go to this directory
 (~/prog/vimconfig/) and type 'make install'. Or simply create symlinks
@@ -21,6 +22,9 @@ in root of your home directory:
 
 Installation is done.
 
+
+UPDATE
+------
 If you get vimconfig from our CVS repository, than further updating is
 very simple. Go to directory ~/prog/vimconfig/ and type this command:
 
@@ -28,16 +32,28 @@ very simple. Go to directory ~/prog/vimconfig/ and type this command:
 
 And that's all folks.
 
+You can checkout vimconfig from CVS Repository manualy running command:
 
-Developed by Lubomir Host 'rajo' <8host AT pauli.fmph.uniba.sk>
+	cvs -d :pserver:anonymous@kepler.fmph.uniba.sk:/home/cvs login
+(Simply press <ENTER> at password prompt.)
+	cvs -d :pserver:anonymous@kepler.fmph.uniba.sk:/home/cvs co vimconfig
+
+Visit also website of vimconfig project at
+
+	http://www.platon.sk/projects/vimconfig/
+	http://www.platon.sk/cvs/cvs.php/vimconfig/
+
+--
+Developed by Lubomir Host 'rajo' <rajo AT platon.sk>
 Copyright (c) 2000-2002 Platon SDG, http://www.platon.sk/
 
-Comments, suggestions, bug reports and patches are always welcome.
-Please e-mail them to the following address: <platon AT pobox.sk>
+Comments, suggestions, bug reports and patches are always welcome.  Please
+e-mail them to the address <platon AT pobox.sk> or use bugtracking system at
+http://www.platon.sk/projects/vimconfig/
 
 The latest official release of vimconfig is available from:
 http://www.platon.sk/projects/vimconfig/
 http://vim.sourceforge.net/script.php?script_id=204
 
-This document was written by Ondrej Jombik in 28th March 2002.
+This document was written by Ondrej Jombik in 28th March 2002. Updated 16th Feb 2003.
 

@@ -8,7 +8,7 @@
 # All rights reserved.
 #
 
-# $Platon: vimconfig/Makefile,v 1.28 2003-02-07 16:31:18 rajo Exp $
+# $Platon: vimconfig/Makefile,v 1.29 2003-02-16 21:40:39 rajo Exp $
 
 PACKAGE = vimconfig
 VERSION = 1.8pre2
@@ -215,6 +215,18 @@ uninstall:
 	 echo "	$$HOME/.vim"; \
 	 echo "	$$HOME/.vimrc"; \
 	 echo "	$$HOME/.gvimrc";
+
+update:
+	@echo "If your version of vimconfig is checked out from"; \
+	 echo "CVS Repository, 'make update' works. If you have only"; \
+	 echo "tarball, 'make update' failed. You can update manualy"; \
+	 echo "running"; \
+	 echo ""; \
+	 echo "    cvs -d :pserver:anonymous@kepler.fmph.uniba.sk:/home/cvs login"; \
+	 echo "    cvs -d :pserver:anonymous@kepler.fmph.uniba.sk:/home/cvs co vimconfig"; \
+	 echo "";
+# next command may failed, if user doesn't have CVS version of vimconfig
+	-cvs update;
 
 .PHONY: clean tags
 
