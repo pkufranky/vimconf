@@ -1,0 +1,9 @@
+" 
+" User's local vim configuration
+"  
+" Developed by Lubomir Host <8host AT pauli.fmph.uniba.sk>
+" Copyright (c) 2000-2002 Platon SDG, http://www.platon.sk/
+" All rights reserved.
+"
+
+let g:company="Platon SDG"

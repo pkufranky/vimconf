@@ -18,7 +18,7 @@
 " Please don't hesitate to correct my english :)
 " Send corrections to <8host AT pauli.fmph.uniba.sk>
 
-" $Id: vimrc,v 1.72 2002/08/15 22:44:44 rajo Exp $
+" Version: $Platon: vimconfig/vimrc,v 1.76 2003-01-16 12:15:10 rajo Exp $
 
 " Settings {{{
 " To be secure & Vi nocompatible
@@ -39,8 +39,8 @@ function! Source(File)
 	silent! execute "source " . a:File
 endfunction
 
-let VIMRC_EXTRA="~/.vim/vimrc-local"
-let GVIMRC_EXTRA="~/.vim/gvimrc-local"
+let VIMRC_EXTRA="~/.vim/local/vimrc"
+let GVIMRC_EXTRA="~/.vim/local/gvimrc"
 if executable("uname") && executable("awk")
 	let machine = system("uname -n | awk 'BEGIN {ORS=\"\"} {print; }'")
 else
