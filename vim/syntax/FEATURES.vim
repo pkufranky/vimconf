@@ -36,6 +36,7 @@ syn match helpVim		"VIMCONFIG USER.*"
 syn match helpOption		"'[a-z]\{2,\}'"
 syn match helpOption		"'t_..'"
 syn match helpHeader		".*\~$"me=e-1 nextgroup=helpIgnore
+syn match helpHeader		"^[A-Z ]\+\~"me=e-1 nextgroup=helpIgnore
 syn match helpIgnore		"." contained
 syn keyword helpNote		note Note NOTE note: Note: NOTE:
 syn match helpSpecial		"\<N\>"
