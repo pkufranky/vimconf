@@ -20,7 +20,7 @@
 "
 "        Lubomir Host 'rajo' <rajo AT platon.sk>
 
-" Version: $Platon: vimconfig/vimrc,v 1.96 2003-12-02 07:56:01 rajo Exp $
+" Version: $Platon: vimconfig/vimrc,v 1.97 2003-12-03 10:45:42 rajo Exp $
 
 " Debian uses compressed helpfiles. We must inform vim that the main
 " helpfiles is compressed. Other helpfiles are stated in the tags-file.
@@ -174,7 +174,7 @@ set tags=./TAGS,./tags,tags
 " Don't add EOF at end of file
 set noendofline
 
-" Do case insensitive matching
+" Do case sensitive matching
 set noignorecase
 
 set showfulltag 
