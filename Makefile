@@ -9,10 +9,10 @@
 # All rights reserved.
 #
 
-# $Platon: vimconfig/Makefile,v 1.30 2003-02-28 02:00:51 rajo Exp $
+# $Platon: vimconfig/Makefile,v 1.31 2003-04-16 01:00:22 rajo Exp $
 
 PACKAGE = vimconfig
-VERSION = 1.8pre2
+VERSION = 1.8
 PACKAGE_TEMPLATE_PLUGIN = templatefile
 VERSION_TEMPLATE_PLUGIN = $(VERSION)
 
@@ -32,6 +32,8 @@ DISTFILES_TEMPLATE_PLUGIN = vim    \
 # DISTFILES {{{
 DISTFILES = README \
 			Makefile vimrc gvimrc vim \
+			contrib \
+			contrib/update-vim-sources \
 			vim/strace.vim \
 			vim/csyntax.vim \
 			vim/latextags \
