@@ -34,16 +34,16 @@ fun! LoadTemplateFile()
 	endif
 	let extension = expand ("%:e")
 	if extension == ""
-		let template_file = "templates/" . expand("%:t")
+		let template_file = "/templates/" . expand("%:t")
 		let template_func = "TemplateFileFunc_noext_" . expand("%:t")
 	else
-		let template_file = "templates/skel." . extension
+		let template_file = "/templates/skel." . extension
 		let template_func = "TemplateFileFunc_" . extension
 	endif
 	if filereadable(expand($VIMTEMPLATE . template_file))
 		call LoadTemplateFileConfirm($VIMTEMPLATE . template_file)
-	elseif filereadable(expand($HOME . "/.vim/" . template_file))
-		call LoadTemplateFileConfirm($HOME . "/.vim/" . template_file)
+	elseif filereadable(expand($HOME . "/.vim" . template_file))
+		call LoadTemplateFileConfirm($HOME . "/.vim" . template_file)
 	elseif filereadable(expand($VIM . template_file))
 		call LoadTemplateFileConfirm($VIM . template_file)
 	elseif filereadable(expand($VIMRUNTIME . template_file))
