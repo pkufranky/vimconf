@@ -6,7 +6,7 @@
 " Version:		01.09.08
 " Language Of Comments:	English
 
-" $Id: vimrc,v 1.24 2001/12/15 04:01:01 host8 Exp $
+" $Id: vimrc,v 1.25 2001/12/15 04:26:34 host8 Exp $
 
 " Settings {{{1
 " To be secure & Vi nocompatible
@@ -184,6 +184,7 @@ fun! SetsByFiletype()
 :if &filetype == "mail"
 :	setlocal textwidth=72
 :	setlocal noautoindent
+:	setlocal formatoptions=croqt
 :	map  <buffer>  gqap
 :	imap <buffer>  gqapi
 :endif
@@ -237,10 +238,6 @@ endfun
 :	autocmd BufEnter            *.c,*.h,*.cc,*.cpp	imap <buffer>  mfggvG$='fi
 :	autocmd BufEnter            *.c,*.h,*.cc,*.cpp	map <buffer> yii yyp3wdwi
 :	autocmd BufEnter            *.c,*.h,*.cc,*.cpp	map <buffer>  :call CallProg()
-:	autocmd BufLeave            *.c,*.h,*.cc,*.cpp	unmap 
-:	autocmd BufLeave            *.c,*.h,*.cc,*.cpp	unmap yii
-:	autocmd BufLeave            *.c,*.h,*.cc,*.cpp	iunmap 
-:	autocmd BufLeave            *.c,*.h,*.cc,*.cpp	unmap 
 :	autocmd BufRead,BufNewFile  *.c,*.h,*.cc,*.cpp	setlocal cindent
 :	autocmd BufRead,BufNewFile  *.c,*.h,*.cc,*.cpp	setlocal cinoptions=>4,e0,n0,f0,{0,}0,^0,:4,=4,p4,t4,c3,+4,(2s,u1s,)20,*30,g4,h4
 :	autocmd BufRead,BufNewFile  *.c,*.h,*.cc,*.cpp	setlocal cinkeys=0{,0},:,0#,!,o,O,e
@@ -255,9 +252,6 @@ endfun
 :	autocmd BufEnter            *.p[lm]	map  <buffer>  mfggvG$='f
 :	autocmd BufEnter            *.p[lm]	imap <buffer>  mfggvG$='fi
 :	autocmd BufEnter            *.p[lm]	map  <buffer>  :call CallProg()
-:	autocmd BufLeave            *.p[lm]	unmap 
-:	autocmd BufLeave            *.p[lm]	iunmap 
-:	autocmd BufLeave            *.p[lm]	unmap 
 :	autocmd BufRead,BufNewFile  *.p[lm]	setlocal cindent
 :	autocmd BufRead,BufNewFile  *.p[lm]	setlocal cinoptions=>4,e0,n0,f0,{0,}0,^0,:4,=4,p4,t4,c3,+4,(24,u4,)20,*30,g4,h4
 :	autocmd BufRead,BufNewFile  *.p[lm]	setlocal cinkeys=0{,0},:,0#,!,o,O,e
@@ -283,10 +277,8 @@ endfun
 :  autocmd!
 " Appending right part of tag in HTML files.
 :	autocmd BufEnter                 *.html	imap <buffer> QQ </>2F<lywf>f/pF<i
-:	autocmd BufLeave                 *.html	iunmap QQ
 :	autocmd BufWritePre,FileWritePre *.html	call AutoLastMod()
 :	autocmd BufEnter                 *.cgi	imap <buffer> QQ </>2F<lywf>f/pF<i
-:	autocmd BufLeave                 *.cgi	iunmap QQ
 :	autocmd BufWritePre,FileWritePre *.cgi	call AutoLastMod()
 :augroup END
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
@@ -328,7 +320,6 @@ endfun
 :augroup Tcl
 :  autocmd!
 :	autocmd WinEnter            *.tcl	map <buffer>  :call CallProg()
-:	autocmd WinLeave            *.tcl	unmap 
 :	autocmd BufRead,BufNewFile  *.tcl	setlocal autoindent
 :augroup END
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
@@ -344,7 +335,6 @@ endfun
 :augroup Makefile
 :  autocmd!
 :	autocmd BufEnter            [Mm]akefile*	map <buffer>  :call CallProg()
-:	autocmd BufLeave            [Mm]akefile*	unmap 
 :augroup END
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
 " Autocommands for "Diplomovka" {{{2

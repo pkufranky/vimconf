@@ -6,7 +6,15 @@
 " Version:		01.09.08
 " Language Of Comments:	English
 
-" $Id: $
+" $Id: latex.vim,v 1.1 2001/12/15 04:01:02 host8 Exp $
+
+:setlocal textwidth=72
+:setlocal formatoptions=croqt
+:setlocal iskeyword="a-z,A-Z,48-57,_,-,>,\\,{.}"
+
+" Ctrl-F reformat paragraph
+:map  <buffer>  gqap
+:imap <buffer>  gqapi
 
 :imap <buffer> =a \'{a}
 :imap <buffer> +a \v{a}
@@ -60,9 +68,6 @@
 :imap <buffer> +y \v{y}
 :imap <buffer> =z \'{z}
 :imap <buffer> +z \v{z}
-
-" BIG letters
-
 :imap <buffer> =A \'{A}
 :imap <buffer> +A \v{A}
 :imap <buffer> =B \'{B}
