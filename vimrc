@@ -20,7 +20,7 @@
 "
 "        Lubomir Host 'rajo' <rajo AT platon.sk>
 
-" Version: $Platon: vimconfig/vimrc,v 1.90 2003-11-03 08:20:20 rajo Exp $
+" Version: $Platon: vimconfig/vimrc,v 1.91 2003-11-09 19:33:57 nepto Exp $
 
 " Debian uses compressed helpfiles. We must inform vim that the main
 " helpfiles is compressed. Other helpfiles are stated in the tags-file.
@@ -56,6 +56,7 @@ if executable("uname") && executable("awk")
 else
 	let machine = $HOSTNAME
 endif
+let machine = tolower(machine)
 let user = $USER
 
 call Source(VIMRC_EXTRA.".pre")
