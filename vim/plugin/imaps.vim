@@ -71,8 +71,9 @@
 " LHS of the required mapping.
 " 
 " NOTE: some functions may confuse user. Therefore if exists variable
-" "g:disable_imap" and is set to ":let g:disable_imap=1", all functions
-" returns ASAP. This feature was added by Lubomir Host <rajo AT host.sk>
+" "g:disable_imap" or "b:disable_imap" and is set to ":let g:disable_imap=1",
+" all functions returns ASAP. This feature was added by Lubomir Host 'rajo'
+" <rajo AT platon.sk>
 " 
 " NOTE: There are other plugins out there which do the same thing. For
 " example, Dr. Chip's Cabbr script at 
@@ -120,6 +121,11 @@ let b:did_imap_plugin = 1
 function! IMAP(lhs, rhs, ft)
 	if exists("g:disable_imap")
 		if g:disable_imap == 1
+			return
+		endif
+	endif
+	if exists("b:disable_imap")
+		if b:disable_imap == 1
 			return
 		endif
 	endif
@@ -277,6 +283,11 @@ function! IMAP_PutTextWithMovement(text)
 			return
 		endif
 	endif
+	if exists("b:disable_imap")
+		if b:disable_imap == 1
+			return
+		endif
+	endif
 			
 	" if the text contains a ä or a «label», then get to the first one of
 	" those. 
@@ -325,6 +336,11 @@ function! <SID>Strntok(s, tok, n)
 			return
 		endif
 	endif
+	if exists("b:disable_imap")
+		if b:disable_imap == 1
+			return
+		endif
+	endif
 	return matchstr( a:s . a:tok[0],
 				\ '\v(\zs([^' . a:tok . ']*)\ze[' . a:tok . ']){' . a:n . '}')
 endfunction
@@ -363,6 +379,11 @@ function! <SID>Snip() range
 			return
 		endif
 	endif
+	if exists("b:disable_imap")
+		if b:disable_imap == 1
+			return
+		endif
+	endif
 	let i = a:firstline
 	let maxlen = -2
 	" find out the maximum virtual length of each line.
@@ -394,6 +415,11 @@ function! SAImaps_RemoveLastHistoryItem()
 			return
 		endif
 	endif
+	if exists("b:disable_imap")
+		if b:disable_imap == 1
+			return
+		endif
+	endif
 	call histdel("/", -1)
 	let @/ = histget("/", -1)
 endfunction
@@ -405,6 +431,11 @@ endfunction
 function! IMAP_Jumpfunc()
 	if exists("g:disable_imap")
 		if g:disable_imap == 1
+			return
+		endif
+	endif
+	if exists("b:disable_imap")
+		if b:disable_imap == 1
 			return
 		endif
 	endif
