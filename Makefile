@@ -8,7 +8,7 @@
 # All rights reserved.
 #
 
-# $Platon: vimconfig/Makefile,v 1.27 2003-01-21 13:46:06 rajo Exp $
+# $Platon: vimconfig/Makefile,v 1.28 2003-02-07 16:31:18 rajo Exp $
 
 PACKAGE = vimconfig
 VERSION = 1.8pre2
@@ -56,6 +56,8 @@ DISTFILES = README \
 			vim/indent/tex.vim \
 			vim/local \
 			vim/local/README \
+			vim/modules/ \
+			vim/modules/diacritics.vim \
 			vim/plugin \
 			vim/plugin/CmdlineCompl.vim \
 			vim/plugin/calendar.vim \
