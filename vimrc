@@ -6,7 +6,7 @@
 " Version:		01.09.08
 " Language Of Comments:	English
 
-" $Id: vimrc,v 1.22 2001/12/03 16:49:28 jombik9 Exp $
+" $Id: vimrc,v 1.23 2001/12/15 00:06:51 host8 Exp $
 
 " Settings {{{1
 " To be secure & Vi nocompatible
@@ -184,8 +184,8 @@ fun! SetsByFiletype()
 :if &filetype == "mail"
 :	setlocal textwidth=72
 :	setlocal noautoindent
-:	map  gqap
-:	imap  gqapi
+:	map  <buffer>  gqap
+:	imap <buffer>  gqapi
 :endif
 " }}}2
 " Perl {{{2
@@ -233,10 +233,10 @@ endfun
 :augroup C
 :  autocmd!
 "formatovanie C-zdrojakov
-:	autocmd BufEnter            *.c,*.h,*.cc,*.cpp	map  mfggvG$='f
-:	autocmd BufEnter            *.c,*.h,*.cc,*.cpp	imap  mfggvG$='fi
-:	autocmd BufEnter            *.c,*.h,*.cc,*.cpp	map yii yyp3wdwi
-:	autocmd BufEnter            *.c,*.h,*.cc,*.cpp	map  :call CallProg()
+:	autocmd BufEnter            *.c,*.h,*.cc,*.cpp	map  <buffer>  mfggvG$='f
+:	autocmd BufEnter            *.c,*.h,*.cc,*.cpp	imap <buffer>  mfggvG$='fi
+:	autocmd BufEnter            *.c,*.h,*.cc,*.cpp	map <buffer> yii yyp3wdwi
+:	autocmd BufEnter            *.c,*.h,*.cc,*.cpp	map <buffer>  :call CallProg()
 :	autocmd BufLeave            *.c,*.h,*.cc,*.cpp	unmap 
 :	autocmd BufLeave            *.c,*.h,*.cc,*.cpp	unmap yii
 :	autocmd BufLeave            *.c,*.h,*.cc,*.cpp	iunmap 
@@ -252,9 +252,9 @@ endfun
 " Autocommands for *.pl *.pm {{{2
 :augroup Perl
 :  autocmd!
-:	autocmd BufEnter            *.p[lm]	map  mfggvG$='f
-:	autocmd BufEnter            *.p[lm]	imap  mfggvG$='fi
-:	autocmd BufEnter            *.p[lm]	map  :call CallProg()
+:	autocmd BufEnter            *.p[lm]	map  <buffer>  mfggvG$='f
+:	autocmd BufEnter            *.p[lm]	imap <buffer>  mfggvG$='fi
+:	autocmd BufEnter            *.p[lm]	map  <buffer>  :call CallProg()
 :	autocmd BufLeave            *.p[lm]	unmap 
 :	autocmd BufLeave            *.p[lm]	iunmap 
 :	autocmd BufLeave            *.p[lm]	unmap 
@@ -282,10 +282,10 @@ endfun
 :augroup HtmlCgi
 :  autocmd!
 " Appending right part of tag in HTML files.
-:	autocmd BufEnter                 *.html	imap QQ </>2F<lywf>f/pF<i
+:	autocmd BufEnter                 *.html	imap <buffer> QQ </>2F<lywf>f/pF<i
 :	autocmd BufLeave                 *.html	iunmap QQ
 :	autocmd BufWritePre,FileWritePre *.html	call AutoLastMod()
-:	autocmd BufEnter                 *.cgi	imap QQ </>2F<lywf>f/pF<i
+:	autocmd BufEnter                 *.cgi	imap <buffer> QQ </>2F<lywf>f/pF<i
 :	autocmd BufLeave                 *.cgi	iunmap QQ
 :	autocmd BufWritePre,FileWritePre *.cgi	call AutoLastMod()
 :augroup END
@@ -327,15 +327,23 @@ endfun
 " Autocomands for *.tcl {{{2
 :augroup Tcl
 :  autocmd!
-:	autocmd WinEnter            *.tcl	map  :call CallProg()
+:	autocmd WinEnter            *.tcl	map <buffer>  :call CallProg()
 :	autocmd WinLeave            *.tcl	unmap 
 :	autocmd BufRead,BufNewFile  *.tcl	setlocal autoindent
+:augroup END
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
+" Autocomands for *.tex {{{2
+:augroup TeX
+:  autocmd!
+:	autocmd WinEnter            *.tex	
+:	autocmd WinLeave            *.tex	
+:	autocmd BufRead,BufNewFile  *.tex	  setlocal formatoptions=croql
 :augroup END
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
 " Autocomands for Makefile {{{2
 :augroup Makefile
 :  autocmd!
-:	autocmd BufEnter            [Mm]akefile*	map  :call CallProg()
+:	autocmd BufEnter            [Mm]akefile*	map <buffer>  :call CallProg()
 :	autocmd BufLeave            [Mm]akefile*	unmap 
 :augroup END
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
