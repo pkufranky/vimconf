@@ -8,7 +8,7 @@
 " Please don't hesitate to correct my english :)
 " Send corrections to <host8@kepler.fmph.uniba.sk>
 
-" $Id: vimrc,v 1.45 2002/02/20 19:11:51 host8 Exp $
+" $Id: vimrc,v 1.46 2002/02/24 18:39:59 host8 Exp $
 
 " Settings {{{
 " To be secure & Vi nocompatible
@@ -103,7 +103,7 @@ set noignorecase
 
 set showfulltag 
 
-set ch=2 bs=2 tabstop=4
+set ch=2 bs=2
 set incsearch report=0 title
 set showcmd showmatch showmode
 
