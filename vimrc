@@ -6,7 +6,7 @@
 " Version:		01.09.08
 " Language Of Comments:	English
 
-" $Id: vimrc,v 1.30 2002/01/18 21:38:38 host8 Exp $
+" $Id: vimrc,v 1.31 2002/01/25 21:43:59 host8 Exp $
 
 " Settings {{{
 " To be secure & Vi nocompatible
@@ -336,16 +336,16 @@ endfun
 " Automatic change date in *.html files.
 "
 fun! LastMod(text, ...)
-mark d
-let line = a:text . strftime("%Y %b %d %X") " text of changed line
-let find = "g/^" . a:text                   " regexpr to find line
-let matx = "^" . a:text                     " ...if line was found
-exec find
-let curr_line = getline(".")
-if match(curr_line, matx) == 0
-	call setline(line("."), line)
-	exec "'d"
-endif
+	mark d
+	let line = a:text . strftime("%Y %b %d %X") " text of changed line
+	let find = "g/^" . a:text                   " regexpr to find line
+	let matx = "^" . a:text                     " ...if line was found
+	exec find
+	let curr_line = getline(".")
+	if match(curr_line, matx) == 0
+		call setline(line("."), line)
+		exec "'d"
+	endif
 endfun
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}
 " Function MakeHeader() {{{
@@ -381,15 +381,15 @@ endfun
 " reload.
 "
 fun! OpenAllWin()
-let i = 0
-if !exists("opened")
-	while i < argc() - 1
-		split
-		n
-		let i = i + 1
-	endwhile
-endif
-let opened = 1
+	let i = 0
+	if !exists("opened")
+		while i < argc() - 1
+			split
+			n
+			let i = i + 1
+		endwhile
+	endif
+	let opened = 1
 endfun
 
 if exists("g:open_all_win")
@@ -467,11 +467,11 @@ fun! Indent()
 " If there is set equalprg to source indenting (ie. perltidy for perl sources)
 " we have not to executes "'f" at the end, else we will got "Mark not set"
 " error message.
-if &equalprg == ""
-	exec "normal mfggvG$='f"
-else
-	exec "normal mfggvG$="
-endif
+	if &equalprg == ""
+		exec "normal mfggvG$='f"
+	else
+		exec "normal mfggvG$="
+	endif
 endfun
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}
 " Function UnquoteMailBody() {{{
