@@ -4,8 +4,11 @@
 " Bugs Reports:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " License:		GNU GPL
 " Version:		2002.02.05
+" 
+" Please don't hesitate to correct my english :)
+" Send corrections to <host8@kepler.fmph.uniba.sk>
 
-" $Id: vimrc,v 1.38 2002/02/05 22:41:53 host8 Exp $
+" $Id: vimrc,v 1.39 2002/02/06 00:48:36 host8 Exp $
 
 " Settings {{{
 " To be secure & Vi nocompatible
