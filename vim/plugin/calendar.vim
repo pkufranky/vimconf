@@ -1,9 +1,11 @@
 "=============================================================================
+" What Is This: Calendar
 " File: calendar.vim
 " Author: Yasuhiro Matsumoto <mattn_jp@hotmail.com>
-" Last Change:  Fri, 10 Jan 2003
-" Version: 1.3r
+" Last Change: Thu, 19 Jun 2003
+" Version: 1.3u
 " Thanks:
+"     Ronald Hoelwarth    : gave a hint for 1.3s
 "     Vikas Agnihotri     : bug report
 "     Steve Hall          : gave a hint for 1.3q
 "     James Devenish      : bug fix
@@ -38,8 +40,20 @@
 "     <Leader>ch
 "       show horizontal calendar ...
 " ChangeLog:
+"     1.3u : bug fix
+"             when enter diary first time,
+"              it don't warn that you don't have diary directory.
+"     1.3t : bug fix
+"             make sure the variables for help
+"     1.3s : bug fix
+"             make a map CalendarV for <Leader>ca
+"            add option calendar_navi_label
+"             see Additional:
+"            add option calendar_focus_today
+"             see Additional:
+"            add map ? for help
 "     1.3r : bug fix
-"            if clicked navigator, cursor go to strange position.
+"             if clicked navigator, cursor go to strange position.
 "     1.3q : bug fix
 "             coundn't set calendar_navi
 "              in its horizontal direction
@@ -131,7 +145,14 @@
 "     1.0a : bug fix by Leif Wickland.
 "            it"s about strftime("%w")
 "     1.0  : first release.
+" TODO:
+"     add the option for diary which is separate or single file.
 " Additional:
+"     *if you want to keep focus when goto next or prev calendar,
+"       add the following to your .vimrc:
+"
+"       let g:calendar_focus_today = 1
+"
 "     *if you want to place the mark('*' or '+') after the day,
 "       add the following to your .vimrc:
 "
@@ -145,6 +166,13 @@
 "       let g:calendar_navi = ''
 "
 "       NOTE:you can set 'top', 'bottom', 'both' for this option.
+"
+"     *if you want to replace navigator in your language,
+"       add the following to your .vimrc:
+"
+"       let g:calendar_navi_label = 'Prev,Today,Next'
+"
+"       NOTE:it must be separated with ','.
 "
 "     *if you want to replace calendar header,
 "       add the following in your favorite language to your .vimrc:
@@ -205,12 +233,9 @@
 "
 "       :echo calendar_version
 
-let g:calendar_version = "1.3r"
+let g:calendar_version = "1.3u"
 if !exists("g:calendar_action")
   let g:calendar_action = "<SID>CalendarDiary"
-endif
-if !exists("g:calendar_diary")
-  let g:calendar_diary = "~/diary"
 endif
 if !exists("g:calendar_sign")
   let g:calendar_sign = "<SID>CalendarSign"
@@ -224,8 +249,18 @@ endif
 if !exists("g:calendar_navi")
  \|| (g:calendar_navi != 'top'
  \&& g:calendar_navi != 'bottom'
- \&& g:calendar_navi != 'both')
+ \&& g:calendar_navi != 'both'
+ \&& g:calendar_navi != '')
   let g:calendar_navi = 'top'
+endif
+if !exists("g:calendar_navi_label")
+  let g:calendar_navi_label = "Prev,Today,Next"
+endif
+if !exists("g:calendar_diary")
+  let g:calendar_diary = "~/diary"
+endif
+if !exists("g:calendar_focus_today")
+  let g:calendar_focus_today = 0
 endif
 
 "*****************************************************************
@@ -234,13 +269,13 @@ endif
 :command! -nargs=* Calendar  call Calendar(0,<f-args>)
 :command! -nargs=* CalendarH call Calendar(1,<f-args>)
 
-if !hasmapto("<Plug>Calendar")
-  nmap <unique> <Leader>ca <Plug>Calendar
+if !hasmapto("<Plug>CalendarV")
+  nmap <unique> <Leader>ca <Plug>CalendarV
 endif
 if !hasmapto("<Plug>CalendarH")
   nmap <unique> <Leader>ch <Plug>CalendarH
 endif
-nmap <silent> <Plug>Calendar  :cal Calendar(0)<CR>
+nmap <silent> <Plug>CalendarV :cal Calendar(0)<CR>
 nmap <silent> <Plug>CalendarH :cal Calendar(1)<CR>
 
 "*****************************************************************
@@ -286,22 +321,27 @@ function! s:CalendarDoAction()
   if exists('g:calendar_navi')
     let navi = expand("<cword>")
     let curl = line(".")
-    if navi == 'Prev'
+    if navi == s:GetToken(g:calendar_navi_label, ',', 1)
       exec substitute(maparg('<s-left>', 'n'), '<CR>', '', '')
-    elseif navi == 'Next'
+    elseif navi == s:GetToken(g:calendar_navi_label, ',', 3)
       exec substitute(maparg('<s-right>', 'n'), '<CR>', '', '')
-    elseif navi == 'Today'
+    elseif navi == s:GetToken(g:calendar_navi_label, ',', 2)
       call Calendar(b:CalendarDir)
     else
       let navi = ''
     endif
     if navi != ''
-      if curl < line('$')/2
-        silent execute "normal! gg/".navi."\<cr>"
+      if g:calendar_focus_today == 1 && search("\*","w") > 0
+        silent execute "normal! gg/\*\<cr>"
+        return
       else
-        silent execute "normal! gg?".navi."\<cr>"
+        if curl < line('$')/2
+          silent execute "normal! gg/".navi."\<cr>"
+        elseif curl < line('$')/2
+          silent execute "normal! gg?".navi."\<cr>"
+        endif
+        return
       endif
-      return
     endif
   endif
 
@@ -836,30 +876,34 @@ function! Calendar(...)
 
   " navi
   if exists('g:calendar_navi')
+    let navi_label = '<'
+		\.s:GetToken(g:calendar_navi_label, ',', 1).' '
+		\.s:GetToken(g:calendar_navi_label, ',', 2).' '
+		\.s:GetToken(g:calendar_navi_label, ',', 3).'>'
     if dir
-      let navcol = ((vcolumn/2)*3-8)
+      let navcol = vcolumn + (vcolumn-strlen(navi_label)+2)/2
     else
-      let navcol = ((vcolumn/2)-8)
+      let navcol = (vcolumn-strlen(navi_label)+2)/2
     endif
 
     if g:calendar_navi == 'top'
       execute "normal gg".navcol."i "
-      silent exec "normal! i<Prev Today Next>\<cr>\<cr>"
+      silent exec "normal! i".navi_label."\<cr>\<cr>"
       silent put! =vdisplay1
     endif
     if g:calendar_navi == 'bottom'
       silent put! =vdisplay1
       silent exec "normal! Gi\<cr>"
       execute "normal ".navcol."i "
-      silent exec "normal! i<Prev Today Next>"
+      silent exec "normal! i".navi_label
     endif
     if g:calendar_navi == 'both'
       execute "normal gg".navcol."i "
-      silent exec "normal! i<Prev Today Next>\<cr>\<cr>"
+      silent exec "normal! i".navi_label."\<cr>\<cr>"
       silent put! =vdisplay1
       silent exec "normal! Gi\<cr>"
       execute "normal ".navcol."i "
-      silent exec "normal! i<Prev Today Next>"
+      silent exec "normal! i".navi_label
     endif
   else
     silent put! =vdisplay1
@@ -892,6 +936,9 @@ function! Calendar(...)
 
   execute 'nnoremap <silent> <buffer> <cr> :call <SID>CalendarDoAction()<cr>'
   execute 'nnoremap <silent> <buffer> <2-LeftMouse> :call <SID>CalendarDoAction()<cr>'
+  execute 'nnoremap <silent> <buffer> t gg/\*<cr>'
+  execute 'nnoremap <silent> <buffer> ? :call <SID>CalendarHelp()<cr>'
+
   "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   "+++ build highlight
   "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -914,8 +961,11 @@ function! Calendar(...)
 
   " navi
   if exists('g:calendar_navi')
-    syn match Search display "\(<Prev\|Next>\)"
-    syn match Search display "\sToday\s"hs=s+1,he=e-1
+    exec "syn match Search display \"\\(<"
+        \.s:GetToken(g:calendar_navi_label, ',', 1)."\\|"
+        \.s:GetToken(g:calendar_navi_label, ',', 3).">\\)\""
+    exec "syn match Search display \"\\s"
+        \.s:GetToken(g:calendar_navi_label, ',', 2)."\\s\"hs=s+1,he=e-1"
   endif
 
   " saturday, sunday
@@ -956,7 +1006,7 @@ function! Calendar(...)
   execute 'syn match StatusLine "'.vwruler.'"'
 
   if search("\*","w") > 0
-    silent execute "normal! gg/*\<cr>"
+    silent execute "normal! gg/\*\<cr>"
   endif
 
   return ''
@@ -993,7 +1043,7 @@ endfunc
 "*****************************************************************
 function! s:CalendarDiary(day, month, year, week, dir)
   " build the file name and create directories as needed
-  if expand(g:calendar_diary) == ''
+  if !isdirectory(expand(g:calendar_diary))
     call confirm("please create diary directory : ".g:calendar_diary, 'OK')
     return
   endif
@@ -1015,6 +1065,7 @@ function! s:CalendarDiary(day, month, year, week, dir)
 
   " load the file
   exe "sp " . sfile
+  set ft=calendar
   exe "auto BufLeave ".escape(sfile, ' \\')." normal! ".vwinnum."<c-w>w"
 endfunc
 
@@ -1028,4 +1079,46 @@ endfunc
 function! s:CalendarSign(day, month, year)
   let sfile = g:calendar_diary."/".a:year."/".a:month."/".a:day.".cal"
   return filereadable(expand(sfile))
+endfunction
+
+"*****************************************************************
+"* CalendarVar : get variable
+"*----------------------------------------------------------------
+"*****************************************************************
+function! s:CalendarVar(var)
+  if !exists(a:var)
+    return ''
+  endif
+  exec 'return ' . a:var
+endfunction
+
+"*****************************************************************
+"* CalendarHelp : show help for Calendar
+"*----------------------------------------------------------------
+"*****************************************************************
+function! s:CalendarHelp()
+  echohl SpecialKey
+  echo '<s-left>  : goto prev month'
+  echo '<s-right> : goto next month'
+  echo 't         : goto today'
+  echo 'q         : close window'
+  echo '?         : show this help'
+  if g:calendar_action == "<SID>CalendarDiary"
+    echo '<cr>      : show diary'
+  endif
+  echo ''
+  echohl Question
+  echo 'calendar_erafmt=' . s:CalendarVar('g:calendar_erafmt')
+  echo 'calendar_mruler=' . s:CalendarVar('g:calendar_mruler')
+  echo 'calendar_wruler=' . s:CalendarVar('g:calendar_wruler')
+  echo 'calendar_weeknm=' . s:CalendarVar('g:calendar_weeknm')
+  echo 'calendar_navi_label=' . s:CalendarVar('g:calendar_navi_label')
+  echo 'calendar_diary=' . s:CalendarVar('g:calendar_diary')
+  echo 'calendar_mark=' . s:CalendarVar('g:calendar_mark')
+  echo 'calendar_navi=' . s:CalendarVar('g:calendar_navi')
+  echohl MoreMsg
+  echo "[Hit any key]"
+  echohl None
+  call getchar()
+  redraw!
 endfunction
