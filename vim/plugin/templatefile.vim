@@ -1,9 +1,9 @@
 "=============================================================================
 " Vim global plugin for autoload template files
 " File: templatefile.vim
-" Maintainer:	Lubomir Host <8host AT pauli.fmph.uniba.sk>
-" Last Change: 2003/01/12
-" Version: $Platon: vimconfig/vim/plugin/templatefile.vim,v 1.8 2003-01-12 18:25:20 nepto Exp $
+" Maintainer:	Lubomir Host 'rajo' <8host AT pauli.fmph.uniba.sk>
+" Last Change:	2003/01/10
+" Version: $Platon: vimconfig/vim/plugin/templatefile.vim,v 1.9 2003-01-14 14:27:41 rajo Exp $
 " Thanks:
 " 	Scott Urban:	First version of templatefile.vim
 " 		        	http://vim.sourceforge.net/scripts/script.php?script_id=198
