@@ -1,5 +1,5 @@
 " Vim configuration file
-" Language:		Vim 5.6 script    (with Vim 6.0 features)
+" Language:		Vim 6.0 script
 " Maintainer:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " Bugs Reports:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " License:		GNU GPL
@@ -8,7 +8,7 @@
 " Please don't hesitate to correct my english :)
 " Send corrections to <host8@kepler.fmph.uniba.sk>
 
-" $Id: vimrc,v 1.39 2002/02/06 00:48:36 host8 Exp $
+" $Id: vimrc,v 1.29 2002/02/09 02:02:58 host8 Exp $
 
 " Settings {{{
 " To be secure & Vi nocompatible
@@ -19,8 +19,9 @@ if version >= 600
 	filetype plugin on
 	filetype indent on
 else
-	syntax on
+	:finish
 endif
+
 
 " Settings for C language {{{
 let c_gnu=1
@@ -49,7 +50,7 @@ set nobackup
 " Display a status-bar.
 set laststatus=2
 if has("statusline")
-	set statusline=%1*%{GetID()}%0*%<%f\ %3*%m%1*%r%0*\ %2*%y%4*%w%0*%=[%b\ 0x%B]\ \ %8l,%10([%c%V/%{strlen(getline(line('.')))}]%)\ %P
+	set statusline=%5*%{GetID()}%0*%<%f\ %3*%m%1*%r%0*\ %2*%y%4*%w%0*%=[%b\ 0x%B]\ \ %8l,%10([%c%V/%{strlen(getline(line('.')))}]%)\ %P
 endif
 " }}}
 
@@ -122,7 +123,35 @@ set winheight=100
 set lazyredraw
 
 " Vim beeping go to the hell...
-set vb t_vb=
+" With very little patch Vim(gvim) doesn't beep! To dissable beeping patch
+" source and set ':set noerrorbells' (default).
+" Here is patch for version 6.0.193:
+" Note: file src/misc1.c was modified with theses patches:
+"       6.0.024 6.0.089 6.0.113 6.0.178 6.0.180
+"       but patch (probably) also work!
+" Patch:
+"*** vim60.193/src/misc1.c.orig	Sat Feb  9 01:49:54 2002
+"--- vim60.193/src/misc1.c	Sat Feb  9 02:17:16 2002
+"***************
+"*** 2721,2727 ****
+"      void
+"  vim_beep()
+"  {
+"!     if (emsg_silent == 0)
+"      {
+"  	if (p_vb)
+"  	{
+"--- 2721,2727 ----
+"      void
+"  vim_beep()
+"  {
+"!     if (emsg_silent == 0 && p_eb)
+"      {
+"  	if (p_vb)
+"  	{
+set noerrorbells
+set visualbell
+set t_vb=
 
 " Set this, if you will open all windows for files specified
 " on the commandline at vim startup.
@@ -214,6 +243,17 @@ command! -nargs=* R call ReadFileAboveCursor(<f-args>)
 
 " Autocomands {{{
 if has("autocmd")
+	
+" Autocomands for GUIEnter {{{
+augroup GUIEnter
+	autocmd!
+"	autocmd GUIEnter * set t_vb=
+	if has("gui_win32")
+		autocmd GUIEnter * simalt ~x
+	endif
+augroup END
+" }}}
+	
 " Autocomands for ~/.vimrc {{{
 augroup VimConfig
 	autocmd!
@@ -264,12 +304,6 @@ augroup Makefile
 	autocmd!
 	autocmd BufEnter            [Mm]akefile*	map <buffer> <C-K> :call CallProg()<CR>
 augroup END
-" }}}
-
-" Autocomands on Win32 {{{
-if has("gui_win32")
-	au GUIEnter * simalt ~x
-endif
 " }}}
 
 endif " if has("autocmd")
@@ -540,12 +574,25 @@ endif
 
 " Colors {{{
 set background=dark
-hi User1 term=inverse,bold  cterm=inverse,bold ctermfg=red
-hi User2 term=bold          cterm=bold         ctermfg=yellow
-hi User3 term=inverse,bold  cterm=inverse,bold ctermfg=blue
-hi User4 term=inverse,bold  cterm=inverse,bold ctermfg=lightblue
-hi Folded term=standout   ctermbg=black ctermfg=Blue guifg=DarkBlue
-hi FoldColumn term=standout ctermbg=black ctermfg=DarkBlue guibg=Grey guifg=DarkBlue
+hi StatusLine   term=bold,reverse cterm=bold,reverse
+hi StatusLineNC term=reverse      cterm=reverse
+hi StatusLine   gui=bold          guifg=Black guibg=White
+hi StatusLineNC gui=bold,reverse  guifg=White guibg=Black
+hi User1 term=inverse,bold  cterm=inverse,bold ctermfg=Red
+hi User2 term=bold          cterm=bold         ctermfg=Yellow
+hi User3 term=inverse,bold  cterm=inverse,bold ctermfg=Blue
+hi User4 term=inverse,bold  cterm=inverse,bold ctermfg=LightBlue
+hi User5 term=inverse,bold  cterm=inverse,bold ctermfg=Red ctermbg=Green
+hi User1 gui=bold guifg=White     guibg=Red
+hi User2 gui=bold guifg=Yellow    guibg=Black
+hi User3 gui=bold guifg=Blue      guibg=White
+hi User4 gui=bold guifg=LightBlue guibg=White
+hi User5 gui=bold guifg=Green     guibg=Red
+hi Folded     term=standout cterm=bold ctermfg=4        ctermbg=Black
+hi FoldColumn term=standout            ctermfg=DarkBlue ctermbg=Black 
+hi Folded     gui=bold guibg=Black guifg=Blue
+hi FoldColumn          guibg=Black guifg=Blue
+
 " }}}
 
 " Modeline {{{
