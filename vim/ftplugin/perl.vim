@@ -2,7 +2,7 @@
 " Language:		Perl
 " Maintainer:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " License:		GNU GPL
-" Version:		$Id: perl.vim,v 1.2 2002/02/05 22:41:53 host8 Exp $
+" Version:		$Id: perl.vim,v 1.3 2002/02/17 01:00:35 host8 Exp $
 
 
 " Only do this when not done yet for this buffer
@@ -22,7 +22,7 @@ endif
 
 
 " Add mappings, unless the user didn't want this.
-if !exists("no_plugin_maps") && !exists("no_mail_maps")
+if !exists("no_plugin_maps") && !exists("no_perl_maps")
 	" Ctrl-F reformat paragraph
 	if !hasmapto('<Plug>PerlFormat')
 		imap <buffer> <C-F> <Plug>PerlFormat
