@@ -19,7 +19,7 @@
 " Send corrections to
 "        Lubomir Host 'rajo' <8host AT pauli.fmph.uniba.sk>
 
-" Version: $Platon: vimconfig/vimrc,v 1.78 2003-01-21 13:46:06 rajo Exp $
+" Version: $Platon: vimconfig/vimrc,v 1.79 2003-02-24 16:15:06 rajo Exp $
 
 " Settings {{{
 " To be secure & Vi nocompatible
@@ -344,10 +344,12 @@ call Source("~/.vim/plugin/imaps.vim")
 command! -nargs=0 -range Indent          <line1>,<line2>call Indent()
 command! -nargs=0 -range FoldLongLines   <line1>,<line2>call FoldLongLines()
 command! -nargs=0 -range UnquoteMailBody <line1>,<line2>call UnquoteMailBody()
-command! -nargs=0 CallProg call CallProg()
-command! -nargs=0 OpenAllWin call OpenAllWin()
-command! -nargs=* ReadFileAboveCursor call ReadFileAboveCursor(<f-args>)
-command! -nargs=* R call ReadFileAboveCursor(<f-args>)
+command! -nargs=0 CallProg				call CallProg()
+command! -nargs=0 OpenAllWin			call OpenAllWin()
+command! -nargs=* ReadFileAboveCursor	call ReadFileAboveCursor(<f-args>)
+command! -nargs=* R						call ReadFileAboveCursor(<f-args>)
+command! -nargs=0 DiacriticsOn			call UseDiacritics()
+command! -nargs=0 DiacriticsOff			let b:disable_imap=1
 " }}}
 
 " Functions {{{
@@ -671,6 +673,7 @@ endfunction
 " Function UseDiacritics() {{{
 function! UseDiacritics()
 	call Source("~/.vim/modules/diacritics.vim")
+	let b:disable_imap=0
 endfunction
 " }}}
 
