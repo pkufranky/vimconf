@@ -3,10 +3,9 @@
 " Maintainer:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " Bugs Reports:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " License:		GNU GPL
-" Version:		01.09.08
-" Language Of Comments:	English
+" Version:		2002.02.05
 
-" $Id: vimrc,v 1.33 2002/02/01 15:55:04 host8 Exp $
+" $Id: vimrc,v 1.34 2002/02/02 05:10:56 host8 Exp $
 
 " Settings {{{
 " To be secure & Vi nocompatible
@@ -24,7 +23,8 @@ endif
 let c_gnu=1
 let c_comment_strings=1
 let c_space_errors=1
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}
+" }}}
+
 " History and viminfo settings {{{
 set history=10000
 if filewritable(expand("$HOME/.vim/viminfo")) == 1 || 
@@ -35,13 +35,15 @@ else
 endif
 " Don't save backups of files.
 set nobackup
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}
+" }}}
+
 " Status line settings {{{
 ":set ruler
 " Display a status-bar.
 set laststatus=2
 set statusline=%1*%{GetID()}%0*%<%f\ %3*%m%1*%r%0*\ %2*%y%4*%w%0*%=[%b\ 0x%B]\ \ %8l,%10([%c%V/%{strlen(getline(line('.')))}]%)\ %P
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}
+" }}}
+
 " Settings for Explorer script {{{
 let g:explDetailedHelp=1
 let g:explDetailedList=1
@@ -52,15 +54,24 @@ let g:cflags="-Wall -pedantic"
 let g:c_debug_flags="-ggdb -DDEBUG"
 let g:makeflags=""
 "}}}
-" Settings for folding long lines {{{
-let g:fold_long_lines=300
-" }}}
 " Settings for AutoLastMod {{{
 " Set this to 1 if you will automaticaly change date of modification of file.
 let g:autolastmod=1
 " Modification is made on line like this variable:
 let g:autolastmodtext="Last modified: "
 " }}}
+
+
+" Priority between files for file name completion (suffixes) {{{
+" Do not give .h low priority in command-line filename completion.
+set suffixes-=.h
+set suffixes+=.aux
+set suffixes+=.bbl
+set suffixes+=.blg
+set suffixes+=.log
+set wildignore+=*.dvi
+" }}}
+
 
 " Automatically setting options in various files
 set modeline
@@ -108,7 +119,11 @@ set vb t_vb=
 " on the commandline at vim startup.
 let g:open_all_win=1
 
-"################################################################# }}}
+" Settings for folding long lines
+let g:fold_long_lines=300
+
+" }}}
+
 " Keybord mappings {{{
 "
 " start of line
@@ -125,9 +140,13 @@ inoremap <C-B>	<S-Left>
 
 " Switching between windows by pressing one time CTRL-X keys.
 noremap <C-X> <C-W><C-W>
+
 " Tip from http://vim.sourceforge.net/tips/tip.php?tip_id=173
 noremap <C-J> <C-W>j<C-W>_
 noremap <C-K> <C-W>k<C-W>_
+
+" Make Insert-mode completion more convenient:
+imap <C-L> <C-X><C-L>
 
 set remap
 map <C-O><C-O> :split 
@@ -152,6 +171,9 @@ imap <C-O><C-V> <Esc>:split ~/.vim<CR>
 ":imap <C-D> <Esc>"_ddi
 imap <C-D> <Esc>:call SafeLineDelete()<CR>i
 
+" Search for the current Visual selection.
+vmap S y/<C-R>=escape(@",'/\')<CR>
+
 " Mappings for folding {{{
 " Open one foldlevel of folds in whole file
 " Note: 'Z' works like 'z' but for all lines in file
@@ -165,8 +187,10 @@ noremap Za mzggvGza'z
 noremap ZA mzggvGzA'z
 noremap Zx mzggvGzx'z
 noremap ZX mzggvGzX'z
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}
-"################################################################# }}}
+" }}}
+
+" }}}
+
 " New commands {{{
 command! -nargs=1 Printf call libcallnr("/lib/libc.so.6", "printf", <args>)
 command! -nargs=0 FoldLongLines call FoldLongLines()
@@ -176,7 +200,8 @@ command! -nargs=0 OpenAllWin call OpenAllWin()
 command! -nargs=0 UnquoteMailBody call UnquoteMailBody()
 command! -nargs=* ReadFileAboveCursor call ReadFileAboveCursor(<f-args>)
 command! -nargs=* R call ReadFileAboveCursor(<f-args>)
-"################################################################# }}}
+" }}}
+
 " Autocomands {{{
 if has("autocmd")
 " Autocomands for ~/.vimrc {{{
@@ -186,7 +211,8 @@ augroup VimConfig
 	autocmd BufWritePost ~/.vimrc	so ~/.vimrc
 	autocmd BufWritePost vimrc	so ~/.vimrc
 augroup END
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}
+" }}}
+
 " Autocommands for *.c, *.h, *.cc *.cpp {{{
 augroup C
 	autocmd!
@@ -202,7 +228,8 @@ augroup C
 	autocmd BufNewFile  *.c,*.cc,*.cpp	0r ~/.vim/skelet.c
 	autocmd BufNewFile	 *.h	call MakeHeader()
 augroup END
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}
+" }}}
+
 " Autocommands for *.html *.cgi {{{
 " Automatic updates date of last modification in HTML files. File must
 " contain line "^Last modified: ", else will be date writtend on the current
@@ -215,27 +242,32 @@ augroup HtmlCgi
 	autocmd BufEnter                 *.cgi	imap <buffer> QQ </><Esc>2F<lywf>f/pF<i
 	autocmd BufWritePre,FileWritePre *.cgi	call AutoLastMod()
 augroup END
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}
+" }}}
+
 " Autocomands for *.tcl {{{
 augroup Tcl
 	autocmd!
 	autocmd WinEnter            *.tcl	map <buffer> <C-K> :call CallProg()<CR>
 	autocmd BufRead,BufNewFile  *.tcl	setlocal autoindent
 augroup END
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}
+" }}}
+
 " Autocomands for Makefile {{{
 augroup Makefile
 	autocmd!
 	autocmd BufEnter            [Mm]akefile*	map <buffer> <C-K> :call CallProg()<CR>
 augroup END
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}
+" }}}
+
 " Autocomands on Win32 {{{
 if has("gui_win32")
 	au GUIEnter * simalt ~x
 endif
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}
+" }}}
+
 endif " if has("autocmd")
-"################################################################# }}}
+" }}} Autocomands
+
 " Functions {{{
 " Function ChangeFoldMethod() {{{
 " Function for changing folding method.
@@ -257,7 +289,8 @@ if version >= 600
 		endif
 	endfun
 endif
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}
+" ChangeFoldMethod() }}}
+
 " Function FoldLongLines() {{{
 "
 if version >= 600
@@ -298,7 +331,8 @@ if version >= 600
 		redraw!
 	endfun
 endif
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}
+" FoldLongLines() }}}
+
 " Function SetVimVar() {{{
 " Functions set appropriate values in variables according to line in
 " 'modelines' VIM_VAR: var1=value1 var2=value2
@@ -306,7 +340,8 @@ endif
 "fun! SetVimVar()
 ":$-5,$ call SetVimVarFromLine()
 "endfun
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}
+" SetVimVar() }}}
+
 " Function SetVimVarFromLine() {{{
 " 
 "fun! SetVimVarFromLine()
@@ -317,7 +352,8 @@ endif
 ":	exec ":let " . substitute(curr_line, matx, "", "")
 ":endif
 "endfun
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}
+" SetVimVarFromLine() }}}
+
 " Function AutoLastMod() {{{
 " Provides atomatic change of date in files, if it is set via
 " modeline variable autolastmod to appropriate value.
@@ -331,7 +367,8 @@ if exists("g:autolastmod")
 	endif
 endif
 endfun
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}
+" AutoLastMod() }}}
+
 " Function LastMod() {{{
 " Automatic change date in *.html files.
 "
@@ -347,7 +384,8 @@ fun! LastMod(text, ...)
 		exec "'d"
 	endif
 endfun
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}
+" LastMod() }}}
+
 " Function MakeHeader() {{{
 " Prepare header in *.h files.
 "
@@ -373,7 +411,8 @@ call append(5, "")
 call setline(6, line6)
 call append(6, "")
 endfun
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}
+" MakeHeader() }}}
+
 " Function OpenAllWin() {{{
 " Opens windows for all files in the command line.
 " Variable "opened" is used for testing, if window for file was already opened
@@ -395,7 +434,8 @@ endfun
 if exists("g:open_all_win")
 	call OpenAllWin()
 endif
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}
+" OpenAllWin() }}}
+
 " Function CallProg() {{{
 fun! CallProg()
 	let choice = confirm("Call:", "&make\nm&ake in cwd\n" .
@@ -418,7 +458,8 @@ fun! CallProg()
 		exec "! cd " . getcwd() . "; pwd; ./%<"
 	endif
 endfun
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}
+" CallProg() }}}
+
 " Function Compile() {{{
 fun! Compile(do_chdir)
 	let cmd = ""
@@ -460,7 +501,8 @@ fun! Compile(do_chdir)
 			\ substitute(getline(2), "VIMGCC", "", "g")
 	endif
 endfun
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}
+" Compile() }}}
+
 " Function Indent() {{{
 " Indents source code.
 fun! Indent()
@@ -473,20 +515,23 @@ fun! Indent()
 		exec "normal mfggvG$="
 	endif
 endfun
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}
+" Indent() }}}
+
 " Function UnquoteMailBody() {{{
 "
 fun! UnquoteMailBody()
 " Every backslash character must be escaped in function -- Nepto
 	exec "normal :%s/^\\([ ]*>[ ]*\\)*\\(\\|[^>].*\\)$/\\2/g<CR>"
 endfun
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}
+" UnquoteMailBody() }}}
+
 " Function SafeLineDelete() {{{
 "
 fun! SafeLineDelete()
 	exec "normal \"_dd"
 endfun
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}
+" SafeLineDelete() }}}
+
 " Function GetID() {{{
 " - used in statusline.
 " If you are root, function return "# " string --> it is showed at begin of
@@ -506,7 +551,8 @@ endif
 fun! GetID()
 	return g:get_id
 endfun
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}
+" GetID() }}}
+
 " Function ReadFileAboveCursor() {{{
 "
 fun! ReadFileAboveCursor(file, ...)
@@ -518,8 +564,9 @@ fun! ReadFileAboveCursor(file, ...)
 	endwhile
 	exec str
 endfun
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}
-"################################################################# }}}
+" ReadFileAboveCursor() }}}
+" }}}
+
 " Gvim settings {{{
 if &t_Co > 2 || has("gui_running")
 	hi Normal guibg=Black guifg=White
@@ -528,7 +575,8 @@ if &t_Co > 2 || has("gui_running")
 	hi Constant gui=NONE 
 	hi Special gui=NONE
 endif
-"################################################################# }}}
+" }}}
+
 " Colors {{{
 set background=dark
 hi User1 term=inverse,bold  cterm=inverse,bold ctermfg=red
@@ -538,7 +586,9 @@ hi User4 term=inverse,bold  cterm=inverse,bold ctermfg=lightblue
 hi Folded term=standout   ctermbg=black ctermfg=Blue guifg=DarkBlue
 hi FoldColumn term=standout ctermbg=black ctermfg=DarkBlue guibg=Grey guifg=DarkBlue
 " }}}
+
 " Modeline {{{
 " vim:set ts=4:
 " vim600:fdm=marker fdl=0 fdc=3 vb t_vb=:
-"################################################################# }}}
+" }}}
+
