@@ -1,8 +1,8 @@
-" Vim filetype plugin file
+" Vim syntax file
 " Language:		Template Toolkit (http://www.template-toolkit.org/)
 " Maintainer:	Lubomir Host 'rajo' <rajo AT platon.sk>
 " License:		GNU GPL
-" Version:		$Platon: vimconfig/vim/syntax/tt2.vim,v 1.1 2003-08-15 18:07:14 rajo Exp $
+" Version:		$Platon: vimconfig/vim/syntax/tt2.vim,v 1.2 2003-09-03 07:58:03 rajo Exp $
 
 
 if version < 600
