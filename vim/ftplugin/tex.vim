@@ -2,8 +2,7 @@
 " Language:		TeX, LaTeX
 " Maintainer:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " License:		GNU GPL
-" Version:		$Id: tex.vim,v 1.6 2002/02/02 04:35:41 host8 Exp $
-" Language Of Comments:	English
+" Version:		$Id: tex.vim,v 1.7 2002/02/05 22:41:53 host8 Exp $
 
 
 " Only do this when not done yet for this buffer

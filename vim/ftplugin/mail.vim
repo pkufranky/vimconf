@@ -2,8 +2,7 @@
 " Language:		Mail
 " Maintainer:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " License:		GNU GPL
-" Version:		$Id: mail.vim,v 1.2 2002/02/04 20:35:17 host8 Exp $
-" Language Of Comments:	English
+" Version:		$Id: mail.vim,v 1.3 2002/02/05 22:41:53 host8 Exp $
 
 
 " Only do this when not done yet for this buffer

@@ -2,8 +2,7 @@
 " Language:		Perl
 " Maintainer:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " License:		GNU GPL
-" Version:		$Id: perl.vim,v 1.1 2002/01/04 10:37:41 host8 Exp $
-" Language Of Comments:	English
+" Version:		$Id: perl.vim,v 1.2 2002/02/05 22:41:53 host8 Exp $
 
 
 " Only do this when not done yet for this buffer
