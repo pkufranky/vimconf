@@ -3,11 +3,11 @@
 " Maintainer:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " Bugs Report:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " Copyright:	GNU GPL
-" Last Change:	2001 Sep 25 05:15:09 PM
+" Last Change:	2001 Oct 06 07:17:07 PM
 " Version:		01.09.08
 " Language Of Comments:	Slovak
 
-" $Id: .vimrc,v 1.5 2001/09/25 15:15:44 host8 Exp $
+" $Id: .vimrc,v 1.6 2001/09/25 15:46:02 host8 Exp $
 
 " Settings {{{1
 " ... to be secure & Vi nocompatible
@@ -149,7 +149,7 @@
 " Autocommands WinEnter * {{{2
 :augroup VimEnter
 :  autocmd!
-:	autocmd WinEnter *	:set winheight=100
+":	autocmd WinEnter *	:set winheight=100
 :augroup END
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
 " Autocommands for * (all files) {{{2
