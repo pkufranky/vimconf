@@ -5,7 +5,7 @@
 "		   URL: 
 "  Last Change: Thu Mar 21 06:00 AM 2002 PST
 "
-" Version: $Platon: vimconfig/vim/ftplugin/html.vim,v 1.5 2003-01-21 13:46:07 rajo Exp $
+" Version: $Platon: vimconfig/vim/ftplugin/html.vim,v 1.6 2003-09-03 08:04:13 rajo Exp $
 
 " HTML mappings {{{
 if !exists('s:doneMappings')
@@ -79,6 +79,9 @@ let g:smartBS_html = '\(' .
 
 inoremap <buffer> <BS> <C-R>=SmartBS()<CR>
 " }}} 
+
+let b:input_method = "iso8859-2"
+call UseDiacritics()
 
 " vim:set ts=4:
 " vim600:fdm=marker fdl=0 fdc=3 nowrap:
