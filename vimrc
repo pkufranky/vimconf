@@ -3,11 +3,11 @@
 " Maintainer:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " Bugs Reports:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " License:		GNU GPL
-" Last Change:	2001 Nov 08 17:00:34
+" Last Change:	2001 Nov 10 00:33:23
 " Version:		01.09.08
 " Language Of Comments:	English
 
-" $Id: vimrc,v 1.16 2001/11/08 15:32:49 host8 Exp $
+" $Id: vimrc,v 1.17 2001/11/08 16:05:18 host8 Exp $
 
 " Settings {{{1
 " To be secure & Vi nocompatible
@@ -217,18 +217,17 @@ unlet s:line1
 :augroup C
 :  autocmd!
 "formatovanie C-zdrojakov
-:	autocmd BufEnter            *.c,*.h,*.cc,*.cpp	:map  mfggvG$='f
-:	autocmd BufEnter            *.c,*.h,*.cc,*.cpp	:imap  mfggvG$='fi
-:	autocmd BufEnter            *.c,*.h,*.cc,*.cpp	:map yii yyp3wdwi
-:	autocmd BufEnter            *.c,*.h,*.cc,*.cpp	:map  :call CallProg()
-:	autocmd BufLeave            *.c,*.h,*.cc,*.cpp	:unmap 
-:	autocmd BufLeave            *.c,*.h,*.cc,*.cpp	:unmap yii
-:	autocmd BufLeave            *.c,*.h,*.cc,*.cpp	:iunmap 
-:	autocmd BufLeave            *.c,*.h,*.cc,*.cpp	:unmap 
-:	autocmd BufRead,BufNewFile  *.c,*.h,*.cc,*.cpp	set cindent
-:	autocmd BufRead,BufNewFile  *.c,*.h,*.cc,*.cpp	set cinoptions=>4,e0,n0,f0,{0,}0,^0,:4,=4,p4,t4,c3,+4,(24,u4,)20,*30,g4,h4
-:	autocmd BufRead,BufNewFile  *.c,*.h,*.cc,*.cpp	set cinkeys=0{,0},:,0#,!,o,O,e
-:	autocmd BufRead,BufNewFile  *.c,*.h,*.cc,*.cpp	setlocal iskeyword+=\.
+:	autocmd BufEnter            *.c,*.h,*.cc,*.cpp	map  mfggvG$='f
+:	autocmd BufEnter            *.c,*.h,*.cc,*.cpp	imap  mfggvG$='fi
+:	autocmd BufEnter            *.c,*.h,*.cc,*.cpp	map yii yyp3wdwi
+:	autocmd BufEnter            *.c,*.h,*.cc,*.cpp	map  :call CallProg()
+:	autocmd BufLeave            *.c,*.h,*.cc,*.cpp	unmap 
+:	autocmd BufLeave            *.c,*.h,*.cc,*.cpp	unmap yii
+:	autocmd BufLeave            *.c,*.h,*.cc,*.cpp	iunmap 
+:	autocmd BufLeave            *.c,*.h,*.cc,*.cpp	unmap 
+:	autocmd BufRead,BufNewFile  *.c,*.h,*.cc,*.cpp	setlocal cindent
+:	autocmd BufRead,BufNewFile  *.c,*.h,*.cc,*.cpp	setlocal cinoptions=>4,e0,n0,f0,{0,}0,^0,:4,=4,p4,t4,c3,+4,(24,u4,)20,*30,g4,h4
+:	autocmd BufRead,BufNewFile  *.c,*.h,*.cc,*.cpp	setlocal cinkeys=0{,0},:,0#,!,o,O,e
 " vytvaranie hlaviciek novych *.c, *.h suborov
 :	autocmd BufNewFile  *.c,*.cc,*.cpp	0r ~/.vim/skelet.c
 :	autocmd BufNewFile	 *.h	call MakeHeader()
@@ -237,15 +236,15 @@ unlet s:line1
 " Autocommands for *.pl *.pm {{{2
 :augroup Perl
 :  autocmd!
-:	autocmd BufEnter            *.p[lm]	:map  mfggvG$='f
-:	autocmd BufEnter            *.p[lm]	:imap  mfggvG$='fi
-:	autocmd BufEnter            *.p[lm]	:map  :call CallProg()
-:	autocmd BufLeave            *.p[lm]	:unmap 
-:	autocmd BufLeave            *.p[lm]	:iunmap 
-:	autocmd BufLeave            *.p[lm]	:unmap 
-:	autocmd BufRead,BufNewFile  *.p[lm]	:set cindent
-:	autocmd BufRead,BufNewFile  *.p[lm]	:set cinoptions=>4,e0,n0,f0,{0,}0,^0,:4,=4,p4,t4,c3,+4,(24,u4,)20,*30,g4,h4
-:	autocmd BufRead,BufNewFile  *.p[lm]	:set cinkeys=0{,0},:,0#,!,o,O,e
+:	autocmd BufEnter            *.p[lm]	map  mfggvG$='f
+:	autocmd BufEnter            *.p[lm]	imap  mfggvG$='fi
+:	autocmd BufEnter            *.p[lm]	map  :call CallProg()
+:	autocmd BufLeave            *.p[lm]	unmap 
+:	autocmd BufLeave            *.p[lm]	iunmap 
+:	autocmd BufLeave            *.p[lm]	unmap 
+:	autocmd BufRead,BufNewFile  *.p[lm]	setlocal cindent
+:	autocmd BufRead,BufNewFile  *.p[lm]	setlocal cinoptions=>4,e0,n0,f0,{0,}0,^0,:4,=4,p4,t4,c3,+4,(24,u4,)20,*30,g4,h4
+:	autocmd BufRead,BufNewFile  *.p[lm]	setlocal cinkeys=0{,0},:,0#,!,o,O,e
 :augroup END
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
 " Autocommands for *.pinerc {{{2
@@ -267,12 +266,12 @@ unlet s:line1
 :augroup HtmlCgi
 :  autocmd!
 " Appending right part of tag in HTML files.
-:	autocmd BufEnter                 *.html	:imap QQ </>2F<lywf>f/pF<i
-:	autocmd BufLeave                 *.html	:iunmap QQ
-:	autocmd BufWritePre,FileWritePre *.html	:call AutoLastMod()
-:	autocmd BufEnter                 *.cgi	:imap QQ </>2F<lywf>f/pF<i
-:	autocmd BufLeave                 *.cgi	:iunmap QQ
-:	autocmd BufWritePre,FileWritePre *.cgi	:call AutoLastMod()
+:	autocmd BufEnter                 *.html	imap QQ </>2F<lywf>f/pF<i
+:	autocmd BufLeave                 *.html	iunmap QQ
+:	autocmd BufWritePre,FileWritePre *.html	call AutoLastMod()
+:	autocmd BufEnter                 *.cgi	imap QQ </>2F<lywf>f/pF<i
+:	autocmd BufLeave                 *.cgi	iunmap QQ
+:	autocmd BufWritePre,FileWritePre *.cgi	call AutoLastMod()
 :augroup END
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
 " Autocommands for *.gz {{{2
@@ -281,7 +280,7 @@ unlet s:line1
 :    autocmd!
 :    autocmd BufReadPre,FileReadPre	*.gz set bin
 :    autocmd BufReadPost,FileReadPost	*.gz '[,']!gunzip
-:    autocmd BufReadPost,FileReadPost	*.gz set nobin
+:    autocmd BufReadPost,FileReadPost	*.gz setlocal nobin
 :    autocmd BufReadPost,FileReadPost	*.gz execute ":doautocmd BufReadPost " . expand("%:r")
 :    autocmd BufWritePost,FileWritePost	*.gz !mv <afile> <afile>:r
 :    autocmd BufWritePost,FileWritePost	*.gz !gzip <afile>:r
@@ -297,9 +296,9 @@ unlet s:line1
 " Autocommands for *.bz2 {{{2
 :augroup bzip2
 :  autocmd!
-:  autocmd BufReadPre,FileReadPre	*.bz2 set bin
+:  autocmd BufReadPre,FileReadPre	*.bz2 setlocal bin
 :  autocmd BufReadPost,FileReadPost	*.bz2 '[,']!bunzip2
-:  autocmd BufReadPost,FileReadPost	*.bz2 set nobin
+:  autocmd BufReadPost,FileReadPost	*.bz2 setlocal nobin
 :  autocmd BufReadPost,FileReadPost	*.bz2 execute ":doautocmd BufReadPost " . expand("%:r")
 :  autocmd BufWritePost,FileWritePost	*.bz2 !mv <afile> <afile>:r
 :  autocmd BufWritePost,FileWritePost	*.bz2 !bzip2 <afile>:r
@@ -312,16 +311,16 @@ unlet s:line1
 " Autocomands for *.tcl {{{2
 :augroup Tcl
 :  autocmd!
-:	autocmd WinEnter            *.tcl	:map  :call CallProg()
-:	autocmd WinLeave            *.tcl	:unmap 
-:	autocmd BufRead,BufNewFile  *.tcl	:set autoindent
+:	autocmd WinEnter            *.tcl	map  :call CallProg()
+:	autocmd WinLeave            *.tcl	unmap 
+:	autocmd BufRead,BufNewFile  *.tcl	setlocal autoindent
 :augroup END
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
 " Autocomands for Makefile {{{2
 :augroup Makefile
 :  autocmd!
-:	autocmd BufEnter            [Mm]akefile*	:map  :call CallProg()
-:	autocmd BufLeave            [Mm]akefile*	:unmap 
+:	autocmd BufEnter            [Mm]akefile*	map  :call CallProg()
+:	autocmd BufLeave            [Mm]akefile*	unmap 
 :augroup END
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
 " Autocommands for "Diplomovka" {{{2
