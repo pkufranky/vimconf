@@ -5,7 +5,7 @@
 # (c) rajo <host8@kepler.fmph.uniba.sk
 #
 
-# $ID: $
+# $Id: $
 
 PACKAGE = vimconfig
 VERSION = 1.0
