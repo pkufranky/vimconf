@@ -1,19 +1,21 @@
 " Vim syntax file
 " Language:	Vim help file
-" Maintainer:	Lubomir Host 'rajo' <8host AT pauli.fmph.uniba.sk>
-" Last Change:	2002 Apr 22
-" Based On: help.vim syntax file from Bram Moolenar
+" Maintainer:	Lubomir Host 'rajo' <rajo AT platon.sk>
+" Last Change:	2003/11/02
+" Version:	$Platon: vimconfig/vim/syntax/FEATURES.vim,v 1.7 2003-11-03 08:20:23 rajo Exp $
+" Based On:	help.vim syntax file from Bram Moolenar
 
 " For version 5.x: Clear all syntax items
 " For version 6.x: Quit when a syntax file was already loaded
 if version < 600
-  syntax clear
+	syntax clear
 elseif exists("b:current_syntax")
-  finish
+	finish
 endif
 
 " Platon's vimconfig homepage
 syn match helpHyperTextEntry	"http://www.platon.sk.*/"
+syn match helpHyperTextEntry	"http://platon.sk.*/"
 syn match helpHyperTextEntry	"http://vim.sourceforge.net/.*"
 syn match helpHyperTextEntry	"http://vim.sf.net/.*"
 
@@ -23,19 +25,19 @@ syn match helpSectionDelim	"^-\{3,}.*--$"
 syn match helpSectionDelim	"^-\{3,}.*--	\+" nextgroup=helpHyperTextEntry
 syn region helpExample		matchgroup=helpIgnore start=" >$" start="^>$" end="^[^ \t]"me=e-1 end="^<"
 if has("ebcdic")
-  syn match helpHyperTextJump	"\\\@<!|[^"*|]\+|"
-  syn match helpHyperTextEntry	"\*[^"*|]\+\*\s"he=e-1
-  syn match helpHyperTextEntry	"\*[^"*|]\+\*$"
+	syn match helpHyperTextJump		"\\\@<!|[^"*|]\+|"
+	syn match helpHyperTextEntry	"\*[^"*|]\+\*\s"he=e-1
+	syn match helpHyperTextEntry	"\*[^"*|]\+\*$"
 else
-  syn match helpHyperTextJump	"\\\@<!|[#-)!+-~]\+|"
-  syn match helpHyperTextEntry	"\*[#-)!+-~]\+\*\s"he=e-1
-  syn match helpHyperTextEntry	"\*[#-)!+-~]\+\*$"
+	syn match helpHyperTextJump		"\\\@<!|[#-)!+-~]\+|"
+	syn match helpHyperTextEntry	"\*[#-)!+-~]\+\*\s"he=e-1
+	syn match helpHyperTextEntry	"\*[#-)!+-~]\+\*$"
 endif
 syn match helpNormal		"|.*====*|"
-syn match helpVim		"Vim version [0-9.a-z]\+"
-syn match helpVim		"VIM REFERENCE.*"
-syn match helpVim		"VIM USER.*"
-syn match helpVim		"VIMCONFIG USER.*"
+syn match helpVim			"Vim version [0-9.a-z]\+"
+syn match helpVim			"VIM REFERENCE.*"
+syn match helpVim			"VIM USER.*"
+syn match helpVim			"VIMCONFIG USER.*"
 syn match helpOption		"'[a-z]\{2,\}'"
 syn match helpOption		"'t_..'"
 syn match helpHeader		"^[^	 ].\+\~$"me=e-1 nextgroup=helpIgnore
@@ -79,32 +81,35 @@ syn sync minlines=40
 " For version 5.7 and earlier: only when not done already
 " For version 5.8 and later: only when an item doesn't have highlighting yet
 if version >= 508 || !exists("did_help_syntax_inits")
-  if version < 508
-    let did_help_syntax_inits = 1
-    command -nargs=+ HiLink hi link <args>
-  else
-    command -nargs=+ HiLink hi def link <args>
-  endif
+	if version < 508
+		let did_help_syntax_inits = 1
+		command -nargs=+ HiLink hi link <args>
+	else
+		command -nargs=+ HiLink hi def link <args>
+	endif
 
-  HiLink helpExampleStart	helpIgnore
-  HiLink helpIgnore		Ignore
-  HiLink helpHyperTextJump	Subtitle
-  HiLink helpHyperTextEntry	String
-  HiLink helpHeadline		Statement
-  HiLink helpHeader		PreProc
-  HiLink helpSectionDelim	PreProc
-  HiLink helpVim		Identifier
-  HiLink helpExample		Comment
-  HiLink helpOption		Type
-  HiLink helpNotVi		Special
-  HiLink helpSpecial		Special
-  HiLink helpNote		Todo
-  HiLink Subtitle		Identifier
+	HiLink helpExampleStart		helpIgnore
+	HiLink helpIgnore			Ignore
+	HiLink helpHyperTextJump	Subtitle
+	HiLink helpHyperTextEntry	String
+	HiLink helpHeadline			Statement
+	HiLink helpHeader			PreProc
+	HiLink helpSectionDelim		PreProc
+	HiLink helpVim				Identifier
+	HiLink helpExample			Comment
+	HiLink helpOption			Type
+	HiLink helpNotVi			Special
+	HiLink helpSpecial			Special
+	HiLink helpNote				Todo
+	HiLink Subtitle				Identifier
 
-  delcommand HiLink
+	delcommand HiLink
 endif
 
 let b:current_syntax = "help"
 
-" vim: ts=8 sw=2
+" Modeline {{{
+" vim:set ts=4
+" vim600:fdm=marker fdl=0 fdc=3 vb t_vb=:
+" }}}
 

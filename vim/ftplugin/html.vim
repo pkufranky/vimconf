@@ -1,11 +1,8 @@
 " HTML filetype plugin
-"	  Language: HTML (ft=html)
-"	Maintainer: Srinath Avadhanula
-"		 Email: srinath@eecs.berkeley.edu
-"		   URL: 
-"  Last Change: Thu Mar 21 06:00 AM 2002 PST
-"
-" Version: $Platon: vimconfig/vim/ftplugin/html.vim,v 1.7 2003-11-03 08:09:00 rajo Exp $
+" Language:		HTML (ft=html)
+" Maintainer:	Srinath Avadhanula <srinath AT eecs.berkeley.edu>
+" License:		GNU GPL
+" Version:		$Platon: vimconfig/vim/ftplugin/html.vim,v 1.8 2003-11-03 08:20:21 rajo Exp $
 
 " HTML mappings {{{
 if !exists('s:doneMappings')
@@ -90,5 +87,8 @@ inoremap <buffer> <BS> <C-R>=SmartBS()<CR>
 let b:input_method = "iso8859-2"
 call UseDiacritics()
 
+" Modeline {{{
 " vim:set ts=4:
 " vim600:fdm=marker fdl=0 fdc=3 nowrap:
+" }}}
+

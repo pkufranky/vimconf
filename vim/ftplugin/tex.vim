@@ -1,7 +1,6 @@
 " LaTeX filetype plugin
 "	  Language: LaTeX (ft=tex)
-"	Maintainer: Srinath Avadhanula
-"		 Email: srinath@eecs.berkeley.edu
+"	Maintainer: Srinath Avadhanula <srinath AT eecs.berkeley.edu>
 "		   URL: http://vim.sourceforge.net/scripts/script.php?script_id=93
 "  Last Change: Thu Mar 21 06:00 AM 2002 PST
 "
@@ -491,5 +490,8 @@ augroup VIMFolds
 				\ | endif
 augroup END
  
+" Modeline {{{ 
 " vim:set ts=4:
 " vim600:fdm=marker fdl=0 fdc=3 nowrap:
+" }}}
+

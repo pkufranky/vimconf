@@ -3,24 +3,24 @@
 "               template for HTML (WWW page) 
 " Maintainer:	Lubomir Host 'rajo' <rajo AT platon.sk>
 " License:		GNU GPL
-" Version:		$Platon: vimconfig/vim/syntax/tt2.vim,v 1.3 2003-09-19 15:11:12 rajo Exp $
+" Version:		$Platon: vimconfig/vim/syntax/tt2.vim,v 1.4 2003-11-03 08:20:23 rajo Exp $
 
 
 if version < 600
-  syntax clear
+	syntax clear
 elseif exists("b:current_syntax")
-  finish
+	finish
 endif
 
 if !exists("main_syntax")
-  let main_syntax = 'tt2'
+	let main_syntax = 'tt2'
 endif
 
 if version < 600
-  so <sfile>:p:h/html.vim
+	so <sfile>:p:h/html.vim
 else
-  runtime syntax/html.vim
-  unlet b:current_syntax
+	runtime syntax/html.vim
+	unlet b:current_syntax
 endif
 
 syn case ignore
@@ -116,11 +116,11 @@ syn match	tt2Comment	"#.\{-}%]"me=e-2	contained contains=tt2Todo
 
 " String
 if exists("tt2_parent_error_open")
-  syn region	tt2StringDouble	matchgroup=None start=+"+ skip=+\\\\\|\\"+ end=+"+	contains=@tt2AddStrings,tt2Identifier,tt2SpecialChar,tt2IdentifierSimply,tt2IdentifierComplex	contained keepend
-  syn region	tt2StringSingle	matchgroup=None start=+'+ skip=+\\\\\|\\'+ end=+'+	contains=@tt2AddStrings contained keepend
+	syn region	tt2StringDouble	matchgroup=None start=+"+ skip=+\\\\\|\\"+ end=+"+	contains=@tt2AddStrings,tt2Identifier,tt2SpecialChar,tt2IdentifierSimply,tt2IdentifierComplex	contained keepend
+	syn region	tt2StringSingle	matchgroup=None start=+'+ skip=+\\\\\|\\'+ end=+'+	contains=@tt2AddStrings contained keepend
 else
-  syn region	tt2StringDouble	matchgroup=None start=+"+ skip=+\\\\\|\\"+ end=+"+	contains=@tt2AddStrings,tt2Identifier,tt2SpecialChar,tt2IdentifierSimply,tt2IdentifierComplex contained extend keepend
-  syn region	tt2StringSingle	matchgroup=None start=+'+ skip=+\\\\\|\\'+ end=+'+	contains=@tt2AddStrings contained keepend extend
+	syn region	tt2StringDouble	matchgroup=None start=+"+ skip=+\\\\\|\\"+ end=+"+	contains=@tt2AddStrings,tt2Identifier,tt2SpecialChar,tt2IdentifierSimply,tt2IdentifierComplex contained extend keepend
+	syn region	tt2StringSingle	matchgroup=None start=+'+ skip=+\\\\\|\\'+ end=+'+	contains=@tt2AddStrings contained keepend extend
 endif
 
 "syn region tt2Zone matchgroup=Delimiter start="\[%[-]*" end="[-]*%\]" contains=tt2Property, tt2String, tt2Block, tt2TagName, tt2InFunc, tt2Filter, tt2IdentifierComplex

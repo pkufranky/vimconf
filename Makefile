@@ -3,13 +3,13 @@
 #
 # Type 'make dist' for create tar-gziped and zip archiv. 
 #
-# Developed by Lubomir Host <rajo AT platon.sk>
+# Developed by Lubomir Host 'rajo' <rajo AT platon.sk>
 # Copyright (c) 2001 - 2003 Platon SDG
 # Licensed under terms of GNU General Public License.
 # All rights reserved.
 #
 
-# $Platon: vimconfig/Makefile,v 1.32 2003-04-16 01:25:42 rajo Exp $
+# $Platon: vimconfig/Makefile,v 1.33 2003-11-03 08:20:20 rajo Exp $
 
 PACKAGE = vimconfig
 VERSION = 1.8
@@ -242,3 +242,4 @@ update:
 # vim:set ts=4:
 # vim600:fdm=marker fdl=0 fdc=3 vb t_vb=:
 # }}}
+

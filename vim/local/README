@@ -20,4 +20,5 @@ EXAMPLE:
 
           let g:company="Condy Software"
 
+# Version: $Platon: vimconfig/vim/local/README,v 1.2 2003-11-03 08:20:22 rajo Exp $
 

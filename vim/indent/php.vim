@@ -1,10 +1,9 @@
 " Vim indent file
 " Language:		PHP
-" Maintainer:	Lubomir Host 'rajo' <8host AT pauli.fmph.uniba.sk> 
-" Created:		2002/06/22 
-" Last Change:	
-" Last Update:  
-" Version:		0.1
+" Maintainer:	Lubomir Host 'rajo' <rajo AT platon.sk>
+" License:		GNU GPL
+" Version:		$Platon: vimconfig/vim/indent/php.vim,v 1.2 2003-11-03 08:20:22 rajo Exp $
+"
 
 
 " Only load this indent file when no other was loaded.

@@ -1,8 +1,8 @@
 " Vim filetype plugin file
-" Language:		
+" Language:		Plain text
 " Maintainer:	Lubomir Host 'rajo' <rajo AT platon.sk>
 " License:		GNU GPL
-" Version:		$Platon: vimconfig/vim/ftplugin/txt.vim,v 1.3 2003-02-28 02:02:26 rajo Exp $
+" Version:		$Platon: vimconfig/vim/ftplugin/txt.vim,v 1.4 2003-11-03 08:20:21 rajo Exp $
 
 
 " Only do this when not done yet for this buffer
@@ -37,3 +37,4 @@ call UseDiacritics()
 " vim:set ts=4:
 " vim600:fdm=marker fdl=0 fdc=3 vb t_vb=:
 " }}}
+

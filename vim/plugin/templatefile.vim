@@ -1,9 +1,9 @@
 "=============================================================================
 " Vim global plugin for autoload template files
-" File: templatefile.vim
-" Maintainer:	Lubomir Host 'rajo' <8host AT pauli.fmph.uniba.sk>
-" Last Change:	2003/01/10
-" Version: $Platon: vimconfig/vim/plugin/templatefile.vim,v 1.13 2003-11-03 08:09:44 rajo Exp $
+" File:			templatefile.vim
+" Maintainer:	Lubomir Host 'rajo' <rajo AT platon.sk>
+" Version:		$Platon: vimconfig/vim/plugin/templatefile.vim,v 1.14 2003-11-03 08:20:22 rajo Exp $
+"
 " Thanks:
 " 	Scott Urban:	First version of templatefile.vim
 " 		        	http://vim.sourceforge.net/scripts/script.php?script_id=198
@@ -171,7 +171,6 @@ fun! TryLoadTemplateInUpperDir(skelfile)
 	execute "cd " . savewd
 	return 0
 endfun
-
 
 " example for no-extension file specific template processing
 function! TemplateFileFunc_noext_makefile()

@@ -4,7 +4,7 @@
 
                 VIMCONFIG USER MANUAL -- by Lubomir Host
                           <rajo AT platon.sk>
-                http://www.platon.sk/projects/vimconfig/
+                  http://platon.sk/projects/vimconfig/
            http://vim.sf.net/scripts/script.php?script_id=204
 		
 

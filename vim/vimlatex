@@ -1,4 +1,9 @@
 #!/bin/bash
+
+#
+# $Platon: vimconfig/vim/vimlatex,v 1.2 2003-11-03 08:20:21 rajo Exp $
+#
+
 # remove a few problems with the output of the latex compiler.
 # 1. sometimes the compiler splits a single linenumber into multiple lines.
 #    therefore join lines when the first ends in '\d\+' and the second starts
@@ -13,3 +18,4 @@ sed -e 's/(/\
 (/g' | \
 sed -e 's/)/)\
 /g' 
+

@@ -1,8 +1,8 @@
 " Vim filetype plugin file
 " Language:		SGML (DocBook)
-" Maintainer:	Ondrej Jombík <nepto@pobox.sk>
+" Maintainer:	Ondrej Jombík <nepto AT platon.sk>
 " License:		GNU GPL
-" Version:		$Platon: vimconfig/vim/ftplugin/sgml.vim,v 1.4 2003-08-06 07:43:26 rajo Exp $
+" Version:		$Platon: vimconfig/vim/ftplugin/sgml.vim,v 1.5 2003-11-03 08:20:21 rajo Exp $
 
 
 " Only do this when not done yet for this buffer

@@ -1,8 +1,8 @@
 " Vim filetype plugin file
-" Language:		
-" Maintainer:	Lubomir Host 'rajo' <8host AT pauli.fmph.uniba.sk>
+" File:			diacritics.vim
+" Maintainer:	Lubomir Host 'rajo' <rajo AT platon.sk>
 " License:		GNU GPL
-" Version:		$Platon: vimconfig/vim/modules/diacritics.vim,v 1.4 2003-09-19 15:11:12 rajo Exp $
+" Version:		$Platon: vimconfig/vim/modules/diacritics.vim,v 1.5 2003-11-03 08:20:22 rajo Exp $
 "
 " This file is sourced if some ftplugin require diacritics (IMAP() mappings)
 
@@ -563,5 +563,8 @@ if exists("b:input_method")
 	endif
 endif
 
+" Modeline {{{
 " vim:set ts=4:
-" vim600:fdm=marker fdl=0 fdc=3 nowrap:
+" vim600:fdm=marker fdl=0 fdc=3 vb t_vb=:
+" }}}
+

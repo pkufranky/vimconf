@@ -3,8 +3,7 @@
 " Description: 
 " 
 " Installation:
-"      History: pluginized by Srinath Avadhanula
-"               ( srinath@fastmail.fm)
+"      History: pluginized by Srinath Avadhanula <srinath AT fastmail.fm>
 "         TODO:
 "=============================================================================
 
