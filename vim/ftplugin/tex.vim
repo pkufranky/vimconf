@@ -454,15 +454,18 @@ let g:smartBS_tex = '\(' .
 
 " This function comes from Benji Fisher <benji@e-math.AMS.org>
 " http://vim.sourceforge.net/scripts/download.php?src_id=409 
-" (modified)
+" (modified/patched by Lubomir Host 'rajo' <host8 AT keplerDOTfmphDOTuniba.sk>)
 fun! s:SmartBS()
-  let init = strpart(getline("."), 0, col(".")-1)
-  let len = strlen(matchstr(init, g:smartBS_tex)) - 1
-  if len > 0
-    execute "normal!" . len . "X"
-  endif
+	let init = strpart(getline("."), 0, col("."))
+	let len = strlen(matchstr(init, g:smartBS_tex)) - 1
+	if len > 0
+		execute "normal!" . len . "Xx"
+	else
+		execute "normal! x"
+	endif
 endfun
-inoremap <buffer> <BS> x<Esc>:call <SID>SmartBS()<CR>a<BS><BS>
+"inoremap <buffer> <BS> x<Esc>:call <SID>SmartBS()<CR>a<BS><BS>
+inoremap <buffer> <BS> <Esc>:call <SID>SmartBS()<CR>a
 " }}}
 
 " MakeTexFolds: see ../plugin/syntaxFolds.vim for documentation {{{
