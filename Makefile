@@ -9,7 +9,7 @@
 # All rights reserved.
 #
 
-# $Platon: vimconfig/Makefile,v 1.35 2003-11-06 17:04:55 rajo Exp $
+# $Platon: vimconfig/Makefile,v 1.36 2003-11-28 19:19:18 rajo Exp $
 
 PACKAGE = vimconfig
 VERSION = 1.8
@@ -17,14 +17,19 @@ PACKAGE_TEMPLATE_PLUGIN = templatefile
 VERSION_TEMPLATE_PLUGIN = $(VERSION)
 
 # DISTFILES_TEMPLATE_PLUGIN {{{
-DISTFILES_TEMPLATE_PLUGIN = vim    \
-							vim/plugin \
+DISTFILES_TEMPLATE_PLUGIN = vim                         \
+							vim/plugin                  \
 							vim/plugin/templatefile.vim \
-							vim/templates/         \
-							vim/templates/skel.c   \
-							vim/templates/skel.h   \
-							vim/templates/skel.sh  \
-							vim/templates/skel.tex \
+							vim/templates/              \
+							vim/templates/skel.c        \
+							vim/templates/skel.ebuild   \
+							vim/templates/skel.h        \
+							vim/templates/skel.java     \
+							vim/templates/skel.lisp     \
+							vim/templates/skel.pl       \
+							vim/templates/skel.pm       \
+							vim/templates/skel.sh       \
+							vim/templates/skel.tex      \
 							vim/templates/Makefile
 
 # DISTFILES_TEMPLATE_PLUGIN }}}
