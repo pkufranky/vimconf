@@ -18,7 +18,7 @@
 " Please don't hesitate to correct my english :)
 " Send corrections to <8host AT pauliDOTfmph.uniba.sk>
 
-" $Id: vimrc,v 1.69 2002/08/12 00:44:06 rajo Exp $
+" $Id: vimrc,v 1.70 2002/08/12 01:43:15 rajo Exp $
 
 " Settings {{{
 " To be secure & Vi nocompatible
@@ -29,10 +29,10 @@
 :endif
 
 :if version >= 600 
-	syntax enable
-	filetype on
-	filetype plugin on
-	filetype indent on
+syntax enable
+filetype on
+filetype plugin on
+filetype indent on
 :endif
 
 function! Source(File)
@@ -160,7 +160,7 @@ set showcmd showmatch showmode
 set titleold=
 set titlestring=ViMconfig\ (c)\ 2000-2002\ Platon\ SDG
 set title
- 
+
 " Indent of 1 tab with size of 4 spaces
 set tabstop=4 
 set shiftwidth=4 
@@ -335,47 +335,47 @@ if has("autocmd")
 
 	" Autocomands for PlatonCopyright {{{
 	augroup PlatonCopyright
-		autocmd!
-		autocmd BufLeave * set titlestring=
-		autocmd BufLeave * silent! call RemoveAutogroup("PlatonCopyright")
-		autocmd WinEnter * set titlestring=
-		autocmd WinEnter * silent! call RemoveAutogroup("PlatonCopyright")
-		autocmd BufWrite * set titlestring=
-		autocmd BufWrite * silent! call RemoveAutogroup("PlatonCopyright")
-		autocmd CmdwinEnter * set titlestring=
-		autocmd CmdwinEnter * silent! call RemoveAutogroup("PlatonCopyright")
+	autocmd!
+	autocmd BufLeave * set titlestring=
+	autocmd BufLeave * silent! call RemoveAutogroup("PlatonCopyright")
+	autocmd WinEnter * set titlestring=
+	autocmd WinEnter * silent! call RemoveAutogroup("PlatonCopyright")
+	autocmd BufWrite * set titlestring=
+	autocmd BufWrite * silent! call RemoveAutogroup("PlatonCopyright")
+	autocmd CmdwinEnter * set titlestring=
+	autocmd CmdwinEnter * silent! call RemoveAutogroup("PlatonCopyright")
 	augroup END
 	" }}}
 
 	" Autocomands for GUIEnter {{{
 	augroup GUIEnter
-		autocmd!
-		if has("gui_win32")
-			autocmd GUIEnter * simalt ~x
-		endif
+	autocmd!
+	if has("gui_win32")
+		autocmd GUIEnter * simalt ~x
+	endif
 	augroup END
 	" }}}
 
 	" Autocomands for ~/.vimrc {{{
 	augroup VimConfig
-		autocmd!
-		" Reread configuration of ViM if file ~/.vimrc is saved
-		autocmd BufWritePost ~/.vimrc	so ~/.vimrc | exec "normal zv"
-		autocmd BufWritePost vimrc   	so ~/.vimrc | exec "normal zv"
+	autocmd!
+	" Reread configuration of ViM if file ~/.vimrc is saved
+	autocmd BufWritePost ~/.vimrc	so ~/.vimrc | exec "normal zv"
+	autocmd BufWritePost vimrc   	so ~/.vimrc | exec "normal zv"
 	augroup END
 	" }}}
 
 	" Autocommands for *.c, *.h, *.cc *.cpp {{{
 	augroup C
-		autocmd!
-		"formatovanie C-zdrojakov
-		autocmd BufEnter     *.c,*.h,*.cc,*.cpp	map  <buffer> <C-F> mfggvG$='f
-		autocmd BufEnter     *.c,*.h,*.cc,*.cpp	imap <buffer> <C-F> <Esc>mfggvG$='fi
-		autocmd BufEnter     *.c,*.h,*.cc,*.cpp	map <buffer> yii yyp3wdwi
-		autocmd BufEnter     *.c,*.h,*.cc,*.cpp	map <buffer> <C-K> :call CallProg()<CR>
-		autocmd BufRead,BufNewFile  *.c,*.h,*.cc,*.cpp	setlocal cindent
-		autocmd BufRead,BufNewFile  *.c,*.h,*.cc,*.cpp	setlocal cinoptions=>4,e0,n0,f0,{0,}0,^0,:4,=4,p4,t4,c3,+4,(2s,u1s,)20,*30,g4,h4
-		autocmd BufRead,BufNewFile  *.c,*.h,*.cc,*.cpp	setlocal cinkeys=0{,0},:,0#,!<C-F>,o,O,e
+	autocmd!
+	"formatovanie C-zdrojakov
+	autocmd BufEnter     *.c,*.h,*.cc,*.cpp	map  <buffer> <C-F> mfggvG$='f
+	autocmd BufEnter     *.c,*.h,*.cc,*.cpp	imap <buffer> <C-F> <Esc>mfggvG$='fi
+	autocmd BufEnter     *.c,*.h,*.cc,*.cpp	map <buffer> yii yyp3wdwi
+	autocmd BufEnter     *.c,*.h,*.cc,*.cpp	map <buffer> <C-K> :call CallProg()<CR>
+	autocmd BufRead,BufNewFile  *.c,*.h,*.cc,*.cpp	setlocal cindent
+	autocmd BufRead,BufNewFile  *.c,*.h,*.cc,*.cpp	setlocal cinoptions=>4,e0,n0,f0,{0,}0,^0,:4,=4,p4,t4,c3,+4,(2s,u1s,)20,*30,g4,h4
+	autocmd BufRead,BufNewFile  *.c,*.h,*.cc,*.cpp	setlocal cinkeys=0{,0},:,0#,!<C-F>,o,O,e
 	augroup END
 	" }}}
 
@@ -384,31 +384,31 @@ if has("autocmd")
 	" contain line "^\([<space><Tab>]*\)Last modified: ",
 	" else will be date writtend on the current " line.
 	augroup HtmlCgiPHP
-		autocmd!
-		" Appending right part of tag in HTML files.
-		autocmd BufEnter                 *.html	imap <buffer> QQ </><Esc>2F<lywf>f/pF<i
-		autocmd BufWritePre,FileWritePre *.html	call AutoLastMod()
-		autocmd BufEnter                 *.cgi	imap <buffer> QQ </><Esc>2F<lywf>f/pF<i
-		autocmd BufWritePre,FileWritePre *.cgi	call AutoLastMod()
-		autocmd BufEnter                 *.php	imap <buffer> QQ </><Esc>2F<lywf>f/pF<i
-		autocmd BufWritePre,FileWritePre *.php	call AutoLastMod()
-		autocmd BufEnter                 *.php3	imap <buffer> QQ </><Esc>2F<lywf>f/pF<i
-		autocmd BufWritePre,FileWritePre *.php3	call AutoLastMod()
+	autocmd!
+	" Appending right part of tag in HTML files.
+	autocmd BufEnter                 *.html	imap <buffer> QQ </><Esc>2F<lywf>f/pF<i
+	autocmd BufWritePre,FileWritePre *.html	call AutoLastMod()
+	autocmd BufEnter                 *.cgi	imap <buffer> QQ </><Esc>2F<lywf>f/pF<i
+	autocmd BufWritePre,FileWritePre *.cgi	call AutoLastMod()
+	autocmd BufEnter                 *.php	imap <buffer> QQ </><Esc>2F<lywf>f/pF<i
+	autocmd BufWritePre,FileWritePre *.php	call AutoLastMod()
+	autocmd BufEnter                 *.php3	imap <buffer> QQ </><Esc>2F<lywf>f/pF<i
+	autocmd BufWritePre,FileWritePre *.php3	call AutoLastMod()
 	augroup END
 	" }}}
 
 	" Autocomands for *.tcl {{{
 	augroup Tcl
-		autocmd!
-		autocmd WinEnter            *.tcl	map <buffer> <C-K> :call CallProg()<CR>
-		autocmd BufRead,BufNewFile  *.tcl	setlocal autoindent
+	autocmd!
+	autocmd WinEnter            *.tcl	map <buffer> <C-K> :call CallProg()<CR>
+	autocmd BufRead,BufNewFile  *.tcl	setlocal autoindent
 	augroup END
 	" }}}
 
 	" Autocomands for Makefile {{{
 	augroup Makefile
-		autocmd!
-		autocmd BufEnter            [Mm]akefile*	map <buffer> <C-K> :call CallProg()<CR>
+	autocmd!
+	autocmd BufEnter            [Mm]akefile*	map <buffer> <C-K> :call CallProg()<CR>
 	augroup END
 	" }}}
 
@@ -437,12 +437,6 @@ if version >= 600
 	endfunction
 endif
 " ChangeFoldMethod() }}}
-
-function! Test() abort range
-	echo "First   line = " . a:firstline
-	echo "Last    line = " . a:lastline
-	echo "Current line =" . line(".")
-endfunction
 
 " Function FoldLongLines() {{{
 "
@@ -488,13 +482,13 @@ endif
 " modeline variable autolastmod to appropriate value.
 "
 function! AutoLastMod()
-if exists("g:autolastmod")
-	if g:autolastmod < 0
-		return 0;
-	elseif g:autolastmod == 1
-		call LastMod(g:autolastmodtext)
+	if exists("g:autolastmod")
+		if g:autolastmod < 0
+			return 0;
+		elseif g:autolastmod == 1
+			call LastMod(g:autolastmodtext)
+		endif
 	endif
-endif
 endfunction
 " AutoLastMod() }}}
 
@@ -561,15 +555,15 @@ endif
 " Function CallProg() {{{
 function! CallProg() abort
 	let choice = confirm("Call:", "&make\nm&ake in cwd\n" .
-						\ "&compile\nc&ompile in cwd\n" .
-						\ "&run\nr&un in cwd")
+				\ "&compile\nc&ompile in cwd\n" .
+				\ "&run\nr&un in cwd")
 	if choice == 1
 		exec ":wall"
 		exec "! cd %:p:h; pwd; make " . g:makeflags
 	elseif choice == 2
 		exec ":wall"
 		exec "! cd " .
-				\ getcwd() . "; pwd; make " . g:makeflags
+					\ getcwd() . "; pwd; make " . g:makeflags
 	elseif choice == 3
 		:call Compile(1)
 	elseif choice == 4
@@ -599,10 +593,10 @@ function! Compile(do_chdir) abort
 	endif
 
 	let choice = confirm("Call:", 
-		\ "&compile\n" .
-		\ "compile and &debug\n" .
-		\ "compile and &run\n" .
-		\ "compile using first &line")
+				\ "&compile\n" .
+				\ "compile and &debug\n" .
+				\ "compile and &run\n" .
+				\ "compile using first &line")
 
 	if choice != 0
 		exec ":wall"
@@ -610,39 +604,43 @@ function! Compile(do_chdir) abort
 
 	if choice == 1
 		exec cmd . "gcc " . g:cflags . 
-			\ " -o " . filename . " " . filename_ext
+					\ " -o " . filename . " " . filename_ext
 	elseif choice == 2
 		exec cmd . "gcc " . g:cflags . " " . g:c_debug_flags . 
-			\ " -o " . filename . " " . filename_ext " && gdb " . filename
+					\ " -o " . filename . " " . filename_ext " && gdb " . filename
 	elseif choice == 3
 		exec cmd . "gcc " . g:cflags . 
-			\ " -o " . filename . " " . filename_ext " && ./" . filename
+					\ " -o " . filename . " " . filename_ext " && ./" . filename
 	elseif choice == 4
 		exec cmd . "gcc " . g:cflags . 
-			\ " -o " . filename . " " . filename_ext . 
-			\ substitute(getline(2), "VIMGCC", "", "g")
+					\ " -o " . filename . " " . filename_ext . 
+					\ substitute(getline(2), "VIMGCC", "", "g")
 	endif
 endfunction
 " Compile() }}}
 
 " Function Indent() {{{
 " Indents source code.
-function! Indent()
-" If there is set equalprg to source indenting (ie. perltidy for perl sources)
-" we have not to executes "'f" at the end, else we will got "Mark not set"
-" error message.
-	if &equalprg == ""
-		exec "normal mfggvG$='f"
-	else
-		exec "normal mfggvG$="
+function! Indent() range abort
+	let savelnum = line(".")
+	let lnum = a:firstline
+	let lend = a:lastline
+	if lnum == lend
+		" No visual area choosen --> whole file
+		let lnum = line(".")
+		let lend = line("$")
+		" Go to the begin of the file
+		exec "1go"
 	endif
+	exec "normal " . lnum . "Gv" . lend . "G="
+	exec "normal " . savelnum . "G"
 endfunction
 " Indent() }}}
 
 " Function UnquoteMailBody() {{{
 "
 function! UnquoteMailBody()
-" Every backslash character must be escaped in function -- Nepto
+	" Every backslash character must be escaped in function -- Nepto
 	exec "normal :%s/^\\([ ]*>[ ]*\\)*\\(\\|[^>].*\\)$/\\2/g<CR>"
 endfunction
 " UnquoteMailBody() }}}
@@ -688,7 +686,7 @@ endfunction
 " Function RemoveAutogroup() {{{
 "
 silent! function! RemoveAutogroup(group)
-	silent exec "augroup! ". a:group
+silent exec "augroup! ". a:group
 endfunction
 " RemoveAutogroup() }}}
 " }}}
