@@ -7,7 +7,7 @@
 " Version:		01.09.08
 " Language Of Comments:	English
 
-" $Id: vimrc,v 1.11 2001/10/23 14:01:17 host8 Exp $
+" $Id: vimrc,v 1.12 2001/11/02 19:13:41 jombik9 Exp $
 
 " Settings {{{1
 " To be secure & Vi nocompatible
@@ -64,6 +64,8 @@
 
 " Don't add EOF at end of file
 :set noendofline
+" Do case insensitive matching
+:set noignorecase
 
 :set showfulltag 
 
@@ -331,7 +333,7 @@
 :if version >= 600
 :	fun! FoldLongLines()
 "		Get screen size:
-:		let lines = system("/bin/tcsh -f -c telltc | " .
+:		let lines = system("`which tcsh` -f -c telltc | " .
 				\ "grep lines | awk '{print \$6-1}'")
 :		let info = "[" . lines . ";0HProcessing line "
 "		Set mark for return back
@@ -363,10 +365,7 @@
 :		Printf("  --  OK\n")
 "		Skip back to the mark
 :		exec "normal 'F"
-:		let choice = confirm("Redraw screen?", "&yes\n&no", 1)
-:		if choice == 1
-:			redraw!
-:		endif
+:		redraw!
 :	endfun
 :endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
