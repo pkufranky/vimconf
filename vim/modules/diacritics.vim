@@ -2,7 +2,7 @@
 " Language:		
 " Maintainer:	Lubomir Host 'rajo' <8host AT pauli.fmph.uniba.sk>
 " License:		GNU GPL
-" Version:		$Platon: vimconfig/vim/modules/diacritics.vim,v 1.2 2003-09-03 08:08:40 rajo Exp $
+" Version:		$Platon: vimconfig/vim/modules/diacritics.vim,v 1.3 2003-09-03 09:04:21 rajo Exp $
 "
 " This file is sourced if some ftplugin require diacritics (IMAP() mappings)
 
@@ -395,7 +395,7 @@ if exists("b:input_method")
 		"call IMAP ('+x', "\\v{x}", &filetype)
 		call IMAP ('=y', "˝",      &filetype)
 		"call IMAP ('+y', "\\v{y}", &filetype)
-		call IMAP ('=z', "º",      &filetype)
+		"call IMAP ('=z', "º",      &filetype)
 		call IMAP ('+z', "û",      &filetype)
 		call IMAP ('=A', "¡",      &filetype)
 		call IMAP ('+A', "ƒ",      &filetype)
@@ -420,7 +420,7 @@ if exists("b:input_method")
 		"call IMAP ('=K', "\\'{K}", &filetype)
 		"call IMAP ('+K', "\\v{K}", &filetype)
 		call IMAP ('=L', "≈",      &filetype)
-		call IMAP ('+L', "•",      &filetype)
+		call IMAP ('+L', "º",      &filetype)
 		"call IMAP ('=M', "\\'{M}", &filetype)
 		"call IMAP ('+M', "\\v{M}", &filetype)
 		call IMAP ('=N', "—",      &filetype)
@@ -434,9 +434,9 @@ if exists("b:input_method")
 		call IMAP ('=R', "¿",      &filetype)
 		call IMAP ('+R', "ÿ",      &filetype)
 		call IMAP ('=S', "¶",      &filetype)
-		call IMAP ('+S', "©",      &filetype)
+		call IMAP ('+S', "ä",      &filetype)
 		"call IMAP ('=T', "\\'{T}", &filetype)
-		call IMAP ('+T', "´",      &filetype)
+		call IMAP ('+T', "ç",      &filetype)
 		call IMAP ('=U', "⁄",      &filetype)
 		call IMAP ('+U', "‹",      &filetype)
 		"call IMAP ('=V', "\\'{V}", &filetype)
@@ -448,7 +448,7 @@ if exists("b:input_method")
 		call IMAP ('=Y', "›",      &filetype)
 		"call IMAP ('+Y', "\\v{Y}", &filetype)
 		call IMAP ('=Z', "¨",      &filetype)
-		call IMAP ('+Z', "Æ",      &filetype)
+		call IMAP ('+Z', "é",      &filetype)
 		" end iso8859-2(latin2) TeX mappings }}}
 	endif
 endif
