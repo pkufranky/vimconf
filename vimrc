@@ -7,7 +7,7 @@
 " Version:		01.09.08
 " Language Of Comments:	Slovak
 
-" $Id: .vimrc,v 1.7 2001/10/13 22:28:40 host8 Exp $
+" $Id: vimrc,v 1.8 2001/10/13 23:14:20 host8 Exp $
 
 " Settings {{{1
 " ... to be secure & Vi nocompatible
@@ -74,6 +74,8 @@
 
 " cursor always in the middle of the screen
 :set scrolloff=999
+" make window maximalized
+:set winheight=100
 
 " the screen will not be redrawn while executing macros, registers
 " and other commands that have not been typed.  To force an update use |:redraw|.
