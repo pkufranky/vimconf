@@ -9,7 +9,7 @@
 # All rights reserved.
 #
 
-# $Platon: vimconfig/Makefile,v 1.36 2003-11-28 19:19:18 rajo Exp $
+# $Platon: vimconfig/Makefile,v 1.37 2003-11-28 19:25:25 rajo Exp $
 
 PACKAGE = vimconfig
 VERSION = 1.8
@@ -53,19 +53,26 @@ DISTFILES = README \
 			vim/doc/tags \
 			vim/ftplugin \
 			vim/ftplugin/cvs.vim \
+			vim/ftplugin/ebuild.vim \
 			vim/ftplugin/html.vim \
+			vim/ftplugin/lisp.vim \
 			vim/ftplugin/mail.vim \
 			vim/ftplugin/miktexmenus.vim \
 			vim/ftplugin/perl.vim \
 			vim/ftplugin/sgml.vim \
 			vim/ftplugin/tex.vim \
+			vim/ftplugin/tt2.vim \
 			vim/ftplugin/txt.vim \
 			vim/ftplugin/vim.vim \
+			vim/ftplugin/wtt2.vim \
 			vim/indent/ \
 			vim/indent/php.vim \
 			vim/indent/tex.vim \
+			vim/indent/tt2.vim \
 			vim/local \
 			vim/local/README \
+			vim/local/vimrc-rajo \
+			vim/local/vimrc-nepto \
 			vim/modules/ \
 			vim/modules/diacritics.vim \
 			vim/plugin \
@@ -78,6 +85,8 @@ DISTFILES = README \
 			vim/plugin/taglist.vim \
 			vim/syntax/ \
 			vim/syntax/FEATURES.vim \
+			vim/syntax/tt2.vim \
+			vim/syntax/wtt2.vim \
 			$(DISTFILES_TEMPLATE_PLUGIN)
 
 # DISTFILES }}}
