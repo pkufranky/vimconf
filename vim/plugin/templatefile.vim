@@ -2,7 +2,7 @@
 " Vim global plugin for autoload template files
 " File:			templatefile.vim
 " Maintainer:	Lubomir Host 'rajo' <rajo AT platon.sk>
-" Version:		$Platon: vimconfig/vim/plugin/templatefile.vim,v 1.20 2004-09-21 20:05:48 rajo Exp $
+" Version:		$Platon: vimconfig/vim/plugin/templatefile.vim,v 1.21 2004-12-02 18:04:39 rajo Exp $
 "
 " Thanks:
 " 	Scott Urban:	First version of templatefile.vim
@@ -92,8 +92,11 @@ function! LoadTemplateFile()
 	" nepto@platon.sk    --> #.platon.sk --> sk.platon.@INCLUDE_GAURD@
 	" rajo AT platon.sk  --> #.platon.sk  --> sk.platon.@INCLUDE_GAURD@
 	let java_pkg = substitute(Email, '^[^@\s]\+\(@\|\s\+AT\s\+\)\(.*\)$', '#.\2', '')
-	while match(java_pkg, '#$') == -1
-		let java_pkg = substitute(java_pkg, '^\([^#]*\)#\(.*\)\.\([a-zA-Z0-9_]\+\)$', '\1.\3#\2', 'g')
+	let java_pkg = substitute(java_pkg, '[^a-zA-Z0-9.]', '', 'g') " remove ugly chars from email address
+	let loop_count = 0 " avoid endless loop in while
+	while match(java_pkg, '#$') == -1 && loop_count < 10
+		let java_pkg = substitute(java_pkg, '^\([^#]*\)#\(.*\)\.\([a-zA-Z0-9_]\+\)$', '\2.\3#\2', 'g')
+		let loop_count = loop_count + 1
 	endwhile
 	let java_pkg = substitute(java_pkg, '^\.\(.*\)#$', '\1.' . tolower(inc_gaurd), '')
 	
