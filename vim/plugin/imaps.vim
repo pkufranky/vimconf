@@ -98,7 +98,7 @@
 "           imap abc def
 "       1. with imap, if you begin typing abc, the cursor will not advance and
 "          long as there is a possible completion, the letters a, b, c will be
-"          displayed on on top of the other. using this function avoids that.
+"          displayed on top of the other. using this function avoids that.
 "       2. with imap, if a backspace or arrow key is pressed before completing
 "          the word, then the mapping is lost. this function allows movement. 
 "          (this ofcourse means that this function is only limited to
@@ -124,16 +124,16 @@ function! IMAP(lhs, rhs, ft)
 	"   lbb --> haha
 	" for tex type files, then the variable will be:
 	"   s:charLens_tex_b = '2,3,'
-	let charLenHash = 's:charLens_'.a:ft.'_'.char2nr(lastLHSChar)
+	let charLenHash = 's:charLens_' . a:ft . '_' . char2nr(lastLHSChar)
 
 	" if this variable doesnt exist before, initialize...
 	if !exists(charLenHash)
-		exe 'let '.charLenHash.' = ""'
+		exe 'let ' . charLenHash . ' = ""'
 	end
 	" get the value of the variable.
 	exe "let charLens = ".charLenHash
 	" check to see if this length is already there...
-	if matchstr(charLens, '\(^\|,\)'.strlen(a:lhs).',') == ''
+	if matchstr(charLens, '\(^\|,\)' . strlen(a:lhs) . ',') == ''
 		" ... if not append.
 		" but carefully. sort the charLens array in decreasing order. this way
 		" the longest lhs is checked first. i.e if the user has 2 maps
@@ -144,34 +144,37 @@ function! IMAP(lhs, rhs, ft)
 		" TODO: possible bug. what if the user has a mapping with lhs more
 		" than 9 chars? (highly improbable).
 		" largest element which is just smaller than the present length
-		let idx = match(charLens, '[1-'.strlen(a:lhs).'],')
+		let idx = match(charLens, '[1-' . strlen(a:lhs) . '],')
 		if idx == -1
-			let new = charLens.strlen(a:lhs).','
+			let new = charLens.strlen(a:lhs) . ','
 		else
 			let left = strpart(charLens, 0, idx)
 			let right = strpart(charLens, idx, 1000)
-			let new = left.strlen(a:lhs).','.right
+			let new = left . strlen(a:lhs) . ',' . right
 		end
 
 		let charLens = new
-		exe "let ".charLenHash." = charLens"
+		exe "let " . charLenHash . " = charLens"
 	end
 	
 	" create a variable corresponding to the lhs. convert all non-word
 	" characters into their ascii codes so that a vim variable with that name
 	" can be created.  this is a way to create hashes in vim.
-	let lhsHash = 's:Map_'.a:ft.'_'.substitute(a:lhs, '\(\W\)', '\="_".char2nr(submatch(1))."_"', 'g')
+	let lhsHash = 's:Map_' . a:ft . '_'
+				\ . substitute(a:lhs, '\(\W\)', '\="_".char2nr(submatch(1))."_"', 'g')
 	" store the value of the right-hand side of the mapping in this newly
 	" created variable.
-	exe "let ".lhsHash." = a:rhs"
+	exe "let " . lhsHash . " = a:rhs"
 	
 	" store a token string of this length. this is helpful later for erasing
 	" the left-hand side before inserting the right-hand side.
-	let tokenLenHash = 's:LenStr_'.strlen(a:lhs)
-	exe "let ".tokenLenHash." = a:lhs"
+	let tokenLenHash = 's:LenStr_' . strlen(a:lhs)
+	exe "let " . tokenLenHash . " = a:lhs"
 
 	" map only the last character of the left-hand side.
-	exe 'inoremap '.escape(lastLHSChar, '|').' <C-r>=<SID>LookupCharacter("'.escape(lastLHSChar, '\|').'")<CR>'
+	exe 'inoremap ' . escape(lastLHSChar, '|')
+				\ . ' <C-r>=<SID>LookupCharacter("'
+				\ . escape(lastLHSChar, '\|') . '")<CR>'
 endfunction
 
 " }}}
@@ -184,22 +187,32 @@ endfunction
 silent! function! <SID>LookupCharacter(char)
 	if exists("g:disable_imap")
 		if g:disable_imap == 1
-			echo "LookupCharacter(\"" . a:char . "\") - disabled (g:disabled=1)"
+			"echo "LookupCharacter(\"" . a:char . "\") - disabled (g:disabled=1)"
 			" here we must return parameter 
 			return a:char
 		endif
 	endif
+	if exists("g:disabled_imap_syntax_items")
+		let currentSyntaxItem = synIDattr(synID(line("."), col(".") - 1, 1), "name")
+		if match(currentSyntaxItem, g:disabled_imap_syntax_items) != -1
+			echo "IMAP mappings are disabled here"
+			return a:char
+		endif
+	endif
+	"echo "currentSyntaxItem = " . synIDattr(synID(line("."), col(".") - 1, 1), "name")
+				\ 'line = ' . line(".")
+				\ 'col  = ' .col(".")
 	echo "LookupCharacter(\"" . a:char . "\") - enabled (g:disabled=0)"
 	let charHash = char2nr(a:char)
 
-	if !exists('s:charLens_'.&ft.'_'.charHash)
-				\ && !exists('s:charLens__'.charHash)
+	if !exists('s:charLens_' . &ft . '_' . charHash)
+				\ && !exists('s:charLens__' . charHash)
 		return a:char
 	end
 	" get the lengths of the left-hand side mappings which end in this
 	" character. if no mappings ended in this character, the previous if
 	" statement would have exited.
-	silent! exe 'let lens = s:charLens_'.&ft.'_'.charHash
+	silent! exe 'let lens = s:charLens_' . &ft . '_' . charHash
 
 	let i = 1
 	while 1
@@ -215,9 +228,11 @@ silent! function! <SID>LookupCharacter(char)
 		
 		" get the corresponding text from before the text. append the present
 		" char to complete the (possible) LHS
-		let text = strpart(getline('.'), col('.') - numchars, numchars - 1).a:char
-	    let lhsHashFT = 's:Map_'.&ft.'_'.substitute(text, '\(\W\)', '\="_".char2nr(submatch(1))."_"', 'g')
-	    let lhsHashNoFT = 's:Map__'.substitute(text, '\(\W\)', '\="_".char2nr(submatch(1))."_"', 'g')
+		let text = strpart(getline('.'), col('.') - numchars, numchars - 1) . a:char
+	    let lhsHashFT = 's:Map_' . &ft . '_'
+					\ . substitute(text, '\(\W\)', '\="_".char2nr(submatch(1))."_"', 'g')
+	    let lhsHashNoFT = 's:Map__'
+					\ . substitute(text, '\(\W\)', '\="_".char2nr(submatch(1))."_"', 'g')
 
 		" if there is no mapping of this length which satisfies the previously
 		" typed in characters, then proceed to the next length group...
@@ -238,9 +253,9 @@ silent! function! <SID>LookupCharacter(char)
 		let bkspc = substitute(bkspc, '.', "\<bs>", "g")
 
 		" get the corresponding RHS
-		exe "let ret = ".lhsHash
+		exe "let ret = " . lhsHash
 		
-		return bkspc.IMAP_PutTextWithMovement(ret)
+		return bkspc . IMAP_PutTextWithMovement(ret)
 
 	endwhile
 endfunction
@@ -282,12 +297,12 @@ function! IMAP_PutTextWithMovement(text)
 		let movement = movement.":call SAImaps_RemoveLastHistoryItem()\<cr>"
 		" if its a ä or «», then just delete it
 		if strpart(a:text, fc, 2) == 'ää'
-			let movement = movement."\"_2s"
+			let movement = movement . "\"_2s"
 		elseif strpart(a:text, fc, 2) == '«»'
-			let movement = movement."\"_2s"
+			let movement = movement . "\"_2s"
 		" otherwise enter select mode...
 		else
-			let movement = movement."vf»\<C-g>"
+			let movement = movement . "vf»\<C-g>"
 		end
 	end
 	return initial.a:text.movement
@@ -302,7 +317,8 @@ function! <SID>Strntok(s, tok, n)
 			return
 		endif
 	endif
-	return matchstr( a:s.a:tok[0], '\v(\zs([^'.a:tok.']*)\ze['.a:tok.']){'.a:n.'}')
+	return matchstr( a:s . a:tok[0],
+				\ '\v(\zs([^' . a:tok . ']*)\ze[' . a:tok . ']){' . a:n . '}')
 endfunction
 
 " }}}
@@ -312,14 +328,15 @@ let s:ml = exists('g:mapleader') ? g:mapleader : '\'
 " these are mappings which were originally in imaps.vim. ideally they should
 " be in the corresponding ftplugin/<ft>.vim directory.
 " General purpose mappings {{{
-call IMAP ('date'.s:ml, "\<c-r>=strftime('%b %d %Y')\<cr>", '')
-call IMAP ('stamp'.s:ml, "Last Change: \<c-r>=strftime('%a %b %d %I:00 %p %Y PST')\<cr>", '')
-call IMAP ('winm'.s:ml, "http://robotics.eecs.berkeley.edu/~srinath/vim/winmanager-2.0.htm", '')
-call IMAP ('latexs'.s:ml, "http://robotics.eecs.berkeley.edu/~srinath/vim/latexSuite.zip", '')
-call IMAP ('homep'.s:ml, "http://robotics.eecs.berkeley.edu/~srinath", '')
+call IMAP ('date'   .s:ml, "\<c-r>=strftime('%b %d %Y')\<cr>", '')
+call IMAP ('stamp'  .s:ml, "Last Change: \<c-r>=strftime('%a %b %d %I:00 %p %Y PST')\<cr>", '')
+call IMAP ('winm'   .s:ml, "http://robotics.eecs.berkeley.edu/~srinath/vim/winmanager-2.0.htm", '')
+call IMAP ('latexs' .s:ml, "http://robotics.eecs.berkeley.edu/~srinath/vim/latexSuite.zip", '')
+call IMAP ('homep'  .s:ml, "http://robotics.eecs.berkeley.edu/~srinath", '')
 " End general purpose mappings }}}
 " Vim Mappings {{{
-call IMAP ('while'.s:ml, "let i = ää\<cr>while i <= \<cr>\<cr>\tlet i = i + 1\<cr>\<bs>endwhile", 'vim')
+call IMAP ('while' . s:ml,
+			\ "let i = ää\<cr>while i <= \<cr>\<cr>\tlet i = i + 1\<cr>\<bs>endwhile", 'vim')
 call IMAP ('fdesc'.s:ml, "\"Description: ", 'vim')
 " end vim mappings }}}
 
@@ -357,7 +374,7 @@ function! <SID>Snip() range
 	exe "norm! O\<esc>".(half - 1)."a-\<esc>A%<\<esc>".(half - 1)."a-"
 endfunction
 
-com! -nargs=0 -range Snip :<line1>,<line2>call <SID>Snip()
+command! -nargs=0 -range Snip :<line1>,<line2>call <SID>Snip()
 " }}}
 " CleanUpHistory: removes last search item from search history {{{
 " Description: This function needs to be globally visible because its
@@ -374,7 +391,7 @@ endfunction
 " }}}
 " IMAP_Jumpfunc: takes user to next «place-holder» {{{
 "        Author: Gergeley Kontra
-"                taken from mu-template.vim by him This idea is originally
+"                taken from mu-template.vim by him. This idea is originally
 "                from Stephen Riehm's bracketing system.
 function! IMAP_Jumpfunc()
 	if exists("g:disable_imap")

@@ -38,6 +38,9 @@ setlocal ts=4
 setlocal textwidth=72
 setlocal formatoptions=croqt
 
+" disable IMAP() function in math environments
+let g:disabled_imap_syntax_items = "texMathZone\\|texStatement"
+
 " These lines come from $VIMRUNTIME/ftplugin/tex.vim (modified by Lubomir Host) {{{
 " Thanks to Benji Fisher, Ph.D. <benji@member.AMS.org>
 let s:save_cpo = &cpo
@@ -94,8 +97,8 @@ if !exists('s:doneMappings')
 	" call IMAP ('^^', '^{ää}«»', "tex")
 	" call IMAP ('$$', '$ää$«»', "tex")
 	" call IMAP ('==', '&=& ', "tex")
-	call IMAP ('...', '\cdots', "tex")
-	call IMAP ('::', '\dots', "tex")
+	call IMAP ('...', '\dots', "tex")
+	call IMAP ('::', '\cdots', "tex")
 	" call IMAP ('((', '\left( ää \right)«»', "tex")
 	" call IMAP ('[[', '\left[ ää \right]«»', "tex")
 	" call IMAP ('{{', '\left\{ ää \right\}«»', "tex")
