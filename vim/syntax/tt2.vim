@@ -1,8 +1,9 @@
 " Vim syntax file
 " Language:		Template Toolkit (http://www.template-toolkit.org/)
+"               template for HTML (WWW page) 
 " Maintainer:	Lubomir Host 'rajo' <rajo AT platon.sk>
 " License:		GNU GPL
-" Version:		$Platon: vimconfig/vim/syntax/tt2.vim,v 1.2 2003-09-03 07:58:03 rajo Exp $
+" Version:		$Platon: vimconfig/vim/syntax/tt2.vim,v 1.3 2003-09-19 15:11:12 rajo Exp $
 
 
 if version < 600

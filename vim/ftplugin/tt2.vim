@@ -1,8 +1,9 @@
 " Vim filetype plugin file
 " Language:		Template Toolkit (http://www.template-toolkit.org/)
+"               template for HTML (WWW page) 
 " Maintainer:	Lubomir Host 'rajo' <rajo AT platon.sk>
 " License:		GNU GPL
-" Version:		$Platon: vimconfig/vim/ftplugin/tt2.vim,v 1.1 2003-09-03 08:03:13 rajo Exp $
+" Version:		$Platon: vimconfig/vim/ftplugin/tt2.vim,v 1.2 2003-09-19 15:11:11 rajo Exp $
 
 " Only do this when not done yet for this buffer
 if exists("b:did_ftplugin")
