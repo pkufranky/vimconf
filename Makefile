@@ -9,7 +9,7 @@
 # All rights reserved.
 #
 
-# $Platon: vimconfig/Makefile,v 1.31 2003-04-16 01:00:22 rajo Exp $
+# $Platon: vimconfig/Makefile,v 1.32 2003-04-16 01:25:42 rajo Exp $
 
 PACKAGE = vimconfig
 VERSION = 1.8
@@ -92,12 +92,17 @@ top_builddir            = .
 # Targets
 
 all: tags dist dist-template-plugin
+	md5sum *$(VERSION).tar.gz *$(VERSION).zip > $(distdir).md5sums \
+	&& cat $(distdir).md5sums
 
-tags:
-	vim -u NONE -U NONE -c ":helptags ./vim/doc" -c ":q"
+tags: ./vim/doc
+
+./vim/doc/tags: ./vim/doc/FEATURES.txt
+	vim -u NONE -U NONE -c ":helptags ./vim/doc" -c ":q" > /dev/null
 
 # Clean {{{
 clean: clean-dist clean-dist-template-plugin clean-tags
+	-rm -f $(distdir).md5sums
 
 clean-tags:
 	rm -f vim/doc/tags
@@ -231,7 +236,7 @@ update:
 # next command may failed, if user doesn't have CVS version of vimconfig
 	-cvs update;
 
-.PHONY: clean tags
+.PHONY: clean all
 
 # Modeline {{{
 # vim:set ts=4:
