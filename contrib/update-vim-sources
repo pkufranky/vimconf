@@ -19,12 +19,12 @@
 # All rights reserved.
 #
 
-# $Platon: vimconfig/contrib/update-vim-sources,v 1.1 2003-04-16 01:00:22 rajo Exp $
+# $Platon: vimconfig/contrib/update-vim-sources,v 1.2 2003-07-29 16:06:48 rajo Exp $
 
 # Define vim version:
-VIM_VER="vim61"
-VIM_VER_LONG="vim-6.1"
-VIM_VER_EGREP="^6\.1\."
+VIM_VER="vim62"
+VIM_VER_LONG="vim-6.2"
+VIM_VER_EGREP="^6\.2\."
 
 # Web site where patches are located
 #URL="ftp://ftp.vim.org/pub/vim/unstable/patches/"
@@ -119,13 +119,13 @@ modify_changelog()
 		&& here="`pwd`" \
 		&& for i in $*; do \
 			test -f patches/$i \
-			&& cp $VIM_VER/debian/changelog $VIM_VRE/debian/changelog.before-$i \
+			&& cp $VIM_VER/debian/changelog $VIM_VER/debian/changelog.before-$i \
 			&& ( echo "vim ($i) unstable; urgency=low" \
 				&& echo && echo "  * Apply upstream patch:" \
 				&& filter_patch < patches/$i \
 				&& echo " -- Lubomir Host <rajo@platon.sk>  `date -R`" \
-				&& echo ) > $VIM_VRE/debian/changelog \
-			&& cat $VIM_VRE/debian/changelog.before-$i >> $VIM_VRE/debian/changelog
+				&& echo ) > $VIM_VER/debian/changelog \
+			&& cat $VIM_VER/debian/changelog.before-$i >> $VIM_VER/debian/changelog
 		done
 	cd "$DIR"
 }
@@ -145,7 +145,7 @@ patch_sources()
 			&& patch -p0 < $i \
 				&& modify_changelog $i \
 				&& cd "$here" \
-				&& ln -s $VIM_VER $VIM_VER`new_version $i` || return 1
+				&& ln -s $VIM_VER $VIM_VER_LONG`new_version $i` || return 1
 		done
 	cd "$DIR"
 }
@@ -170,7 +170,7 @@ update-vim()
 {
 	local DIR TMP_FILE
 	DIR=`pwd`;
-	TMP_FILE=`tempfile -p update_vim-zsh || mktemp /tmp/update_vim-zshXXXXXX || echo /tmp/update_vim-zsh$$`
+	TMP_FILE=`tempfile -p update_vim || mktemp /tmp/update_vim-XXXXXX || echo /tmp/update_vim-$$`
 	echo "Looking for new patches..."; 
 	wget -O - $URL 2> /dev/null | awk 'BEGIN { FS=">" } {print $2}' | \
 		egrep "$VIM_VER_EGREP" | sed 's/<.*//g;' > $TMP_FILE
