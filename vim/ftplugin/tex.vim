@@ -2,7 +2,7 @@
 " Language:		TeX, LaTeX
 " Maintainer:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " License:		GNU GPL
-" Version:		$Id: tex.vim,v 1.2 2002/01/15 02:33:29 host8 Exp $
+" Version:		$Id: tex.vim,v 1.3 2002/01/15 03:32:49 host8 Exp $
 " Language Of Comments:	English
 
 
@@ -14,7 +14,8 @@ let b:did_ftplugin = 1
 
 setlocal textwidth=72
 setlocal formatoptions=croqt
-setlocal iskeyword="a-z,A-Z,48-57,_,-,>,\\,{.}"
+" iskeyword probably dosn't work correctly, dissabling
+"setlocal iskeyword=a-z,A-Z,_,-,>,^\\,{,}
 
 " These lines come from $VIMRUNTIME/ftplugin/tex.vim (modified) {{{
 " Thanks to Benji Fisher, Ph.D. <benji@member.AMS.org>
@@ -211,7 +212,7 @@ if !exists("no_plugin_maps") && !exists("no_tex_maps")
 endif
 " }}} end mappings	
 
-" Modeline {{{1
+" Modeline {{{
 " vim:set ts=4:
 " vim600:fdm=marker fdl=0 fdc=3 vb t_vb=:
-"################################################################# }}}1
+"################################################################# }}}

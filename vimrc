@@ -6,7 +6,7 @@
 " Version:		01.09.08
 " Language Of Comments:	English
 
-" $Id: vimrc,v 1.28 2002/01/15 18:34:45 host8 Exp $
+" $Id: vimrc,v 1.29 2002/01/15 19:42:26 host8 Exp $
 
 " Settings {{{
 " To be secure & Vi nocompatible
@@ -125,6 +125,9 @@ inoremap <C-B>	<S-Left>
 
 " Switching between windows by pressing one time CTRL-X keys.
 noremap <C-X> <C-W><C-W>
+" Tip from http://vim.sourceforge.net/tips/tip.php?tip_id=173
+noremap <C-J> <C-W>j<C-W>_
+noremap <C-K> <C-W>k<C-W>_
 
 set remap
 map <C-O><C-O> :split 
