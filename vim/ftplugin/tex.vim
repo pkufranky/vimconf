@@ -2,7 +2,7 @@
 " Language:		TeX, LaTeX
 " Maintainer:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " License:		GNU GPL
-" Version:		$Id: tex.vim,v 1.4 2002/01/18 21:38:39 host8 Exp $
+" Version:		$Id: tex.vim,v 1.5 2002/01/19 03:57:54 host8 Exp $
 " Language Of Comments:	English
 
 
@@ -211,8 +211,26 @@ if !exists("no_plugin_maps") && !exists("no_tex_maps")
 	imap <buffer> +Y \v{Y}
 	imap <buffer> =Z \'{Z}
 	imap <buffer> +Z \v{Z}
+
+	" Map <BS> to delete "\'{a}" as one character.
+	" To avoid complications (start of line, end of line, etc.) the
+	" mapping inserts a character, the function deletes all but two
+	" characters, and the mapping deletes the last two.
+	inoremap <buffer> <BS> x<Esc>:call <SID>SmartBS('\(\\.{\S}\)')<CR>a<BS><BS>
+
 endif
 " }}} end mappings	
+
+" This function comes from Benji Fisher <benji@e-math.AMS.org>
+" http://vim.sourceforge.net/scripts/download.php?src_id=409 
+fun! s:SmartBS(pat, ...)
+  let init = strpart(getline("."), 0, col(".")-1)
+  let len = strlen(matchstr(init, a:pat . "$")) - 1
+  if len > 0
+    execute "normal!" . len . "X"
+  endif
+endfun
+
 
 " Modeline {{{
 " vim:set ts=4:
