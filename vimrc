@@ -18,7 +18,7 @@
 " Please don't hesitate to correct my english :)
 " Send corrections to <8host AT pauliDOTfmph.uniba.sk>
 
-" $Id: vimrc,v 1.65 2002/08/07 21:27:19 rajo Exp $
+" $Id: vimrc,v 1.66 2002/08/11 17:31:15 rajo Exp $
 
 " Settings {{{
 " To be secure & Vi nocompatible
@@ -44,13 +44,9 @@ let GVIMRC_EXTRA="~/.vim/gvimrc-local"
 if executable("uname") && executable("awk")
 	let machine = system("uname -n | awk 'BEGIN {ORS=\"\"} {print; }'")
 else
-	let machine = ""
+	let machine = $HOSTNAME
 endif
-if executable("awk")
-	let user = system("echo $USER | awk 'BEGIN {ORS=\"\"} {print; }'")
-else
-	let user = $USER
-endif
+let user = $USER
 
 call Source(VIMRC_EXTRA.".pre")
 call Source(VIMRC_EXTRA."-".user.".pre")
