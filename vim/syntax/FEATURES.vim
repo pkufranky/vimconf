@@ -12,6 +12,9 @@ elseif exists("b:current_syntax")
   finish
 endif
 
+" Platon's vimconfig homepage
+syn match helpHyperTextEntry	"http://www.platon.sk.*/"
+
 syn match helpHeadline		"^[A-Z ]\+[ ]\+\*"me=e-1
 syn match helpSectionDelim	"^=\{3,}.*===$"
 syn match helpSectionDelim	"^-\{3,}.*--$"

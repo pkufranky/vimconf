@@ -1,11 +1,14 @@
 *vimconfig*      For Vim version 6.1.  Last change: 2002 Apr 22
 
 
-		  VIMCONFIG USER MANUAL    by Lubomir Host
+		   VIMCONFIG USER MANUAL    by Lubomir Host
+		   http://www.platon.sk/projects/vimconfig/
+		
 
 The notation used in this manual is explained here: |notation|
 (type ':help notation')
-Note: Use CTRL-] when looking for keyword.
+
+Note: Use CTRL-] and CTRL-T when looking for keyword.
 
 ==============================================================================
 1. Short description				*vimconfig-description*
@@ -83,7 +86,7 @@ Here is a list of defined commands: ~
 |vimconfig-com-Snip|			:Snip
 |vimconfig-com-UnquoteMailBody|		:UnquoteMailBody
 -------------------------------------------------------------
-Note: Use CTRL-] when looking for keyword.
+Note: Use CTRL-] and CTRL-T when looking for keyword.
 
 
 FUNCTIONS					*vimconfig-functions*
@@ -106,7 +109,7 @@ Here is a list of defined functions: ~
 |vimconfig-fun-ReadFileAboveCursor|	ReadFileAboveCursor()
 |vimconfig-fun-RemoveAutogroup|		RemoveAutogroup()
 -------------------------------------------------------------
-Note: Use CTRL-] when looking for keyword.
+Note: Use CTRL-] and CTRL-T when looking for keyword.
 
 ==============================================================================
 
@@ -245,7 +248,7 @@ Very thanks to many people which contribute on this Vim configuration files.
 
 Here is a list of contributors (alphabetical order): ~
 	Srinath Avadhanula <srinath AT fastmail.fm>
-	Ondrej Jombik 'Neptun' <nepto AT pobox.sk>
+	Ondrej Jombik 'Nepto' <nepto AT pobox.sk>
 	Martin Karas 'Wolcaan' <wolcano AT pobox.sk>
 
 
