@@ -2,13 +2,13 @@
 "
 " File:			database-client.vim
 " Maintainer:	Lubomir Host 'rajo' <rajo AT platon.sk>
-" Version:		$Platon: vimconfig/vim/modules/database-client.vim,v 1.5 2004-02-29 20:01:11 rajo Exp $
+" Version:		$Platon: vimconfig/vim/modules/database-client.vim,v 1.6 2004-03-08 10:55:18 rajo Exp $
 "
 " Copyright (c) 2003 Platon SDG, http://platon.sk/
 " Licensed under terms of GNU General Public License.
 " All rights reserved.
 "
-" $Platon: vimconfig/vim/modules/database-client.vim,v 1.5 2004-02-29 20:01:11 rajo Exp $
+" $Platon: vimconfig/vim/modules/database-client.vim,v 1.6 2004-03-08 10:55:18 rajo Exp $
 " 
 
 " This plugin needs Perl interpreter to be enabled (+perl feature)
@@ -30,7 +30,7 @@ if !exists('g:SQL_data_window_title')
     let g:SQL_data_window_title = "SQL_data"
 endif
 if !exists('g:SQL_cmd_window_title')
-    let g:SQL_cmd_window_title = "SQL_command"
+    let g:SQL_cmd_window_title = "SQL_log"
 endif
 
 " width of main window
@@ -78,14 +78,24 @@ augroup END
 
 " initialize DBI engine
 function! SQL_Init() " {{{
-perl << EOF
+	perl << EOF
+
+	use Time::HiRes qw(gettimeofday tv_interval);
+	use POSIX qw(strftime);
+	use Env;
+	use DBI;
 
 	package DBI::st;
 
 	# fetch and print data from _executed_ DBI statement handler
-	sub dump_data ($)
+	sub dump_data ($$)
 	{ # {{{
-		my $sth = shift;
+		my ($sth, $curbuf) = @_;
+
+		# if buffer is not defined, dump data to current window
+		unless (defined $curbuf) {
+			$curbuf = $main::curbuf;
+		}
 
 		my $numFields     = $sth->{'NUM_OF_FIELDS'};
 		my $column_names  = $sth->{'NAME'};
@@ -101,19 +111,17 @@ perl << EOF
 				: ($$column_is_num[$i] ? -1 : 1) * length($$column_names[$i]); # WARN: negative length! - used for right aligment of numbers
 			$header_names .= sprintf("%s%s", $i ? " | " : "| ", $$column_names[$i] . " " x ($$column_sizes[$i] - length($$column_names[$i])));
 		}
-		$header_names .= " |\n";
+		$header_names .= " |";
 
 		# build header separator
 		my $separator = "";
 		foreach (my $i = 0; $i < $numFields; $i++) {
 			$separator .= "+" . ("-" x (abs($$column_sizes[$i]) + 2));
 		}
-		$separator .= "+\n"; # the end
+		$separator .= "+"; # the end
 
 		# print header
-		VIM::Msg($separator);
-		VIM::Msg($header_names);
-		VIM::Msg($separator);
+		$curbuf->Append($curbuf->Count(), $separator, $header_names, $separator);
 
 		# print data
 		while (my @row = $sth->fetchrow_array()) {
@@ -125,16 +133,45 @@ perl << EOF
 						: " " x (- $$column_sizes[$i] - length($row[$i])) . $row[$i]
 				);
 			}
-			VIM::Msg("$line |\n");
+			$curbuf->Append($curbuf->Count(), "$line |");
 		}
 
 		# print footer
-		VIM::Msg($separator);
+		$curbuf->Append($curbuf->Count(), $separator);
 
 	} # }}}
 
 	package main;
 
+	# return reference to array with database names
+	sub SQL_database_list($;)
+	{ # {{{
+		my ($dbh) = @_;
+
+		my $sth = $dbh->prepare("SHOW DATABASES");
+		$sth->execute();
+		my @arr;
+
+		while (my @row = $sth->fetchrow()) {
+			push @arr, $row[0];
+		}
+
+		return \@arr;
+
+	} # }}}
+
+	sub SQL_add_database_list($$;)
+	{ # {{{
+		my ($key, $line) = @_;
+
+		my $added_lines = 0;
+		foreach my $db (@{ $main::connections->{$key}->{databases} }) {
+			$main::curbuf->Append($line + $added_lines, "    " . $db);
+			$added_lines++;
+		}
+		
+	} # }}}
+	
 	# number of executed SQL commands
 	my $sql_cmd_num = 0;
 
@@ -148,14 +185,14 @@ call SQL_Init()
 " connect to database
 function! SQL_Connect() " {{{
 	perl << EOF
-	use DBI;
 
 	package main;
 
 	# get hostname from user
 	$db_host = "localhost" unless (defined $db_host); # remember server name
 	my ($success, $value) = VIM::Eval("inputdialog('Hostname of your database server', '$db_host')");
-	if ($success) {
+	#VIM::Msg("success = $success value = $value");
+	if ($success and $value ne '') {
 		$db_host = $value;
 	}
 	else {
@@ -163,20 +200,15 @@ function! SQL_Connect() " {{{
 	}
 	
 	# get username from user
-	$db_user = "user" unless (defined $db_user); # remember username
+	$db_user = $ENV{"USER"} unless (defined $db_user); # remember username
 	my ($success, $value) = VIM::Eval("inputdialog('Login', '$db_user')");
-	if ($success) {
+	if ($success and $value ne '') {
 		$db_user = $value;
 	}
 	else {
 		return;
 	}
 
-	if (exists $main::connections->{"$db_host; $db_user;"}) {
-		VIM::Msg("This connection already exists!");
-		return;
-	}
-	
 	# get password from user
 	my ($success, $value) = VIM::Eval('inputsecret("Password: ")');
 	if ($success) {
@@ -186,22 +218,36 @@ function! SQL_Connect() " {{{
 		return;
 	}
 	
-	$dbh = DBI->connect("DBI:mysql:host=$db_host", $db_user, $db_pass)
+	$dbh = DBI->connect("DBI:mysql:host=$db_host", $db_user, $db_pass,
+		{ RaiseError => 0, AutoCommit => 1})
 		or die $DBI::errstr;
+	# reconnect to database if the connection is lost
+	$dbh->{mysql_auto_reconnect} = 1;
+
+	my $key   = "$db_host; $db_user;";
+	my $ext   = "";
+	my $index = 2;
+	while (exists %main::connections->{"$key$ext"}) {
+		$ext = " ($index)";
+		$index++;
+	}
+	$key .= $ext; # add number of the same connection
 
 	if (defined $dbh) {
-		$main::connections->{"$db_host; $db_user;"} = {
+		$main::connections->{$key} = {
 			'dbh'	=> $dbh,
-			'desc'	=> "$db_user\@$db_host",
-			'list_tables'	=> 1,
+			'desc'	=> "$db_user\@$db_host$ext",
+			'list_databases'	=> 1,
+			'databases'	=> SQL_database_list($dbh),
 		};
-		$main::current_conn = "$db_host; $db_user;";
+		$main::current_conn = $key;
 	}
 	else {
-		undef $main::connections->{"$db_host; $db_user;"}->{dbh};
-		undef $main::connections->{"$db_host; $db_user;"}->{desc};
-		undef $main::connections->{"$db_host; $db_user;"};
+		undef $main::connections->{$key}->{dbh};
+		undef $main::connections->{$key}->{desc};
+		undef $main::connections->{$key};
 	}
+	undef $key, $ext, $index; # cleanup
 
 	my $count = 0;
 	foreach my $key (sort keys %{$main::connections}) {
@@ -209,6 +255,7 @@ function! SQL_Connect() " {{{
 		# reorder connections
 		$main::connections->{$key}->{order} = $count;
 	}
+	undef $count; # cleanup
 		
 	VIM::Msg("Connect to database succsesfull");
 
@@ -221,7 +268,6 @@ endfunction
 " show used connections
 function! SQL_ShowConnections() " {{{
 	perl << EOF
-	use DBI;
 
 	package main;
 
@@ -304,15 +350,10 @@ function! SQL_Execute() " {{{
 endfunction
 " }}}
 
-
 " execute SQL command
 function! SQL_Do(sql_cmd) " {{{
 
-	" get number of SQL cmd window
-	let cmd_winnum  = bufwinnr(g:SQL_cmd_window_title)
-
 	perl << EOF
-	use DBI;
 
 	package main;
 
@@ -322,36 +363,67 @@ function! SQL_Do(sql_cmd) " {{{
 	# remove empty chars from beginning and end of string
 	# add semilon at the end
 	$sql_cmd =~ s/^\s+//g;
-	$sql_cmd =~ s/;?\s*$/;/g;
+	$sql_cmd =~ s/[;\s]{1,}$//g;
+	$sql_cmd = $sql_cmd . ";";
 
 	# remember last SQL command
 	VIM::DoCommand('let g:SQL_last_command="' . $sql_cmd . '"');
 
 	$main::sql_cmd_num++;
-	my $winnr = VIM::Eval("cmd_winnum");
-	my ($window) = VIM::Windows($winnr);
-	my $cmd_buf = $window->Buffer();
-	my $last_line = $cmd_buf->Count(); # number of lines
+
+	my ($success, $value)	= VIM::Eval("bufwinnr(g:SQL_cmd_window_title)");
+	my ($cmd_window)		= $success ? VIM::Windows($value) : undef;
+	my $cmd_buf				= $cmd_window ? $cmd_window->Buffer() : $main::curbuf;
+
+	my ($success, $value)	= VIM::Eval("bufwinnr(g:SQL_data_window_title)");
+	my ($data_window)		= $success ? VIM::Windows($value) : undef;
+	my $data_buf			= $data_window ? $data_window->Buffer() : $main::curbuf;
 
 	# add SQL cmd separator
-	$cmd_buf->Append($last_line, "-- Commnad #$main::sql_cmd_num: " . scalar localtime, $sql_cmd, "");
+	$data_buf->Append($data_buf->Count(),
+		"", "-- Commnad #$main::sql_cmd_num: " . scalar localtime, $sql_cmd);
+	$cmd_buf->Append($cmd_buf->Count(),
+		"", "-- Commnad #$main::sql_cmd_num: " . scalar localtime, $sql_cmd);
 
-	my $sth = $dbh->prepare($sql_cmd) or warn $DBI::errstr;
-	$sth->execute();
-	$sth->dump_data();
+	my $start_time = [ Time::HiRes::gettimeofday ];
+	my $sth = $dbh->prepare($sql_cmd);
+	if ($dbh->errstr) {
+		$cmd_buf->Append($cmd_buf->Count(), "-- ERROR: " . $dbh->errstr);
+	}
+	else {
+		$sth->execute();
+		if ($dbh->errstr) {
+			$cmd_buf->Append($cmd_buf->Count(), "-- ERROR: " . $dbh->errstr);
+		}
+		else {
+			$sth->dump_data($data_buf);
+			$data_buf->Append($curbuf->Count(),
+				"-- " . $sth->rows() . " rows in set (" . Time::HiRes::tv_interval($start_time) . " sec)");	
+			$sth->finish();
+		}
+	}
+	#$cmd_window->Cursor($cmd_buf->Count(), 1);
 
-	undef $window;
-	undef $cmd_buf;
-	undef $last_line;
-	undef $winnr;
+	undef $cmd_window, $data_window;
+	undef $cmd_buf, $data_buf;
 
 EOF
 
-	unlet cmd_winnum
+	" get number of current window
+	let curwinnum = bufwinnr('%')
+
+	let winnum = bufwinnr(g:SQL_cmd_window_title)
+	if winnum < 0 " window doesn't exists
+		return
+	endif
+	
+	" toggle to SQL window, scroll to end, and then switch back
+	execute "normal \<c-w>" . winnum . "w"
+	execute "normal G"
+	execute "normal \<c-w>" . curwinnum . "w"
 
 endfunction
 " }}}
-
 
 "create menu
 function! SQL_CreateMenu() " {{{
@@ -365,7 +437,7 @@ function! SQL_CreateMenu() " {{{
 	amenu 200.40.30 S&QL.&Show.&tables :call SQL_Do('SHOW TABLES')<Return>
 	amenu 200.40.40 S&QL.&Show.&variables :call SQL_Do('SHOW VARIABLES')<Return>
 	amenu 200.40.50 S&QL.&Show.&server\ status :call SQL_Do('SHOW STATUS')<Return>
-	amenu 200.50.10 S&QL.&Windows.&create :call <SID>SQL_CreateWindows()<Return>
+	amenu 200.50.10 S&QL.&Windows.&create :call SQL_CreateWindows()<Return>
 endfunction
 " }}}
 call SQL_CreateMenu()
@@ -380,7 +452,7 @@ endfunction
 " }}}
 
 " create windows
-function! s:SQL_CreateWindows() " {{{
+function! SQL_CreateWindows() " {{{
 	let s:main_winnum = bufwinnr(g:SQL_main_window_title)
 	call s:CloseWindow(s:main_winnum)
 	
@@ -395,11 +467,11 @@ function! s:SQL_CreateWindows() " {{{
 	setlocal buftype=nowrite
 	setlocal bufhidden=delete
 	setlocal nonumber
-	setlocal nowrap
+	setlocal wrap
 	setlocal norightleft
 	setlocal foldcolumn=0
 	setlocal modifiable
-	setlocal filetype=sql
+	setlocal filetype=sql_log
 
 
 	execute g:SQL_main_window_width " vsplit " . g:SQL_main_window_title
@@ -450,13 +522,13 @@ function! s:SQL_Display_Help()
 
 	if s:sql_brief_help
 		" Add the brief help
-		call append(0, '" Press ? to display help text')
+		call append(0, "\" Press 'h' to display help text")
 		call append(1, '')
 	else
 		" Add the extensive help
 		call append(0, '" u : Update table list')
 		call append(1, '" U : Update database list')
-		call append(2, '" ? : Remove help text')
+		call append(2, '" h : Remove help text')
 		call append(3, '')
 	endif
 endfunction
@@ -522,11 +594,39 @@ function! s:Map_SQL_mappings()
 		" toggle to SQL window and then back
 		execute "normal \<c-w>" . winnum . "w"
 
-		inoremap <buffer> <silent> ? <C-o>:call <SID>SQL_Toggle_Help_Text()<CR>
-		nnoremap <buffer> <silent> ? :call <SID>SQL_Toggle_Help_Text()<CR>
+		" toggle between long and short help format
+		inoremap <buffer> <silent> h <C-o>:call <SID>SQL_Toggle_Help_Text()<CR>
+		nnoremap <buffer> <silent> h :call <SID>SQL_Toggle_Help_Text()<CR>
 
 		inoremap <buffer> <silent> U <C-o>:call <SID>SQL_UpdateDatabaseList()<CR>
 		nnoremap <buffer> <silent> U :call <SID>SQL_UpdateDatabaseList()<CR>
+
+		inoremap <buffer> <silent> <CR> <C-o>:call <SID>SQL_SwitchCurrentDB()<CR>
+		nnoremap <buffer> <silent> <CR> :call <SID>SQL_SwitchCurrentDB()<CR>
+
+		execute "normal \<c-w>" . curwinnum . "w"
+	endif
+
+	let winnum = bufwinnr(g:SQL_cmd_window_title)
+	if winnum >= 0 " if window exists
+		" toggle to SQL window and then back
+		execute "normal \<c-w>" . winnum . "w"
+
+		" execute current SQL command
+		inoremap <buffer> <silent> <F9> <C-o>:call SQL_Do(getline("."))<CR>
+		nnoremap <buffer> <silent> <F9> :call SQL_Do(getline("."))<CR>
+
+		execute "normal \<c-w>" . curwinnum . "w"
+	endif
+
+	let winnum = bufwinnr(g:SQL_data_window_title)
+	if winnum >= 0 " if window exists
+		" toggle to SQL window and then back
+		execute "normal \<c-w>" . winnum . "w"
+
+		" execute current SQL command
+		inoremap <buffer> <silent> <F9> <C-o>:call SQL_Do(getline("."))<CR>
+		nnoremap <buffer> <silent> <F9> :call SQL_Do(getline("."))<CR>
 
 		execute "normal \<c-w>" . curwinnum . "w"
 	endif
@@ -541,47 +641,111 @@ function! s:SQL_UpdateDatabaseList()
 	let curwinnum = bufwinnr('%')
 	
 	let winnum = bufwinnr(g:SQL_main_window_title)
-	if winnum >= 0 " if window exists
-		" toggle to SQL window and then back
-		execute "normal \<c-w>" . winnum . "w"
+	if winnum < 0 " window doesn't exists
+		return
+	endif
+	
+	" toggle to SQL window and then back
+	execute "normal \<c-w>" . winnum . "w"
 
-		setlocal modifiable
+	setlocal modifiable
 
-		" remove all lines after help lines
-		if s:sql_brief_help
-			exe (s:brief_help_size + 1) . ',$ delete _'
-		else
-			exe (s:full_help_size + 1) . ',$ delete _'
-		endif
+	" remove all lines after help lines
+	if s:sql_brief_help
+		silent! execute (s:brief_help_size + 1) . ',$ delete _'
+	else
+		silent! execute (s:full_help_size + 1) . ',$ delete _'
+	endif
 
-		perl << EOF
-		use DBI;
+	perl << EOF
 
-		package main;
+	package main;
 
-		my $count = 0;
-		foreach my $key (sort keys %{$main::connections}) {
-			$count++;
-			# reorder connections
-			my $conn = $main::connections->{$key};
-			$conn->{order} = $count;
-			$main::curbuf->Append($main::curbuf->Count(),
-				($conn->{list_tables} ?
-					($main::current_conn eq $key ? '* ' : '+ ' ) :
-					'- ')
-				. "$main::connections->{$key}->{desc}"
-			);
+	my $count = 0;
+	foreach my $key (sort keys %{$main::connections}) {
+		$count++;
+		# reorder connections
+		my $conn = $main::connections->{$key};
+		$conn->{order} = $count;
+		$main::curbuf->Append($main::curbuf->Count(),
+			($conn->{list_databases} ?
+				($main::current_conn eq $key ? '* ' : '+ ' ) :
+				'- ')
+			. $conn->{desc}
+		);
+		if ($conn->{list_databases}) {
+			SQL_add_database_list($key, $main::curbuf->Count());
 		}
+	}
 
-		if ($count == 0) { # No connections
-			$main::curbuf->Append($main::curbuf->Count(), '" -- No connections');
-		}
+	if ($count == 0) { # No connections
+		$main::curbuf->Append($main::curbuf->Count(), '" -- No connections');
+	}
 
 EOF
 
-		setlocal nomodifiable
-		execute "normal \<c-w>" . curwinnum . "w"
+	setlocal nomodifiable
+	execute "normal \<c-w>" . curwinnum . "w"
+
+endfunction
+" }}}
+
+" s:SQL_SwitchCurrentDB() {{{
+function! s:SQL_SwitchCurrentDB()
+
+	" get number of current window
+	let curwinnum = bufwinnr('%')
+	
+	let winnum = bufwinnr(g:SQL_main_window_title)
+	if winnum < 0 " window doesn't exists
+		return
 	endif
+
+	" toggle to SQL window and then back
+	execute "normal \<c-w>" . winnum . "w"
+
+	setlocal modifiable
+	let curr_line = line(".")
+	silent! execute "%s/^\*/+/g"
+	silent! execute "normal " . curr_line . "G"
+
+	" search for new active connection
+	if match(getline("."), "^[+-]") == -1
+		let linenum = search("^[+-]", "bW") " first search backward
+	else " current line matches connection
+		let linenum = curr_line
+	endif
+	if linenum == 0 " search also forward (if we are on top)
+		let linenum = search("^[+-]", "W")
+	endif
+	if linenum == 0 " no db found, return
+		return
+	endif
+	let curr_db = getline(linenum)
+	call setline(linenum, substitute(curr_db, "^.", "*", ""))
+
+	perl << EOF
+
+	package main;
+
+	my $new_conn = VIM::Eval("curr_db");
+	my $new_db   = VIM::Eval("getline(curr_line)");
+	$new_conn =~ s/^..//g;
+	$new_db   =~ s/^....//g;
+
+	foreach my $key (keys %{$main::connections}) {
+		if ($new_conn eq $main::connections->{$key}->{desc}) {
+			$main::current_conn = $key;
+			my $retval = $main::connections->{$key}->{dbh}->do("USE $new_db");
+			last;
+		}
+	}
+EOF
+
+	silent! execute "normal " . curr_line . "G"
+
+	setlocal nomodifiable
+	execute "normal \<c-w>" . curwinnum . "w"
 
 endfunction
 " }}}
