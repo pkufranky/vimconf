@@ -5,12 +5,12 @@
 # (c) rajo <host8@kepler.fmph.uniba.sk
 #
 
-# $Id: $
+# $Id: Makefile,v 1.2 2001/10/13 22:35:20 host8 Exp $
 
 PACKAGE = vimconfig
 VERSION = 1.0
 
-DISTFILES = Makefile .vimrc .vim .vim/strace.vim
+DISTFILES = Makefile vimrc vim vim/strace.vim
 
 #TAR = gtar
 TAR = tar
