@@ -1,16 +1,16 @@
 " Vim configuration file
 " Language:		Vim 5.6 script    (with Vim 6.0 features)
 " Maintainer:	Lubomir Host <host8@kepler.fmph.uniba.sk>
-" Bugs Report:	Lubomir Host <host8@kepler.fmph.uniba.sk>
-" Copyright:	GNU GPL
-" Last Change:	2001 Oct 23 15:56:41
+" Bugs Reports:	Lubomir Host <host8@kepler.fmph.uniba.sk>
+" License:		GNU GPL
+" Last Change:	2001 Nov 01 21:36:58
 " Version:		01.09.08
-" Language Of Comments:	Slovak
+" Language Of Comments:	English
 
-" $Id: vimrc,v 1.10 2001/10/23 13:31:12 host8 Exp $
+" $Id: vimrc,v 1.11 2001/10/23 14:01:17 host8 Exp $
 
 " Settings {{{1
-" ... to be secure & Vi nocompatible
+" To be secure & Vi nocompatible
 :set secure nocompatible
 :if version >= 600 
 :	syntax enable
@@ -62,7 +62,7 @@
 " Available TAGS files
 :set tags=./TAGS,./tags,tags
 
-" Don't add EOF at end of file!
+" Don't add EOF at end of file
 :set noendofline
 
 :set showfulltag 
@@ -71,16 +71,26 @@
 :set incsearch report=0 title
 :set showcmd showmatch showmode
 
+" Indent of 1 tab with size of 4 spaces
+:set tabstop=4 
+:set shiftwidth=4 
+
+" Use an indent of 4 spaces, with no tabs. This setting is recommended by PEAR
+" (PHP Extension and Application Repository) Conding Standarts. If you want
+" this setting uncomment the expandtab setting below.
+":set expandtab 
+
 " Settings for mouse (gvim under Xwindows)
 :set nomousefocus mousehide
 
-" cursor always in the middle of the screen
+" Cursor always in the middle of the screen
 :set scrolloff=999
-" make window maximalized
+
+" Make window maximalized
 :set winheight=100
 
-" the screen will not be redrawn while executing macros, registers
-" and other commands that have not been typed.  To force an update use |:redraw|.
+" The screen will not be redrawn while executing macros, registers
+" and other commands that have not been typed. To force an updates use |:redraw|.
 :set lazyredraw
 
 " Vim beeping go to the hell...
@@ -93,7 +103,7 @@
 :endif
 
 "################################################################# }}}1
-" Keybord mappings. {{{1
+" Keybord mappings {{{1
 "
 " start of line
 ":noremap <C-A>		i<Home>
@@ -106,7 +116,7 @@
 " forward one word
 ":inoremap <C-F>	<S-Right>
 
-" prepinanie medzi oknami stlacenim 1x CTRL-X
+" Switching between windows by pressing one time CTRL-X keys.
 :noremap <C-X> <C-W><C-W>
 
 :set remap
@@ -224,13 +234,12 @@
 :augroup END
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
 " Autocommands for *.html *.cgi {{{2
-" toto sa postara o automaticky update datumu poslednej modifikacie
-" *.html suborov 
-" Podmienka: v subore sa musi vyskytovat riadok "^Last modified: ",
-" inac sa datum napise na aktualnom riadku
+" Automatic updates date of last modification in HTML files. File must
+" contain line "^Last modified: ", else will be date writtend on the current
+" line.
 :augroup HtmlCgi
 :  autocmd!
-" doplnanie parovej znacky v suboroch *.html
+" Appending right part of tag in HTML files.
 :	autocmd BufEnter                 *.html	:imap QQ </>2F<lywf>f/pF<i
 :	autocmd BufLeave                 *.html	:iunmap QQ
 :	autocmd BufWritePre,FileWritePre *.html	:call AutoLastMod()
@@ -297,7 +306,7 @@
 "################################################################# }}}1
 " Functions {{{1
 " Function ChangeFoldMethod() {{{2
-" funkcia na zmenu skryvacej metody
+" Function for changing folding method.
 "
 :if version >= 600
 :	fun! ChangeFoldMethod()
@@ -362,9 +371,9 @@
 :endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
 " Function SetVimVar() {{{2
-" funkcia podla riadku v 'modelines' VIM_VAR: var1=value1 var2=value2
-" nastavi prislusne hodnoty premennych
-"
+" Functions set appropriate values in variables according to line in
+" 'modelines' VIM_VAR: var1=value1 var2=value2
+" 
 "fun! SetVimVar()
 ":$-5,$ call SetVimVarFromLine()
 "endfun
@@ -381,9 +390,8 @@
 "endfun
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
 " Function AutoLastMod() {{{2
-" funkcia zabezpeci automaticku zmenu datumu suborov *.html
-" ak je napr. cez modeline nastavena premmenna autolastmod
-" na prislusnu hodnotu
+" Provides atomatic change of date in files, if it is set via
+" modeline variable autolastmod to appropriate value.
 "
 fun! AutoLastMod()
 :if exists("g:autolastmod")
@@ -396,7 +404,7 @@ fun! AutoLastMod()
 endfun
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
 " Function LastMod() {{{2
-" funkcia na automaticku upravu datumu *.html suborov
+" Automatic change date in *.html files.
 "
 fun! LastMod(text, ...)
 :mark d
@@ -412,21 +420,21 @@ fun! LastMod(text, ...)
 endfun
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
 " Function MakeHeader() {{{2
-" funkcia na pripravu hlavicky *.h suborov
+" Prepare header in *.h files.
 "
 fun! MakeHeader() 
-" nastavia sa premenne, ze ako budu vyzerat riadky
+" Line look variables.
 :let line = "" . bufname("%")
 :let line = substitute(line, "\\\.", "_\0", "")
 :let line1 = substitute(line, ".*", "#ifndef _\\U\\0", "")
 :let line2 = substitute(line, ".*", "#define _\\U\\0", "")
 :let line6 = "#endif /* " . line1 . " */"
-" vypis nastavenych premmennych
+" Writeout of sets variebles.
 ":echo line
 " ...
-" nastavovanie konkretnych riadkov podla premennych
-" v danom subore musi byt dostatocny pocet riadkov, lebo inac setline() zlyha!! 
-" append pridava dalsi riadok do suboru, vid :help append
+" Setting appropriate lines according to the prepared variables.
+" In target file there must be sufficient number of lines, else setline() will
+" fails. Function append() appends next line into file, see :help append
 :call setline(1, line1)
 :call append(1, line2)
 :call append(2, "")
@@ -438,11 +446,10 @@ fun! MakeHeader()
 endfun
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
 " Function OpenAllWin() {{{2
-" Otvaraniem okien pre vsetky subory na prikazovom riadku
-" premenna "opened" je pouzita pre test, ci uz boli okna
-" pre subory raz otvarane, aby sa predislo opatovnemu 
-" otvaraniu okien, ak sa zmeni konfiguracny subor (resp.
-" sa znovu nacita)
+" Opens windows for all files in the command line.
+" Variable "opened" is used for testing, if window for file was already opened
+" or not. This is prevention for repeat window opening after ViM config file
+" reload.
 "
 :fun! OpenAllWin()
 :let i = 0
@@ -560,3 +567,4 @@ endfun
 " vim:set ts=4:
 " vim600:fdm=marker fdl=0 fdc=3:
 "################################################################# }}}1
+
