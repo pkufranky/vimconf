@@ -9,7 +9,7 @@
 # All rights reserved.
 #
 
-# $Platon: vimconfig/Makefile,v 1.39 2004-02-02 09:48:48 nepto Exp $
+# $Platon: vimconfig/Makefile,v 1.40 2004-02-11 09:20:54 rajo Exp $
 
 PACKAGE = vimconfig
 VERSION = 1.8
@@ -23,6 +23,7 @@ DISTFILES_TEMPLATE_PLUGIN = vim                         \
 							vim/templates/              \
 							vim/templates/skel.c        \
 							vim/templates/skel.ebuild   \
+							vim/templates/skel.fcgi     \
 							vim/templates/skel.h        \
 							vim/templates/skel.java     \
 							vim/templates/skel.lisp     \
