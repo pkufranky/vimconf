@@ -5,10 +5,10 @@
 # (c) rajo <host8@kepler.fmph.uniba.sk>
 #
 
-# $Id: Makefile,v 1.19 2002/04/30 23:53:06 host8 Exp $
+# $Id: Makefile,v 1.20 2002/05/01 01:13:27 host8 Exp $
 
 PACKAGE = vimconfig
-VERSION = 1.7-2.unstable
+VERSION = 1.7
 PACKAGE_TEMPLATE_PLUGIN = templatefile
 VERSION_TEMPLATE_PLUGIN = 1.7-2.unstable
 
@@ -31,17 +31,21 @@ DISTFILES = README FEATURES.txt tags \
 			vim/compiler/tex.vim \
 			vim/ftplugin \
 			vim/ftplugin/cvs.vim \
+			vim/ftplugin/html.vim \
 			vim/ftplugin/mail.vim \
 			vim/ftplugin/miktexmenus.vim \
 			vim/ftplugin/perl.vim \
+			vim/ftplugin/sgml.vim \
 			vim/ftplugin/tex.vim \
 			vim/ftplugin/vim.vim \
 			vim/indent/ \
+			vim/indent/php.vim \
 			vim/indent/tex.vim \
 			vim/plugin \
 			vim/plugin/CmdlineCompl.vim \
 			vim/plugin/calendar.vim \
 			vim/plugin/imaps.vim \
+			vim/plugin/increment.vim \
 			vim/plugin/matchit.vim \
 			vim/plugin/syntaxFolds.vim \
 			vim/syntax/ \
