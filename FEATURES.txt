@@ -1,0 +1,116 @@
+*vimconfig*      For Vim version 6.1.  Last change: 2002 Apr 22
+
+
+		  VIMCONFIG USER MANUAL    by Lubomir Host
+
+The notation used in this manual is explained here: |notation|
+(type ':help notation')
+
+==============================================================================
+1. Short description				*vimconfig-description*
+
+Vimconfig is a complete set of Vim 6.1 configurations files. It includes
+personal vimrc config file with many features and some usefull plugins e.g.
+for html, TeX, Perl, ... . 
+
+COMMON features					*vimconfig-common*
+---------------
+
+- support for user specific and machine specific settings See
+  |vimconfig-setup|.
+- improved status bar |vimconfig-statusbar|.
+- ability to open multiple files at ViM startup when they are specified at
+  command line |vimconfig-startup|.
+- when opening new file a common used strings are inserted according to file
+  type; ie. #include directives in *.c files and so on
+- automatic 'perltidy' detection and usage for Perl source codes indentation
+
+KEYS (INSERT mode)				*vimconfig-insert-mode*
+------------------
+
+CTRL-a - move to beginning of line
+CTRL-e - move to end of line
+CTRL-d - delete current line without saving it to buffer and without
+         possibility of Undo; use with care!
+
+KEYS (NORMAL mode)				*vimconfig-normal-mode*
+------------------
+
+CTRL-o - open file
+
+FUNCTIONS					*vimconfig-functions*
+---------
+
+						*vimconfig-func-Calendar*
+:Calendar - 
+						*vimconfig-func-CallProg*
+:CallProg -
+						*vimconfig-func-Explore*
+:Explore
+						*vimconfig-func-FoldLongLines*
+:FoldLongLines -
+						*vimconfig-func-Inc*
+:Inc -
+						*vimconfig-func-IncN*
+:IncN -
+						*vimconfig-func-IncR*
+:IncR -
+						*vimconfig-func-Indent*
+:Indent - indents whole document; especially usable for C source codes
+						*vimconfig-func-LoadFile*
+:LoadFile -
+						*vimconfig-func-LoadTemplateFile*
+:LoadTemplateFile -
+						*vimconfig-func-MatchDebug*
+:MatchDebug -
+						*vimconfig-func-Next*
+:Next -
+						*vimconfig-func-NetUserPass*
+:NetUserPass -
+						*vimconfig-func-Nread*
+:Nread -
+						*vimconfig-func-Nwrite*
+:Nwrite -
+						*vimconfig-func-OpenAllWin*
+:OpenAllWin -
+						*vimconfig-func-Print*
+:Print -
+						*vimconfig-func-Printf*
+:Printf -
+						*vimconfig-func-ReadFileAboveCursor*
+:ReadFileAboveCursor -
+						*vimconfig-func-Sexplore*
+:Sexplore -
+						*vimconfig-func-Source*
+:Source -
+						*vimconfig-func-Snip*
+:Snip -
+
+
+:UnquoteMailBody - removes starting '>' characters from every line
+
+==============================================================================
+x.x Autocommands				*vimconfig-autocommands*
+
+
+
+==============================================================================
+x.x Plugins					*vimconfig-plugins*
+
+
+
+==============================================================================
+X.x Thanks					*vimconfig-thanks*
+
+Very thanks to many people which contribute on this Vim configuration files.
+
+Here is a list of contributors (alphabetical order):
+	Srinath Avadhanula <srinath AT fastmail.fm>
+	Ondrej Jombik 'Neptun' <nepto AT pobox.sk>
+	Martin Karas 'Wolcaan' <wolcano AT pobox.sk>
+
+
+
+
+==============================================================================
+  vim:tw=78:ts=8:ft=FEATURES:norl:
