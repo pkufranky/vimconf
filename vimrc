@@ -3,11 +3,11 @@
 " Maintainer:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " Bugs Reports:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " License:		GNU GPL
-" Last Change:	2001 Nov 07 22:30:12
+" Last Change:	2001 Nov 08 04:25:42 PM
 " Version:		01.09.08
 " Language Of Comments:	English
 
-" $Id: vimrc,v 1.13 2001/11/07 19:41:43 host8 Exp $
+" $Id: vimrc,v 1.14 2001/11/07 21:32:27 host8 Exp $
 
 " Settings {{{1
 " To be secure & Vi nocompatible
@@ -161,7 +161,7 @@
 :command! -nargs=0 FoldLongLines call FoldLongLines()
 :command! -nargs=0 Indent call Indent()
 :command! -nargs=0 CallProg call CallProg()
-:command! -nargs=0 UnquoteMailbody call UnquoteMailbody()
+:command! -nargs=0 UnquoteMailBody call UnquoteMailBody()
 :command! -nargs=* ReadFileAboveCursor call ReadFileAboveCursor(<f-args>)
 :command! -nargs=* R call ReadFileAboveCursor(<f-args>)
 "################################################################# }}}1
@@ -552,11 +552,11 @@ fun! Indent()
 :	exec "normal mfggvG$='f"
 endfun
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
-" Function UnquoteMailbody() {{{2
+" Function UnquoteMailBody() {{{2
 "
-fun! UnquoteMailbody()
-:	exec ":%s/\\n> \\?\\([^>]\\)/ \\1/g"
-:	exec ":%s/^>$//g"
+fun! UnquoteMailBody()
+" Every backslash character must be escaped in function -- Nepto
+:	exec "normal :%s/^\\([ ]*>[ ]*\\)*\\(\\|[^>].*\\)$/\\2/g"
 endfun
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
 " Function SafeLineDelete() {{{2
