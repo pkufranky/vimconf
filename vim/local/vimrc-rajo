@@ -9,3 +9,4 @@ let g:author="Lubomir Host 'rajo'"
 let g:email="rajo AT platon.sk"
 let g:company = "Platon SDG, http://platon.sk/"
 
+source ~/.vim/modules/database-client.vim
