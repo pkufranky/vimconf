@@ -21,6 +21,7 @@ CREATE OR REPLACE PACKAGE @FILE@ IS
 
 END;
 /
+SHOW ERRORS;
 
 /* Modeline for ViM {{{
  * vim: set ts=4:
