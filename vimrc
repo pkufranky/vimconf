@@ -8,7 +8,7 @@
 " Please don't hesitate to correct my english :)
 " Send corrections to <host8@kepler.fmph.uniba.sk>
 
-" $Id: vimrc,v 1.42 2002/02/16 23:23:58 host8 Exp $
+" $Id: vimrc,v 1.43 2002/02/16 23:52:09 host8 Exp $
 
 " Settings {{{
 " To be secure & Vi nocompatible
@@ -372,7 +372,7 @@ if version >= 600
 			endif
 			let lnum = line(".")
 "			Move one line down
-			exec "normal OB"
+			exec "normal j"
 			if lnum == lend
 				break
 			endif
