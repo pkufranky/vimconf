@@ -5,7 +5,7 @@
 " License:		GNU GPL
 " Version:		2002.02.05
 
-" $Id: vimrc,v 1.34 2002/02/02 05:10:56 host8 Exp $
+" $Id: vimrc,v 1.35 2002/02/05 19:22:56 host8 Exp $
 
 " Settings {{{
 " To be secure & Vi nocompatible
@@ -26,12 +26,16 @@ let c_space_errors=1
 " }}}
 
 " History and viminfo settings {{{
-set history=10000
-if filewritable(expand("$HOME/.vim/viminfo")) == 1 || 
-			\ filewritable(expand("$HOME/.vim/")) == 2
-	set viminfo=!,%,'5000,\"10000,:10000,/10000,n~/.vim/viminfo
-else
-	set viminfo=
+if has("history") 
+	set history=10000
+endif
+if has("viminfo")
+	if filewritable(expand("$HOME/.vim/viminfo")) == 1 || 
+				\ filewritable(expand("$HOME/.vim/")) == 2
+		set viminfo=!,%,'5000,\"10000,:10000,/10000,n~/.vim/viminfo
+	else
+		set viminfo=
+	endif
 endif
 " Don't save backups of files.
 set nobackup
@@ -41,7 +45,9 @@ set nobackup
 ":set ruler
 " Display a status-bar.
 set laststatus=2
-set statusline=%1*%{GetID()}%0*%<%f\ %3*%m%1*%r%0*\ %2*%y%4*%w%0*%=[%b\ 0x%B]\ \ %8l,%10([%c%V/%{strlen(getline(line('.')))}]%)\ %P
+if has("statusline")
+	set statusline=%1*%{GetID()}%0*%<%f\ %3*%m%1*%r%0*\ %2*%y%4*%w%0*%=[%b\ 0x%B]\ \ %8l,%10([%c%V/%{strlen(getline(line('.')))}]%)\ %P
+endif
 " }}}
 
 " Settings for Explorer script {{{
