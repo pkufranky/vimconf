@@ -139,6 +139,11 @@ set wildignore+=*.dvi
 set nostartofline
 
 " Automatically setting options in various files
+" WARNINNG: disable modeline if you are running vim version < 6.1.265 !!
+"           These are security problems. See http://www.guninski.com/vim1.html
+"                                                (reported by Georgi Guninski)
+" TODO: there is no way how to test vim patchlevel version, therefore we are
+"       not able determine vim version < 6.1.265
 set modeline
 
 " Available TAGS files
