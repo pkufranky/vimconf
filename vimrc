@@ -19,7 +19,7 @@
 " Send corrections to
 "        Lubomir Host 'rajo' <rajo AT platon.sk>
 
-" Version: $Platon: vimconfig/vimrc,v 1.80 2003-02-28 02:00:51 rajo Exp $
+" Version: $Platon: vimconfig/vimrc,v 1.81 2003-03-06 21:08:06 rajo Exp $
 
 " Settings {{{
 " To be secure & Vi nocompatible
@@ -780,6 +780,7 @@ hi User4        term=inverse,bold cterm=inverse,bold ctermfg=LightBlue
 hi User5        term=inverse,bold cterm=inverse,bold ctermfg=Red       ctermbg=Green
 hi Folded       term=standout     cterm=bold         ctermfg=Blue      ctermbg=Black
 hi FoldColumn   term=standout                        ctermfg=DarkBlue  ctermbg=Black 
+hi Comment      term=bold                            ctermfg=DarkCyan
 " }}}
 
 call Source(VIMRC_EXTRA.".post")

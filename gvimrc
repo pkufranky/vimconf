@@ -20,7 +20,7 @@
 "
 "        Lubomir Host 'rajo' <rajo AT platon.sk>
 
-" Version: $Platon: vimconfig/gvimrc,v 1.6 2003-02-28 02:00:51 rajo Exp $
+" Version: $Platon: vimconfig/gvimrc,v 1.7 2003-03-06 21:08:06 rajo Exp $
 
 function! Source(File)
 	silent! execute "source " . a:File
@@ -56,6 +56,7 @@ set t_vb=
 
 " Color settings
 if &t_Co > 2 || has("gui_running")
+	hi Comment                  guifg=#80a0ff
 	hi StatusLine   guibg=White guifg=Black     gui=bold 
 	hi StatusLineNC guibg=Black guifg=White     gui=bold,reverse 
 	hi User1        guibg=Red   guifg=White     gui=bold 
