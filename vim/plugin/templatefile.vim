@@ -2,7 +2,7 @@
 " Vim global plugin for autoload template files
 " File:			templatefile.vim
 " Maintainer:	Lubomir Host 'rajo' <rajo AT platon.sk>
-" Version:		$Platon: vimconfig/vim/plugin/templatefile.vim,v 1.17 2003-11-20 15:53:25 rajo Exp $
+" Version:		$Platon: vimconfig/vim/plugin/templatefile.vim,v 1.18 2003-12-09 07:26:57 rajo Exp $
 "
 " Thanks:
 " 	Scott Urban:	First version of templatefile.vim
@@ -72,12 +72,18 @@ function! LoadTemplateFile()
 	let inc_gaurd  = Escape(toupper(inc_gaurd))
 	if exists("g:author")
 		let Author = Escape(g:author)
+	else
+		let Author = Escape("UNKNOWN AUTHOR")
 	endif
 	if exists("g:email")
 		let Email  = Escape(g:email)
+	else
+		let Email  = Escape("UNKNOWN@undefined.net")
 	endif
 	if exists("g:company")
 		let Company  = Escape(g:company)
+	else
+		let Company  = Escape("UNKNOWN Company")
 	endif
 
 	" build variable for @JAVA_PACKAGE@ substitution
