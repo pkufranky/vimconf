@@ -3,7 +3,7 @@
 " File: templatefile.vim
 " Maintainer:	Lubomir Host 'rajo' <8host AT pauli.fmph.uniba.sk>
 " Last Change:	2003/01/10
-" Version: $Platon: vimconfig/vim/plugin/templatefile.vim,v 1.9 2003-01-14 14:27:41 rajo Exp $
+" Version: $Platon: vimconfig/vim/plugin/templatefile.vim,v 1.10 2003-01-16 12:19:32 rajo Exp $
 " Thanks:
 " 	Scott Urban:	First version of templatefile.vim
 " 		        	http://vim.sourceforge.net/scripts/script.php?script_id=198
@@ -25,8 +25,13 @@ augroup END
 command! -nargs=0 LoadTemplateFile call LoadTemplateFile()
 command! -nargs=1 LoadFile call LoadFile(<args>)
 
+" escape special characters
+function! Escape(str)
+	return escape(a:str, '/\\')
+endfunction
+
 " template file loaded
-fun! LoadTemplateFile()
+function! LoadTemplateFile()
 	if exists("g:load_templates")
 		if g:load_templates == "no"
 			return
@@ -52,34 +57,33 @@ fun! LoadTemplateFile()
 		" Template not found
 	endif
 
-	let date = strftime("%d/%m/%Y")
-	let year = strftime("%Y")
-	let cwd  = getcwd()
-	let lastdir = substitute(cwd, ".*/", "", "g")
-	let myfile  = expand("%:t:r")
-	let myfile_ext = expand("%")
-	let myfile_ext = substitute(myfile_ext, "/", "@PATH_SEP@", "")
-	let inc_gaurd = substitute(myfile, "\\.", "_", "g")
-	let inc_gaurd = toupper(inc_gaurd)
+	let date       = Escape(strftime("%d/%m/%Y"))
+	let year       = Escape(strftime("%Y"))
+	let cwd        = Escape(getcwd())
+	let lastdir    = Escape(substitute(cwd, ".*/", "", "g"))
+	let myfile     = Escape(expand("%:t:r"))
+	let myfile_ext = Escape(expand("%"))
+	let inc_gaurd  = Escape(substitute(myfile, "\\.", "_", "g"))
+	let inc_gaurd  = Escape(toupper(inc_gaurd))
 	if exists("g:author")
-		let Author = g:author
+		let Author = Escape(g:author)
 	endif
 	if exists("g:email")
-		let Email  = g:email
+		let Email  = Escape(g:email)
 	endif
 	if exists("g:company")
-		let Company  = g:company
+		let Company  = Escape(g:company)
 	endif
-	silent! execute "%s/@DATE@/" .  date . "/g"
-	silent! execute "%s/@YEAR@/" .  year . "/g"
-	silent! execute "%s/@LASTDIR@/"  .  lastdir    . "/g"
-	silent! execute "%s/@FILE@/"     .  myfile     . "/g"
-	silent! execute "%s/@FILE_EXT@/" .  myfile_ext . "/g"
-	silent! execute "%s/@PATH_SEP@/\\//g"
-	silent! execute "%s/@INCLUDE_GAURD@/" . inc_gaurd . "/g"
-	silent! execute "%s/@AUTHOR@/" . Author . "/g"
-	silent! execute "%s/@EMAIL@/"  . Email  . "/g"
-	silent! execute "%s/@COMPANY@/"  . Company  . "/g"
+	silent! execute "%s/@DATE@/"          . date       . "/g"
+	silent! execute "%s/@YEAR@/"          . year       . "/g"
+	silent! execute "%s/@LASTDIR@/"       . lastdir    . "/g"
+	silent! execute "%s/@FILE@/"          . myfile     . "/g"
+	silent! execute "%s/@FILE_EXT@/"      . myfile_ext . "/g"
+	silent! execute "%s/@PATH_SEP@/"      . path_sep   . "/g"
+	silent! execute "%s/@INCLUDE_GAURD@/" . inc_gaurd  . "/g"
+	silent! execute "%s/@AUTHOR@/"        . Author     . "/g"
+	silent! execute "%s/@EMAIL@/"         . Email      . "/g"
+	silent! execute "%s/@COMPANY@/"       . Company    . "/g"
 	if exists ("*" . template_func)
 		if exists("g:load_templates")
 			if g:load_templates == "ask"
@@ -96,9 +100,9 @@ fun! LoadTemplateFile()
 			silent! execute ":call " . template_func . "()"
 		endif
 	endif
-endfun
+endfunction
 
-fun! LoadTemplateFileConfirm(filename)
+function! LoadTemplateFileConfirm(filename)
 	if filereadable(expand(a:filename))
 		if exists("g:load_templates")
 			if g:load_templates == "ask"
@@ -116,9 +120,9 @@ fun! LoadTemplateFileConfirm(filename)
 			execute "0r "  . a:filename
 		endif
 	endif
-endfun
+endfunction
 
-fun! LoadFile(filename)
+function! LoadFile(filename)
 	if filereadable(expand(a:filename))
 		if exists("g:load_templates")
 			if g:load_templates == "ask"
@@ -138,16 +142,16 @@ fun! LoadFile(filename)
 	else
 		echo "File not found!"
 	endif
-endfun
+endfunction
 
 " example for no-extension file specific template processing
-fun! TemplateFileFunc_noext_makefile()
+function! TemplateFileFunc_noext_makefile()
 	let save_r = @r
 	let @r = "all:\n\techo your template files need work"
 	normal G
 	put r
 	let @r = save_r
-endfun
+endfunction
 
 " Modeline {{{
 " vim:set ts=4:
