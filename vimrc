@@ -6,7 +6,7 @@
 " Version:		01.09.08
 " Language Of Comments:	English
 
-" $Id: vimrc,v 1.27 2002/01/04 10:37:41 host8 Exp $
+" $Id: vimrc,v 1.28 2002/01/15 18:34:45 host8 Exp $
 
 " Settings {{{
 " To be secure & Vi nocompatible
@@ -112,15 +112,16 @@ let g:open_all_win=1
 " Keybord mappings {{{
 "
 " start of line
-":noremap <C-A>		i<Home>
+"noremap <C-A>		i<Home>
 inoremap <C-A>		<Home>
+cnoremap <C-A>		<Home>
 " end of line
 noremap <C-E>		i<End>
 inoremap <C-E>		<End>
 " back one word
 inoremap <C-B>	<S-Left>
 " forward one word
-":inoremap <C-F>	<S-Right>
+"inoremap <C-F>	<S-Right>
 
 " Switching between windows by pressing one time CTRL-X keys.
 noremap <C-X> <C-W><C-W>
