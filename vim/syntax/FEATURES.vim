@@ -14,10 +14,13 @@ endif
 
 " Platon's vimconfig homepage
 syn match helpHyperTextEntry	"http://www.platon.sk.*/"
+syn match helpHyperTextEntry	"http://vim.sourceforge.net/.*"
+syn match helpHyperTextEntry	"http://vim.sf.net/.*"
 
 syn match helpHeadline		"^[A-Z ]\+[ ]\+\*"me=e-1
 syn match helpSectionDelim	"^=\{3,}.*===$"
 syn match helpSectionDelim	"^-\{3,}.*--$"
+syn match helpSectionDelim	"^-\{3,}.*--	\+" nextgroup=helpHyperTextEntry
 syn region helpExample		matchgroup=helpIgnore start=" >$" start="^>$" end="^[^ \t]"me=e-1 end="^<"
 if has("ebcdic")
   syn match helpHyperTextJump	"\\\@<!|[^"*|]\+|"

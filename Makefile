@@ -5,7 +5,7 @@
 # (c) rajo <host8@kepler.fmph.uniba.sk>
 #
 
-# $Id: Makefile,v 1.22 2002/08/09 00:17:41 rajo Exp $
+# $Id: Makefile,v 1.23 2002/08/11 17:31:15 rajo Exp $
 
 PACKAGE = vimconfig
 VERSION = 1.7
@@ -21,7 +21,7 @@ DISTFILES_TEMPLATE_PLUGIN = vim \
 						vim/templates/skel.sh \
 						vim/templates/Makefile
 
-DISTFILES = README FEATURES.txt tags \
+DISTFILES = README \
 			Makefile vimrc gvimrc vim \
 			vim/strace.vim \
 			vim/csyntax.vim \
@@ -30,6 +30,9 @@ DISTFILES = README FEATURES.txt tags \
 			vim/compiler \
 			vim/compiler/tex.vim \
 			vim/diary \
+			vim/doc \
+			vim/doc/FEATURES.txt \
+			vim/doc/tags \
 			vim/ftplugin \
 			vim/ftplugin/cvs.vim \
 			vim/ftplugin/html.vim \
@@ -75,11 +78,11 @@ all: tags dist dist-template-plugin
 
 clean: clean-dist clean-dist-template-plugin clean-tags
 
-tags: *.txt
-	vim -c ":helptags ." -c ":q"
+tags:
+	vim -u NONE -U NONE -c ":helptags ./vim/doc" -c ":q"
 
 clean-tags:
-	rm -f tags
+	rm -f vim/doc/tags
 
 clean-dist: clean-dist-template-plugin
 	-rm -rf $(distdir)
@@ -190,6 +193,8 @@ uninstall:
 	 echo "	$$HOME/.vim"; \
 	 echo "	$$HOME/.vimrc"; \
 	 echo "	$$HOME/.gvimrc";
+
+.PHONY: clean tags
 
 # Modeline {{{
 # vim:set ts=4:

@@ -18,7 +18,7 @@
 " Please don't hesitate to correct my english :)
 " Send corrections to <8host AT pauliDOTfmph.uniba.sk>
 
-" $Id: vimrc,v 1.66 2002/08/11 17:31:15 rajo Exp $
+" $Id: vimrc,v 1.67 2002/08/11 17:46:25 rajo Exp $
 
 " Settings {{{
 " To be secure & Vi nocompatible
@@ -56,6 +56,9 @@ call Source(VIMRC_EXTRA."")
 call Source(VIMRC_EXTRA."-".user)
 call Source(VIMRC_EXTRA."-".machine)
 call Source(VIMRC_EXTRA."-".machine."-".user)
+
+" used for searching documentation (~/.vim/doc/FEATURES.txt) etc.
+set runtimepath+=~/.vim
 
 " Settings for C language {{{
 let c_gnu=1
@@ -415,14 +418,6 @@ endif " if has("autocmd")
 " }}} Autocomands
 
 " Functions {{{
-" Function Help() {{{
-" Function for open help for vimconfig
-function! Help(...)
-	split ~/.vim/../FEATURES.txt
-	execute "/" . a:1
-endfunction
-" }}} Help()
-
 " Function ChangeFoldMethod() {{{
 " Function for changing folding method.
 "
