@@ -131,6 +131,7 @@
 " New commands {{{1
 :command! -nargs=1 Printf call libcallnr("/lib/libc.so.6", "printf", <args>)
 :command! -nargs=0 FoldLongLines call FoldLongLines()
+:command! -nargs=0 Indent call Indent()
 "################################################################# }}}1
 " Autocomands {{{1
 " Startup autocommands {{{2
@@ -500,9 +501,15 @@ endfun
 :	elseif choice == 4
 :		exec cmd . "gcc " . g:cflags . 
 			\ " -o " . filename . " " . filename_ext . 
-			\ substitute(getline(2), "VIM_GCC", "", "g")
+			\ substitute(getline(2), "VIMGCC", "", "g")
 :	endif
 :endfun
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
+" Function Indent() {{{2
+"
+fun! Indent()
+:	exec "normal mfggvG$='f"
+endfun
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
 "################################################################# }}}1
 " Gvim settings {{{1
