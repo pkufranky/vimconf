@@ -20,7 +20,7 @@
 "
 "        Lubomir Host 'rajo' <rajo AT platon.sk>
 
-" Version: $Platon: vimconfig/vimrc,v 1.93 2003-11-27 18:01:06 rajo Exp $
+" Version: $Platon: vimconfig/vimrc,v 1.94 2003-11-28 10:15:12 rajo Exp $
 
 " Debian uses compressed helpfiles. We must inform vim that the main
 " helpfiles is compressed. Other helpfiles are stated in the tags-file.
@@ -363,7 +363,7 @@ command! -nargs=0 CallProg				call CallProg()
 command! -nargs=0 OpenAllWin			call OpenAllWin()
 command! -nargs=* ReadFileAboveCursor	call ReadFileAboveCursor(<f-args>)
 command! -nargs=* R						call ReadFileAboveCursor(<f-args>)
-command! -nargs=0 DiacriticsOn			call UseDiacritics()
+command! -nargs=0 DiacriticsOn			call ChooseInputMethod(0)
 command! -nargs=0 DiacriticsOff			let b:disable_imap=1
 " }}}
 
@@ -685,24 +685,44 @@ endfunction
 
 " }}} 
 
-" Function UseDiacritics() {{{
-function! UseDiacritics()
+" Function ChooseInputMethod() {{{
+function! ChooseInputMethod(method)
 	let b:disable_imap=0
-	let g:available_methods = "&Tex-universal\n&tex-iso8859-2\n&iso8859-2\n&windows-1250\nunicode-&Html"
+	let g:available_methods = "&none\n&Tex-universal\n&tex-iso8859-2\n&iso8859-2\n&windows-1250\nunicode-&Html"
 
-	let choice = confirm("Choose encoding:", g:available_methods, 0)
-	if choice == 1
-		let b:input_method="tex-universal"
-	elseif choice == 2
-		let b:input_method="tex-iso8859-2"
-	elseif choice == 3
-		let b:input_method="iso8859-2"
-	elseif choice == 4
-		let b:input_method="windows-1250"
-	elseif choice == 5
-		let b:input_method="unicode-html"
+	if a:method == 0
+		let choice = confirm("Choose input mapping:", g:available_methods, 1)
+	else
+		let choice = a:method
 	endif
 
+	if choice == 1
+		let b:input_method = "NONE"
+	elseif choice == 2
+		let b:input_method = "tex-universal"
+	elseif choice == 3
+		let b:input_method = "tex-iso8859-2"
+	elseif choice == 4
+		let b:input_method = "iso8859-2"
+	elseif choice == 5
+		let b:input_method = "windows-1250"
+	elseif choice == 6
+		let b:input_method = "unicode-html"
+	endif
+	
+	if choice == 1
+		let b:disable_imap = 1
+	elseif choice != 0
+		echo "Sourcing ..."
+		call UseDiacritics()
+	endif
+
+endfunction
+"}}}
+
+" Function UseDiacritics() {{{
+function! UseDiacritics()
+	let b:disable_imap = 0
 	call Source("~/.vim/modules/diacritics.vim")
 endfunction
 " }}}
