@@ -5,9 +5,9 @@
 " Copyright (c) 2000-2003 Platon SDG, http://platon.sk/
 " All rights reserved.
 "
-" $Platon: vimconfig/vim/local/vimrc-Maxim-ondrej,v 1.4 2003-08-03 13:55:07 nepto Exp $
+" $Platon: vimconfig/vim/local/vimrc-Maxim-ondrej,v 1.5 2003-08-19 08:10:52 nepto Exp $
 
-:let author  = "Ondrej Jombik"
-:let email   = "nepto@platon.sk"
-:let company = "Platon SDG, http://platon.sk/"
+let g:author  = "Ondrej Jombik"
+let g:email   = "nepto@platon.sk"
+let g:company = "Platon SDG, http://platon.sk/"
 
