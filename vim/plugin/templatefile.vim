@@ -2,7 +2,7 @@
 " Vim global plugin for autoload template files
 " File:			templatefile.vim
 " Maintainer:	Lubomir Host 'rajo' <rajo AT platon.sk>
-" Version:		$Platon: vimconfig/vim/plugin/templatefile.vim,v 1.18 2003-12-09 07:26:57 rajo Exp $
+" Version:		$Platon: vimconfig/vim/plugin/templatefile.vim,v 1.19 2004-03-29 14:48:53 rajo Exp $
 "
 " Thanks:
 " 	Scott Urban:	First version of templatefile.vim
@@ -62,7 +62,7 @@ function! LoadTemplateFile()
 		" Template not found
 	endif
 
-	let date       = Escape(strftime("%d/%m/%Y"))
+	let date       = Escape(strftime("%Y-%m-%d"))
 	let year       = Escape(strftime("%Y"))
 	let cwd        = Escape(getcwd())
 	let lastdir    = Escape(substitute(cwd, ".*/", "", "g"))
