@@ -3,7 +3,7 @@
 "               template for HTML (WWW page) 
 " Maintainer:	Lubomir Host 'rajo' <rajo AT platon.sk>
 " License:		GNU GPL
-" Version:		$Platon: vimconfig/vim/syntax/tt2.vim,v 1.4 2003-11-03 08:20:23 rajo Exp $
+" Version:		$Platon: vimconfig/vim/syntax/tt2.vim,v 1.5 2004-07-12 09:04:15 rajo Exp $
 
 
 if version < 600
@@ -51,11 +51,10 @@ syn keyword	tt2Functions	contained nsort1
 syn keyword tt2Functions GET CALL SET DEFAULT WRAPPER
 syn keyword tt2Functions BLOCK MACRO
 syn keyword tt2Functions FILTER USE PERL RAWPERL
-syn keyword tt2Functions TRY THROW CATCH FINAL
 syn keyword tt2Functions NEXT LAST RETURN CLEAR META
 syn keyword tt2Functions TAGS DEBUG VIEW
 
-syn keyword tt2Repeat IF UNLESS ELSIF ELSE END SWITCH CASE FOREACH FOR WHILE
+syn keyword tt2Repeat IF UNLESS ELSIF ELSE END SWITCH CASE FOREACH FOR WHILE TRY THROW CATCH FINAL
 
 "syn keyword tt2InFunc ne eq
 
