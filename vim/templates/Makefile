@@ -22,14 +22,16 @@ top_builddir = .
 
 # Targets {{{
 
+PROGRAM   = test
+
 SOURCES   = $(srcdir)/test.c
 
 OBJECTS   = $(top_builddir)/test.o
 
 DEP_FILES = $(top_builddir)/.deps/test.P
 
-DISTFILES = test \
-			test/test.c
+DISTFILES = Makefile \
+			test.c
 
 CONFIG_HEADER   = $(top_builddir)/config.h
 
@@ -42,15 +44,16 @@ ZIP      = zip
 ZIP_ENV  = -r9
 GZIP_ENV = --best
 
-CC       = @CC@
-CPP      = @CPP@
-CXX      = @CXX@
+CC       =
+CPP      =
+CXX      =
 #DEBUG_FLAGS = -g -ggdb -DDEBUG
 CFLAGS   = -O2 -Wall -Wshadow -pedantic $(DEBUG_FLAGS)
-CPPFLAGS = @CPPFLAGS@
-LDFLAGS  = @LDFLAGS@
-DEFS     = @DEFS@
+CPPFLAGS =
+LDFLAGS  =
+DEFS     =
 INCLUDES = -I$(srcdir) -I$(top_builddir)
+LIBS     =
 
 
 COMPILE  = $(CC) $(DEFS) $(INCLUDES) $(CPPFLAGS) $(CFLAGS)
@@ -78,6 +81,9 @@ DEPS_MAGIC := $(shell mkdir .deps > /dev/null 2>&1 || :)
 	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
 	    >> .deps/$(*F).P; \
 	rm .deps/$(*F).pp
+
+clean:
+	-rm -f *.o core
 
 .PHONY:	sources
 sources:
