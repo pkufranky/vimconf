@@ -19,7 +19,7 @@
 " Send corrections to
 "        Lubomir Host 'rajo' <rajo AT platon.sk>
 
-" Version: $Platon: vimconfig/vimrc,v 1.86 2003-08-15 18:30:24 rajo Exp $
+" Version: $Platon: vimconfig/vimrc,v 1.87 2003-10-08 15:24:30 rajo Exp $
 
 " Debian uses compressed helpfiles. We must inform vim that the main
 " helpfiles is compressed. Other helpfiles are stated in the tags-file.
@@ -770,11 +770,13 @@ if has("autocmd")
 	" Autocomands for *.txt {{{
 	augroup Txt
 	autocmd BufNewFile,BufRead  *.txt   setf txt
+	augroup END
 	" }}}
 
 	" Autocomands for *.tt2 {{{
 	augroup Tt2
 	autocmd BufNewFile,BufRead  *.tt2   setf tt2
+	augroup END
 	" }}}
 
 	" Autocomands for Makefile {{{
