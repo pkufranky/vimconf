@@ -20,5 +20,5 @@
 #  define @INCLUDE_GAURD@_H
 
 
-#endif /* ifndef @INCLUDE_GAURD@_H */
+#endif /* #ifndef @INCLUDE_GAURD@_H */
 
