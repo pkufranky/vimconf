@@ -2,13 +2,13 @@
 "
 " File:			database-client.vim
 " Maintainer:	Lubomir Host 'rajo' <rajo AT platon.sk>
-" Version:		$Platon: vimconfig/vim/modules/database-client.vim,v 1.3 2004-02-23 17:52:54 rajo Exp $
+" Version:		$Platon: vimconfig/vim/modules/database-client.vim,v 1.4 2004-02-24 07:43:02 rajo Exp $
 "
 " Copyright (c) 2003 Platon SDG, http://platon.sk/
 " Licensed under terms of GNU General Public License.
 " All rights reserved.
 "
-" $Platon: vimconfig/vim/modules/database-client.vim,v 1.3 2004-02-23 17:52:54 rajo Exp $
+" $Platon: vimconfig/vim/modules/database-client.vim,v 1.4 2004-02-24 07:43:02 rajo Exp $
 " 
 
 " This plugin needs Perl interpreter to be enabled (+perl feature)
@@ -44,8 +44,14 @@ endif
 
 " Control whether additional help is displayed as part of the taglist or not.
 " Also, controls whether empty lines are used to separate the tag tree.
-if !exists('SQL_Compact_Format')
-    let SQL_Compact_Format = 0
+if !exists('g:SQL_Compact_Format')
+    let g:SQL_Compact_Format = 0
+endif
+
+
+" Default SQL command on startup
+if !exists('g:SQL_last_command')
+    let g:SQL_last_command = "SELECT * FROM table"
 endif
 
 "---------------------------------------------------------------------------
@@ -122,6 +128,11 @@ perl << EOF
 		VIM::Msg($separator);
 
 	} # }}}
+
+	package main;
+
+	# number of executed SQL commands
+	my $sql_cmd_num = 0;
 
 EOF
 endfunction
@@ -272,8 +283,24 @@ EOF
 endfunction
 " }}}
 
+" get SQL command from user and execute
+function! SQL_Execute() " {{{
+	
+	let sql_cmd = inputdialog('SQL command:', g:SQL_last_command)
+	if sql_cmd != ''
+		call SQL_Do(sql_cmd)
+	endif
+	unlet sql_cmd
+	
+endfunction
+" }}}
+
+
 " execute SQL command
 function! SQL_Do(sql_cmd) " {{{
+
+	" get number of SQL cmd window
+	let cmd_winnum  = bufwinnr(g:SQL_cmd_window_title)
 
 	perl << EOF
 	use DBI;
@@ -283,11 +310,35 @@ function! SQL_Do(sql_cmd) " {{{
 	my $dbh = $main::connections->{$main::current_conn}->{dbh};
 	my $sql_cmd = VIM::Eval("a:sql_cmd"); # get function parameter from Vim to Perl
 
+	# remove empty chars from beginning and end of string
+	# add semilon at the end
+	$sql_cmd =~ s/^\s+//g;
+	$sql_cmd =~ s/;?\s*$/;/g;
+
+	# remember last SQL command
+	VIM::DoCommand('let g:SQL_last_command="' . $sql_cmd . '"');
+
+	$main::sql_cmd_num++;
+	my $winnr = VIM::Eval("cmd_winnum");
+	my ($window) = VIM::Windows($winnr);
+	my $cmd_buf = $window->Buffer();
+	my $last_line = $cmd_buf->Count(); # number of lines
+
+	# add SQL cmd separator
+	$cmd_buf->Append($last_line, "-- Commnad #$main::sql_cmd_num: " . scalar localtime, $sql_cmd, "");
+
 	my $sth = $dbh->prepare($sql_cmd) or warn $DBI::errstr;
 	$sth->execute();
 	$sth->dump_data();
 
+	undef $window;
+	undef $cmd_buf;
+	undef $last_line;
+	undef $winnr;
+
 EOF
+
+	unlet cmd_winnum
 
 endfunction
 " }}}
@@ -299,11 +350,13 @@ function! CreateMenu() " {{{
 	silent! aunmenu SQL
 	amenu 200.10 S&QL.&Connect :call SQL_Connect()<Return>
 	amenu 200.20 S&QL.&Disconnect :call SQL_Disconnect()<Return>
-	amenu 200.30.5  S&QL.&Show.&connections :call SQL_ShowConnections()<Return>
-	amenu 200.30.10 S&QL.&Show.&databases :call SQL_Do('SHOW DATABASES')<Return>
-	amenu 200.30.20 S&QL.&Show.&tables :call SQL_Do('SHOW TABLES')<Return>
-	amenu 200.30.30 S&QL.&Show.&variables :call SQL_Do('SHOW VARIABLES')<Return>
-	amenu 200.30.40 S&QL.&Show.&server\ status :call SQL_Do('SHOW STATUS')<Return>
+	amenu 200.30 S&QL.&Execute :call SQL_Execute()<Return>
+	amenu 200.40.10 S&QL.&Show.&connections :call SQL_ShowConnections()<Return>
+	amenu 200.40.20 S&QL.&Show.&databases :call SQL_Do('SHOW DATABASES')<Return>
+	amenu 200.40.30 S&QL.&Show.&tables :call SQL_Do('SHOW TABLES')<Return>
+	amenu 200.40.40 S&QL.&Show.&variables :call SQL_Do('SHOW VARIABLES')<Return>
+	amenu 200.40.50 S&QL.&Show.&server\ status :call SQL_Do('SHOW STATUS')<Return>
+	amenu 200.50.10 S&QL.&Windows.&create :call CreateWindows()<Return>
 endfunction
 " }}}
 call CreateMenu()
@@ -312,7 +365,7 @@ function! s:CloseWindow(winnum) " {{{
 	" if window exists
 	if a:winnum >= 0
 		execute "normal \<c-w>" . a:winnum . "w"
-		close
+		silent! close
 	endif
 endfunction
 " }}}
@@ -320,11 +373,12 @@ endfunction
 " create windows
 function! CreateWindows() " {{{
 	let s:main_winnum = bufwinnr(g:SQL_main_window_title)
-	let s:data_winnum = bufwinnr(g:SQL_data_window_title)
-	let s:cmd_winnum  = bufwinnr(g:SQL_cmd_window_title)
-
 	call s:CloseWindow(s:main_winnum)
+	
+	let s:data_winnum = bufwinnr(g:SQL_data_window_title)
 	call s:CloseWindow(s:data_winnum)
+	
+	let s:cmd_winnum  = bufwinnr(g:SQL_cmd_window_title)
 	call s:CloseWindow(s:cmd_winnum)
 
 	execute 'topleft split ' . g:SQL_cmd_window_title
