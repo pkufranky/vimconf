@@ -2,13 +2,13 @@
 "
 " File:			database-client.vim
 " Maintainer:	Lubomir Host 'rajo' <rajo AT platon.sk>
-" Version:		$Platon: vimconfig/vim/modules/database-client.vim,v 1.1 2004-02-17 17:13:02 rajo Exp $
+" Version:		$Platon: vimconfig/vim/modules/database-client.vim,v 1.2 2004-02-18 07:59:48 rajo Exp $
 "
 " Copyright (c) 2003 Platon SDG, http://platon.sk/
 " Licensed under terms of GNU General Public License.
 " All rights reserved.
 "
-" $Platon: vimconfig/vim/modules/database-client.vim,v 1.1 2004-02-17 17:13:02 rajo Exp $
+" $Platon: vimconfig/vim/modules/database-client.vim,v 1.2 2004-02-18 07:59:48 rajo Exp $
 " 
 
 " This plugin needs Perl interpreter to be enabled (+perl feature)
@@ -17,8 +17,11 @@ if ! has('perl')
 	finish
 endif
 
-echo "sourcing ..."
+echo "sourcing DBI client ..."
 
+"---------------------------------------------------------------------------
+"------------------------ USER CONFIGURABLE OPTIONS ------------------------
+"---------------------------------------------------------------------------
 " Set default values:
 if !exists('g:SQL_main_window_title')
     let g:SQL_main_window_title = "SQL"
@@ -45,7 +48,10 @@ if !exists('SQL_Compact_Format')
     let SQL_Compact_Format = 0
 endif
 
-"------------------- end of user configurable options --------------------
+"---------------------------------------------------------------------------
+"-------------------- END OF USER CONFIGURABLE OPTIONS ---------------------
+"---------------------------------------------------------------------------
+
 
 " Initialize the taglist plugin local variables for the supported file types
 " and tag types
@@ -57,29 +63,114 @@ let s:sql_brief_help = 1
 " autosource this file on write
 augroup DBIclient
 	autocmd!
-	autocmd BufWritePost ~/database-client.vim source ~/database-client.vim
+	autocmd BufWritePost database-client.vim source ~/.vim/modules/database-client.vim
 augroup END
 
+" initialize DBI engine
+function! SQL_Init() " {{{
+perl << EOF
+
+	package DBI::st;
+
+	# fetch and print data from _executed_ DBI statement handler
+	sub dump_data ($)
+	{ # {{{
+		my $sth = shift;
+
+		my $numFields     = $sth->{'NUM_OF_FIELDS'};
+		my $column_names  = $sth->{'NAME'};
+		my $column_sizes  = $sth->{'mysql_max_length'};
+		my $column_is_num = $sth->{'mysql_is_num'};
+
+		# build column name's line
+		my $header_names = "";
+		foreach (my $i = 0; $i < $numFields; $i++) {
+			# numeric columns have smaller length as column name, overwrite ...
+			$$column_sizes[$i] = $$column_sizes[$i] > length($$column_names[$i])
+				? $$column_sizes[$i]
+				: ($$column_is_num[$i] ? -1 : 1) * length($$column_names[$i]); # WARN: negative length! - used for right aligment of numbers
+			$header_names .= sprintf("%s%s", $i ? " | " : "| ", $$column_names[$i] . " " x ($$column_sizes[$i] - length($$column_names[$i])));
+		}
+		$header_names .= " |\n";
+
+		# build header separator
+		my $separator = "";
+		foreach (my $i = 0; $i < $numFields; $i++) {
+			$separator .= "+" . ("-" x (abs($$column_sizes[$i]) + 2));
+		}
+		$separator .= "+\n"; # the end
+
+		# print header
+		VIM::Msg($separator);
+		VIM::Msg($header_names);
+		VIM::Msg($separator);
+
+		# print data
+		while (my @row = $sth->fetchrow_array()) {
+			my $line = "";
+			foreach (my $i = 0; $i < $numFields; $i++) {
+				$line .= sprintf("%s%s", $i ? " | " : "| ",
+					$$column_sizes[$i] > 0 # usage of negative length
+						? $row[$i] . " " x ($$column_sizes[$i] - length($row[$i]))
+						: " " x (- $$column_sizes[$i] - length($row[$i])) . $row[$i]
+				);
+			}
+			VIM::Msg("$line |\n");
+		}
+
+		# print footer
+		VIM::Msg($separator);
+
+	} # }}}
+
+EOF
+endfunction
+" }}}
+
+" Initialize NOW!
+call SQL_Init()
+
 " connect to database
-function! DBconnect() " {{{
+function! SQL_Connect() " {{{
 	perl << EOF
 	use DBI;
+
+	# get hostname from user
+	$db_host = "localhost" unless (defined $db_host); # remember server name
+	my ($success, $value) = VIM::Eval("inputdialog('Hostname of your database server', '$db_host')");
+	if ($success) {
+		$db_host = $value;
+	}
+	else {
+		return;
+	}
 	
+	# get username from user
+	$db_user = "user" unless (defined $db_user); # remember username
+	my ($success, $value) = VIM::Eval("inputdialog('Login', '$db_user')");
+	if ($success) {
+		$db_user = $value;
+	}
+	else {
+		return;
+	}
+	
+	# get password from user
+	my ($success, $value) = VIM::Eval('inputsecret("Password: ")');
+	if ($success) {
+		$db_pass = $value;
+	}
+	else {
+		return;
+	}
 	
 	$dbh = DBI->connect("DBI:mysql:host=$db_host", $db_user, $db_pass)
 		or die $DBI::errstr;
 
-	$sql = $dbh->prepare("show databases");
+	$sql = $dbh->prepare("SHOW DATABASES");
 
 	$sql->execute();
-	$data = $sql->fetchall_hashref('Database');
-
-	foreach $key (sort keys %$data) {
-		#VIM::Msg("Database: $key\n");
-		foreach $line (sort keys %{$$data{$key}}) {
-			VIM::Msg("$line => '$$data{$key}{$line}'\n");
-		}
-	}
+	$sql->dump_data();
 
 EOF
 endfunction
@@ -87,9 +178,14 @@ endfunction
 
 "create menu
 function! CreateMenu() " {{{
-	amenu 200 &SQL.&Show.&databases call SQL_do('SHOW DATABASES')
-	amenu 200 &SQL.&Show.&tables call SQL_do('SHOW TABLES')
-	amenu 200 &SQL.&Show.&server\ status call SQL_do('SHOW STATUS')
+	" remove whole menu 
+	silent! aunmenu SQL
+	amenu 200.10 S&QL.&Connect :call SQL_Connect()<Return>
+	amenu 200.20 S&QL.&Disconnect :call SQL_Disconnect()<Return>
+	amenu 200.30.10 S&QL.&Show.&databases :call SQL_do('SHOW DATABASES')<Return>
+	amenu 200.30.20 S&QL.&Show.&tables :call SQL_do('SHOW TABLES')<Return>
+	amenu 200.30.30 S&QL.&Show.&variables :call SQL_do('SHOW VARIABLES')<Return>
+	amenu 200.30.40 S&QL.&Show.&server\ status :call SQL_do('SHOW STATUS')<Return>
 endfunction
 " }}}
 call CreateMenu()
