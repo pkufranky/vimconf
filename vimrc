@@ -18,7 +18,7 @@
 " Please don't hesitate to correct my english :)
 " Send corrections to <8host AT pauliDOTfmph.uniba.sk>
 
-" $Id: vimrc,v 1.68 2002/08/11 19:16:11 rajo Exp $
+" $Id: vimrc,v 1.69 2002/08/12 00:44:06 rajo Exp $
 
 " Settings {{{
 " To be secure & Vi nocompatible
@@ -321,14 +321,13 @@ noremap ZX mzggvGzX'z
 " }}}
 
 " New commands {{{
-command! -nargs=0 FoldLongLines call FoldLongLines()
-command! -nargs=0 Indent call Indent()
+command! -nargs=0 -range Indent          <line1>,<line2>call Indent()
+command! -nargs=0 -range FoldLongLines   <line1>,<line2>call FoldLongLines()
+command! -nargs=0 -range UnquoteMailBody <line1>,<line2>call UnquoteMailBody()
 command! -nargs=0 CallProg call CallProg()
 command! -nargs=0 OpenAllWin call OpenAllWin()
-command! -nargs=0 UnquoteMailBody call UnquoteMailBody()
 command! -nargs=* ReadFileAboveCursor call ReadFileAboveCursor(<f-args>)
 command! -nargs=* R call ReadFileAboveCursor(<f-args>)
-command! -nargs=* Help call Help(<f-args>)
 " }}}
 
 " Autocomands {{{
@@ -421,7 +420,7 @@ endif " if has("autocmd")
 " Function for changing folding method.
 "
 if version >= 600
-	function! ChangeFoldMethod()
+	function! ChangeFoldMethod() abort
 		let choice = confirm("Which folde method?", "&manual\n&indent\n&expr\nma&rker\n&syntax", 2)
 		if choice == 1
 			set foldmethod=manual
@@ -439,36 +438,46 @@ if version >= 600
 endif
 " ChangeFoldMethod() }}}
 
+function! Test() abort range
+	echo "First   line = " . a:firstline
+	echo "Last    line = " . a:lastline
+	echo "Current line =" . line(".")
+endfunction
+
 " Function FoldLongLines() {{{
 "
 if version >= 600
-	fun! FoldLongLines()
-"		Set mark for return back
-		exec "normal mF"
-"		Go to the first line
-		exec "1go"
-		let lnum = line(".")
-		let lend = line("$")
+	function! FoldLongLines() range abort
+		let savelnum = line(".")
+		let lnum = a:firstline
+		let lend = a:lastline
+		if lnum == lend
+			" No visual area choosen --> whole file
+			let lnum = line(".")
+			let lend = line("$")
+			" Go to the begin of the file
+			exec "1go"
+		endif
 		while lnum <= lend
-"			Skip closed folds
+			" Skip closed folds
 			if foldclosed(lnum) != -1
 				let lnum = foldclosedend(lnum) + 1
 				continue
 			endif
 			let dlzka = strlen(getline("."))
 			if dlzka >= g:fold_long_lines
-"				Create fold for one line
+				" Create fold for one line
 				exec "normal zfl"
 			endif
 			let lnum = line(".")
-"			Move one line down
+			" Move one line down
 			exec "normal j"
 			if lnum == lend
 				break
 			endif
 		endwhile
-"		Skip back to the mark
-		exec "normal 'F"
+		" ...and go back
+		exec "normal " . savelnum . "G"
 		redraw!
 	endfunction
 endif
@@ -550,7 +559,7 @@ endif
 " OpenAllWin() }}}
 
 " Function CallProg() {{{
-function! CallProg()
+function! CallProg() abort
 	let choice = confirm("Call:", "&make\nm&ake in cwd\n" .
 						\ "&compile\nc&ompile in cwd\n" .
 						\ "&run\nr&un in cwd")
@@ -574,7 +583,7 @@ endfunction
 " CallProg() }}}
 
 " Function Compile() {{{
-function! Compile(do_chdir)
+function! Compile(do_chdir) abort
 	let cmd = ""
 	let filename = ""
 	let filename_ext = ""
@@ -650,7 +659,6 @@ endfunction
 " If you are root, function return "# " string --> it is showed at begin of
 "                                                  statusline
 " If you aren't root, function return empty string --> nothing is visible
-let g:get_id=""
 " Check for your name ID
 let g:get_id = $USER
 " If you are root, set to '#', else set to ''
