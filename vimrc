@@ -18,7 +18,7 @@
 " Please don't hesitate to correct my english :)
 " Send corrections to <8host AT pauliDOTfmph.uniba.sk>
 
-" $Id: vimrc,v 1.62 2002/06/19 16:59:06 host8 Exp $
+" $Id: vimrc,v 1.63 2002/06/19 21:29:19 host8 Exp $
 
 " Settings {{{
 " To be secure & Vi nocompatible
@@ -180,7 +180,17 @@ set lazyredraw
 " a tenth of a second
 set timeout timeoutlen=1000 ttimeoutlen=100
 
-" Vim beeping go to the hell...
+" Customize display {{{
+" lastline	When included, as much as possible of the last line
+"			in a window will be displayed.  When not included, a
+"			last line that doesn't fit is replaced with "@" lines.
+"uhex		Show unprintable characters hexadecimal as <xx>
+"			instead of using ^C and ~C.
+set display+=lastline
+set display+=uhex
+" }}}
+
+" Vim beeping go to the hell... {{{
 " With very little patch Vim(gvim) doesn't beep! To dissable beeping patch
 " source and set ':set noerrorbells' (default).
 " Here is patch for version 6.0.193:
@@ -210,6 +220,7 @@ set timeout timeoutlen=1000 ttimeoutlen=100
 set noerrorbells
 set visualbell
 set t_vb=
+" }}}
 
 " Set this, if you will open all windows for files specified
 " on the commandline at vim startup.
