@@ -6,7 +6,7 @@
 " Version:		01.09.08
 " Language Of Comments:	English
 
-" $Id: vimrc,v 1.23 2001/12/15 00:06:51 host8 Exp $
+" $Id: vimrc,v 1.24 2001/12/15 04:01:01 host8 Exp $
 
 " Settings {{{1
 " To be secure & Vi nocompatible
@@ -337,7 +337,7 @@ endfun
 :  autocmd!
 :	autocmd WinEnter            *.tex	
 :	autocmd WinLeave            *.tex	
-:	autocmd BufRead,BufNewFile  *.tex	  setlocal formatoptions=croql
+:	autocmd BufRead,BufNewFile  *.tex	  setlocal formatoptions=croqt
 :augroup END
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
 " Autocomands for Makefile {{{2
