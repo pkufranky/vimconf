@@ -8,6 +8,7 @@
 " HTML mappings {{{
 if !exists('s:doneMappings')
 	let s:doneMappings = 1
+	let s:ml = exists('g:mapleader') ? g:mapleader : '\'
 
 	" HTML commands {{{2
 	call IMAP ('tab'.s:ml, "<table border=2 cellspacing=2 cellpadding=5>\<cr><tr>\<cr>\<tab><td>ä</td>\<cr>\<bs></tr>\<cr></table>", 'html')
@@ -68,6 +69,29 @@ if !exists('s:doneMappings')
 	" }}}
 endif 
 " end HTML mappings }}}
+
+" SmartBS: smart backspacing {{{
+let g:smartBS_html = '\(' .
+			\ '&[^;]\+;'  .
+			\ '\)' . "$"
+
+" This function comes from Benji Fisher <benji AT e-mathDOTAMSDOTorg>
+" http://vim.sourceforge.net/scripts/download.php?src_id=409
+" (modified/patched by: Lubomir Host 'rajo' <host8 AT keplerDOTfmphDOTuniba.sk>
+"                       Srinath Avadhanula  <srinath AT fastmailDOTfm> )
+function! s:SmartBS()
+	let init = strpart(getline("."), 0, col(".")-1)
+	let matchtxt = matchstr(init, g:smartBS_html)
+	echo "SmartBS(" . matchtxt . ")"
+	if matchtxt != ''
+		let bstxt = substitute(matchtxt, '.', "\<bs>", 'g')
+		return bstxt
+	else
+		return "\<bs>"
+	endif
+endfun
+inoremap <buffer> <BS> <C-R>=<SID>SmartBS()<CR>
+" }}} 
 
 " vim:set ts=4:
 " vim600:fdm=marker fdl=0 fdc=3 nowrap:
