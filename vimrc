@@ -18,7 +18,7 @@
 " Please don't hesitate to correct my english :)
 " Send corrections to <8host AT pauliDOTfmph.uniba.sk>
 
-" $Id: vimrc,v 1.63 2002/06/19 21:29:19 host8 Exp $
+" $Id: vimrc,v 1.64 2002/06/21 14:14:23 host8 Exp $
 
 " Settings {{{
 " To be secure & Vi nocompatible
@@ -81,6 +81,7 @@ if has("viminfo")
 endif
 " Don't save backups of files.
 set nobackup
+set backupcopy=yes
 " }}}
 
 " Status line settings {{{
