@@ -14,7 +14,6 @@
  *
  */
 
-/* $Id$ */
 /* $Platon$ */
 
 #ifndef @INCLUDE_GAURD@_H

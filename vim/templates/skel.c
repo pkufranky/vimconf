@@ -14,7 +14,6 @@
  *
  */
 
-/* $Id$ */
 /* $Platon$ */
 
 #include <stdio.h>

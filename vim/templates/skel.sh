@@ -15,6 +15,5 @@
 # @DATE@ - created
 #
 
-# $Id$
 # $Platon$
 

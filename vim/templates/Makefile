@@ -13,7 +13,6 @@
 # @DATE@ - created
 #
 
-# $Id$
 # $Platon$ 
 
 # Makefile for creating distribution of test package
