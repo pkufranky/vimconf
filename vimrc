@@ -20,7 +20,7 @@
 "
 "        Lubomir Host 'rajo' <rajo AT platon.sk>
 
-" Version: $Platon: vimconfig/vimrc,v 1.102 2004-08-30 10:05:14 rajo Exp $
+" Version: $Platon: vimconfig/vimrc,v 1.103 2004-09-21 20:15:24 rajo Exp $
 
 " Debian uses compressed helpfiles. We must inform vim that the main
 " helpfiles is compressed. Other helpfiles are stated in the tags-file.
@@ -464,7 +464,7 @@ endif
 "
 function! AutoLastMod()
 	if exists("g:autolastmod")
-		if g:autolastmod < 0
+		if g:autolastmod < 1
 			return 0;
 		elseif g:autolastmod == 1
 			call LastMod(g:autolastmodtext)
@@ -507,10 +507,15 @@ function! OpenAllWin()
 		while s:i < argc()
 			if bufwinnr(argv(s:i)) == -1	" buffer doesn't exists or doesn't have window
 				exec ":split " . escape(argv(s:i), ' \')
+				"echo "Current window is " . bufwinnr(s:i) 
 			endif
 			let s:i = s:i + 1
 		endwhile
 	endif
+
+	" force first window to be maximalized. Behaviour of vim has changed after
+	" 6.2(?) release, therefore next command is not needed for vim < 6.2(?)
+	exec "normal 2\<C-w>\<C-w>1\<C-w>\<C-w>"
 
 	" restore Vim option from variable
 	if s:save_split
@@ -773,6 +778,14 @@ if has("autocmd")
 	autocmd CmdwinEnter * silent! call RemoveAutogroup("PlatonCopyright")
 	augroup END
 	" }}}
+
+" UGLY hack - preload templatefile.vim. This is needed for loading templates
+" for all buffers (when opening all windows for buffers)
+call Source("~/.vim/plugin/templatefile.vim")
+augroup TemplateSystem
+	autocmd!
+	au BufNewFile * call LoadTemplateFile()
+augroup END
 
 	" Autocomands for GUIEnter {{{
 	augroup GUIEnter
