@@ -3,10 +3,11 @@
 " Maintainer:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " Bugs Report:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " Copyright:	GNU GPL
-" Last Change:	2001 Sep 19 12:57:22 PM
+" Last Change:	2001 Sep 25 05:15:09 PM
 " Version:		01.09.08
 " Language Of Comments:	Slovak
 
+" $Id: $
 " Settings {{{1
 " ... to be secure & Vi nocompatible
 :set secure nocompatible
@@ -133,6 +134,7 @@
 :command! -nargs=0 FoldLongLines call FoldLongLines()
 :command! -nargs=0 Indent call Indent()
 :command! -nargs=0 CallProg call CallProg()
+:command! -nargs=0 UnquoteMailbody call UnquoteMailbody()
 "################################################################# }}}1
 " Autocomands {{{1
 " Startup autocommands {{{2
@@ -305,7 +307,8 @@
 :if version >= 600
 :	fun! FoldLongLines()
 "		Get screen size:
-:		let lines = system("/bin/tcsh -f -c telltc | grep lines | awk '{print \$6-1}'")
+:		let lines = system("/bin/tcsh -f -c telltc | " .
+				\ "grep lines | awk '{print \$6-1}'")
 :		let info = "[" . lines . ";0HProcessing line "
 "		Set mark for return back
 :		exec "normal mF"
@@ -510,6 +513,13 @@ endfun
 "
 fun! Indent()
 :	exec "normal mfggvG$='f"
+endfun
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
+" Function UnquoteMailbody() {{{2
+"
+fun! UnquoteMailbody()
+:	exec ":%s/\\n> \\?\\([^>]\\)/ \\1/g"
+:	exec ":%s/^>$//g"
 endfun
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
 "################################################################# }}}1
