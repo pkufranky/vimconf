@@ -18,7 +18,7 @@
 " Please don't hesitate to correct my english :)
 " Send corrections to <8host AT pauliDOTfmph.uniba.sk>
 
-" $Id: vimrc,v 1.60 2002/04/30 23:53:06 host8 Exp $
+" $Id: vimrc,v 1.61 2002/05/02 12:56:14 host8 Exp $
 
 " Settings {{{
 " To be secure & Vi nocompatible
@@ -265,6 +265,17 @@ imap <C-D> <Esc>:call SafeLineDelete()<CR>i
 
 " Search for the current Visual selection.
 vmap S y/<C-R>=escape(@",'/\')<CR>
+
+" Good pasting toggle {{{
+" From  Christopher Swingley <cswingle AT iarc.uaf.edu>
+" Whenever I want to paste something, I do:
+" ,f
+" i
+" <paste>
+" <esc>
+" ,f
+map ,f :set paste!<CR>:set paste?<CR>
+" }}}
 
 " Mappings for folding {{{
 " Open one foldlevel of folds in whole file
