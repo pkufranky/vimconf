@@ -6,13 +6,16 @@
 " Version:		01.09.08
 " Language Of Comments:	English
 
-" $Id: vimrc,v 1.25 2001/12/15 04:26:34 host8 Exp $
+" $Id: $
 
 " Settings {{{1
 " To be secure & Vi nocompatible
 :set secure nocompatible
 :if version >= 600 
 :	syntax enable
+:	filetype on
+:	filetype plugin on
+:	filetype indent on
 :else
 :	syntax on
 :endif
@@ -123,24 +126,24 @@
 :noremap <C-X> <C-W><C-W>
 
 :set remap
-:map  :split 
-:imap  :split 
+:map <C-O><C-O> :split 
+:imap <C-O><C-O> <Esc>:split 
 
 " diakritika 
-":map  :so ~/.vim/diakritika.vim
-":imap  :so ~/.vim/diakritika.vim
+":map <C-D><C-D> :so ~/.vim/diakritika.vim
+":imap <C-D><C-D> <Esc>:so ~/.vim/diakritika.vim
 
 " Open new window with the file ~/.tcshrc (my shell configuration file)
-:map  :split ~/.tcshrc
-:imap  :split ~/.tcshrc
+:map <C-O><C-T> :split ~/.tcshrc<CR>
+:imap <C-O><C-T> <Esc>:split ~/.tcshrc<CR>
 
 " Open new window with file ~/.vimrc (ViM configuration file)
-:map  :split ~/.vimrc
-:imap  :split ~/.vimrc
+:map <C-O><C-K> :split ~/.vimrc<CR>
+:imap <C-O><C-K> <Esc>:split ~/.vimrc<CR>
 
 " Safe delete line (don't add line to registers)
-":imap  "_ddi
-:imap  :call SafeLineDelete()i
+":imap <C-D> <Esc>"_ddi
+:imap <C-D> <Esc>:call SafeLineDelete()<CR>i
 
 " Mappings for folding {{{2
 " Open one foldlevel of folds in whole file
@@ -167,58 +170,8 @@
 :command! -nargs=* ReadFileAboveCursor call ReadFileAboveCursor(<f-args>)
 :command! -nargs=* R call ReadFileAboveCursor(<f-args>)
 "################################################################# }}}1
-" Filetype detect {{{
-let s:line1 = getline(1)
-if s:line1 =~ '^From [a-zA-Z][a-zA-Z_0-9\.=-]*\(@[^ ]*\)\= .*[12][09]\d\d$'
-  set filetype=mail
-endif
-unlet s:line1
-" }}}
-" Filetypes settings {{{1
-" Function SetsByFiletype() is defined as autocommand for each file and it is
-" always called when new file is read or opened. There are settings which will
-" be sets according to specific file type. Try to avoid of use 'set' command
-" here. Use 'setlocal' command instead.
-fun! SetsByFiletype()
-" Mail {{{2
-:if &filetype == "mail"
-:	setlocal textwidth=72
-:	setlocal noautoindent
-:	setlocal formatoptions=croqt
-:	map  <buffer>  gqap
-:	imap <buffer>  gqapi
-:endif
-" }}}2
-" Perl {{{2
-:if &filetype == "perl"
-:	if executable("perltidy")
-:		setlocal equalprg=perltidy\ -q\ -se\ -fnl
-:	endif
-:endif
-" }}}2
-endfun
-"################################################################# }}}1
 " Autocomands {{{1
-" Startup autocommands {{{2
-:augroup VimStartup
-:  autocmd!
-":	autocmd VimEnter *	:syntax on
-":	autocmd VimEnter *	call OpenAllWin()
-":	autocmd BufReadPost *	call SetVimVar()
-:augroup END
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
-" Autocommands WinEnter * {{{2
-:augroup VimEnter
-:  autocmd!
-":	autocmd WinEnter *	:set winheight=100
-:augroup END
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
-" Autocommands for * (all files) {{{2
-:augroup AllFiles
-:  autocmd!
-:	autocmd BufRead,BufNewFile  *	call SetsByFiletype()
-:augroup END
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
+if has("autocmd")
 " Autocomands for ~/.vimrc {{{2
 :augroup VimConfig
 :  autocmd!
@@ -234,39 +187,16 @@ endfun
 :augroup C
 :  autocmd!
 "formatovanie C-zdrojakov
-:	autocmd BufEnter            *.c,*.h,*.cc,*.cpp	map  <buffer>  mfggvG$='f
-:	autocmd BufEnter            *.c,*.h,*.cc,*.cpp	imap <buffer>  mfggvG$='fi
-:	autocmd BufEnter            *.c,*.h,*.cc,*.cpp	map <buffer> yii yyp3wdwi
-:	autocmd BufEnter            *.c,*.h,*.cc,*.cpp	map <buffer>  :call CallProg()
+:	autocmd BufEnter     *.c,*.h,*.cc,*.cpp	map  <buffer> <C-F> mfggvG$='f
+:	autocmd BufEnter     *.c,*.h,*.cc,*.cpp	imap <buffer> <C-F> <Esc>mfggvG$='fi
+:	autocmd BufEnter     *.c,*.h,*.cc,*.cpp	map <buffer> yii yyp3wdwi
+:	autocmd BufEnter     *.c,*.h,*.cc,*.cpp	map <buffer> <C-K> :call CallProg()<CR>
 :	autocmd BufRead,BufNewFile  *.c,*.h,*.cc,*.cpp	setlocal cindent
 :	autocmd BufRead,BufNewFile  *.c,*.h,*.cc,*.cpp	setlocal cinoptions=>4,e0,n0,f0,{0,}0,^0,:4,=4,p4,t4,c3,+4,(2s,u1s,)20,*30,g4,h4
-:	autocmd BufRead,BufNewFile  *.c,*.h,*.cc,*.cpp	setlocal cinkeys=0{,0},:,0#,!,o,O,e
+:	autocmd BufRead,BufNewFile  *.c,*.h,*.cc,*.cpp	setlocal cinkeys=0{,0},:,0#,!<C-F>,o,O,e
 " vytvaranie hlaviciek novych *.c, *.h suborov
 :	autocmd BufNewFile  *.c,*.cc,*.cpp	0r ~/.vim/skelet.c
 :	autocmd BufNewFile	 *.h	call MakeHeader()
-:augroup END
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
-" Autocommands for *.pl *.pm {{{2
-:augroup Perl
-:  autocmd!
-:	autocmd BufEnter            *.p[lm]	map  <buffer>  mfggvG$='f
-:	autocmd BufEnter            *.p[lm]	imap <buffer>  mfggvG$='fi
-:	autocmd BufEnter            *.p[lm]	map  <buffer>  :call CallProg()
-:	autocmd BufRead,BufNewFile  *.p[lm]	setlocal cindent
-:	autocmd BufRead,BufNewFile  *.p[lm]	setlocal cinoptions=>4,e0,n0,f0,{0,}0,^0,:4,=4,p4,t4,c3,+4,(24,u4,)20,*30,g4,h4
-:	autocmd BufRead,BufNewFile  *.p[lm]	setlocal cinkeys=0{,0},:,0#,!,o,O,e
-:augroup END
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
-" Autocommands for *.pinerc {{{2
-:augroup Pine
-:  autocmd!
-:	autocmd BufRead .pinerc so ~/.vim/pine.vim
-:augroup END
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
-" Autocommands for *.php {{{2
-:augroup PHP
-:  autocmd!
-":	autocmd BufRead *.php so /usr/share/vim/syntax/php3.vim
 :augroup END
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
 " Autocommands for *.html *.cgi {{{2
@@ -276,73 +206,31 @@ endfun
 :augroup HtmlCgi
 :  autocmd!
 " Appending right part of tag in HTML files.
-:	autocmd BufEnter                 *.html	imap <buffer> QQ </>2F<lywf>f/pF<i
+:	autocmd BufEnter                 *.html	imap <buffer> QQ </><Esc>2F<lywf>f/pF<i
 :	autocmd BufWritePre,FileWritePre *.html	call AutoLastMod()
-:	autocmd BufEnter                 *.cgi	imap <buffer> QQ </>2F<lywf>f/pF<i
+:	autocmd BufEnter                 *.cgi	imap <buffer> QQ </><Esc>2F<lywf>f/pF<i
 :	autocmd BufWritePre,FileWritePre *.cgi	call AutoLastMod()
-:augroup END
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
-" Autocommands for *.gz {{{2
-:if version < 600
-:  augroup gzip
-:    autocmd!
-:    autocmd BufReadPre,FileReadPre	*.gz set bin
-:    autocmd BufReadPost,FileReadPost	*.gz '[,']!gunzip
-:    autocmd BufReadPost,FileReadPost	*.gz setlocal nobin
-:    autocmd BufReadPost,FileReadPost	*.gz execute ":doautocmd BufReadPost " . expand("%:r")
-:    autocmd BufWritePost,FileWritePost	*.gz !mv <afile> <afile>:r
-:    autocmd BufWritePost,FileWritePost	*.gz !gzip <afile>:r
-:    autocmd FileAppendPre		*.gz !gunzip <afile>
-:    autocmd FileAppendPre		*.gz !mv <afile>:r <afile>
-:    autocmd FileAppendPost		*.gz !mv <afile> <afile>:r
-:    autocmd FileAppendPost		*.gz !gzip <afile>:r
-:  augroup END
-:else
-:  " empty
-:endif
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
-" Autocommands for *.bz2 {{{2
-:augroup bzip2
-:  autocmd!
-:  autocmd BufReadPre,FileReadPre	*.bz2 setlocal bin
-:  autocmd BufReadPost,FileReadPost	*.bz2 '[,']!bunzip2
-:  autocmd BufReadPost,FileReadPost	*.bz2 setlocal nobin
-:  autocmd BufReadPost,FileReadPost	*.bz2 execute ":doautocmd BufReadPost " . expand("%:r")
-:  autocmd BufWritePost,FileWritePost	*.bz2 !mv <afile> <afile>:r
-:  autocmd BufWritePost,FileWritePost	*.bz2 !bzip2 <afile>:r
-:  autocmd FileAppendPre		*.bz2 !bunzip2 <afile>
-:  autocmd FileAppendPre		*.bz2 !mv <afile>:r <afile>
-:  autocmd FileAppendPost		*.bz2 !mv <afile> <afile>:r
-:  autocmd FileAppendPost		*.bz2 !bzip2 <afile>:r
 :augroup END
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
 " Autocomands for *.tcl {{{2
 :augroup Tcl
 :  autocmd!
-:	autocmd WinEnter            *.tcl	map <buffer>  :call CallProg()
+:	autocmd WinEnter            *.tcl	map <buffer> <C-K> :call CallProg()<CR>
 :	autocmd BufRead,BufNewFile  *.tcl	setlocal autoindent
-:augroup END
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
-" Autocomands for *.tex {{{2
-:augroup TeX
-:  autocmd!
-:	autocmd WinEnter            *.tex	
-:	autocmd WinLeave            *.tex	
-:	autocmd BufRead,BufNewFile  *.tex	  setlocal formatoptions=croqt
 :augroup END
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
 " Autocomands for Makefile {{{2
 :augroup Makefile
 :  autocmd!
-:	autocmd BufEnter            [Mm]akefile*	map <buffer>  :call CallProg()
+:	autocmd BufEnter            [Mm]akefile*	map <buffer> <C-K> :call CallProg()<CR>
 :augroup END
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
-" Autocommands for "Diplomovka" {{{2
-":augroup Diplomovka
-":  autocmd!
-":	autocmd BufWritePost,FileWritePost	~/dipl/xgrafix/src/* !make install
-":augroup END
+" Autocomands on Win32 {{{2
+if has("gui_win32")
+	au GUIEnter * simalt ~x
+endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
+endif " if has("autocmd")
 "################################################################# }}}1
 " Functions {{{1
 " Function ChangeFoldMethod() {{{2
@@ -373,7 +261,7 @@ endfun
 "		Get screen size:
 :		let lines = system("`which tcsh` -f -c telltc | " .
 				\ "grep lines | awk '{print \$6-1}'")
-:		let info = "[" . lines . ";0HProcessing line "
+:		let info = "<Esc>[" . lines . ";0HProcessing line "
 "		Set mark for return back
 :		exec "normal mF"
 "		Delete line
@@ -586,7 +474,7 @@ endfun
 "
 fun! UnquoteMailBody()
 " Every backslash character must be escaped in function -- Nepto
-:	exec "normal :%s/^\\([ ]*>[ ]*\\)*\\(\\|[^>].*\\)$/\\2/g"
+:	exec "normal :%s/^\\([ ]*>[ ]*\\)*\\(\\|[^>].*\\)$/\\2/g<CR>"
 endfun
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
 " Function SafeLineDelete() {{{2
