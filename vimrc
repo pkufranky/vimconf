@@ -18,7 +18,7 @@
 " Please don't hesitate to correct my english :)
 " Send corrections to <8host AT pauliDOTfmph.uniba.sk>
 
-" $Id: vimrc,v 1.64 2002/06/21 14:14:23 host8 Exp $
+" $Id: vimrc,v 1.65 2002/08/07 21:27:19 rajo Exp $
 
 " Settings {{{
 " To be secure & Vi nocompatible
@@ -93,16 +93,27 @@ if has("statusline")
 endif
 " }}}
 
+" Settings for Calendar plugin {{{
+if !exists("g:calendar_diary")
+	let g:calendar_diary = "~/.vim/diary"
+endif
+" }}} 
 " Settings for Explorer script {{{
-let g:explDetailedHelp=1
-let g:explDetailedList=1
-let g:explDateFormat="%d %b %Y %H:%M"
-"}}}
+if !exists("g:explDetailedHelp")
+	let g:explDetailedHelp=1
+endif
+if !exists("g:explDetailedList")
+	let g:explDetailedList=1
+endif
+if !exists("g:explDateFormat")
+	let g:explDateFormat="%d %b %Y %H:%M"
+endif
+" }}}
 " Settings for gcc & make {{{
 let g:cflags="-Wall -pedantic"
 let g:c_debug_flags="-ggdb -DDEBUG"
 let g:makeflags=""
-"}}}
+" }}}
 " Settings for AutoLastMod {{{
 " Set this to 1 if you will automaticaly change date of modification of file.
 let g:autolastmod=1
@@ -225,10 +236,14 @@ set t_vb=
 
 " Set this, if you will open all windows for files specified
 " on the commandline at vim startup.
-let g:open_all_win=1
+if !exists("g:open_all_win")
+	let g:open_all_win=1
+endif
 
 " Settings for folding long lines
-let g:fold_long_lines=300
+if !exists("g:fold_long_lines")
+	let g:fold_long_lines=300
+endif
 
 " }}}
 

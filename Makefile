@@ -5,7 +5,7 @@
 # (c) rajo <host8@kepler.fmph.uniba.sk>
 #
 
-# $Id: Makefile,v 1.21 2002/08/08 23:54:19 rajo Exp $
+# $Id: Makefile,v 1.22 2002/08/09 00:17:41 rajo Exp $
 
 PACKAGE = vimconfig
 VERSION = 1.7
@@ -29,6 +29,7 @@ DISTFILES = README FEATURES.txt tags \
 			vim/vimlatex \
 			vim/compiler \
 			vim/compiler/tex.vim \
+			vim/diary \
 			vim/ftplugin \
 			vim/ftplugin/cvs.vim \
 			vim/ftplugin/html.vim \
