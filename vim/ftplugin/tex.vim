@@ -2,7 +2,7 @@
 " Language:		TeX, LaTeX
 " Maintainer:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " License:		GNU GPL
-" Version:		$Id: tex.vim,v 1.1 2001/12/24 01:45:25 host8 Exp $
+" Version:		$Id: tex.vim,v 1.1 2002/01/04 10:37:41 host8 Exp $
 " Language Of Comments:	English
 
 
@@ -10,7 +10,11 @@
 if exists("b:did_ftplugin")
 	finish
 endif
-let b:did_ftplugin = 1
+" Variable b:did_ftplugin is not yet set, because I will load 
+" also $VIMRUNTIME/ftplugin/tex.vim file.
+"let b:did_ftplugin = 1
+
+let loaded_matchit = 1
 
 setlocal textwidth=72
 setlocal formatoptions=croqt
@@ -19,13 +23,13 @@ setlocal iskeyword="a-z,A-Z,48-57,_,-,>,\\,{.}"
 " Add mappings, unless the user didn't want this.
 if !exists("no_plugin_maps") && !exists("no_tex_maps")
 	" Ctrl-F reformat paragraph
-	if !hasmapto('<Plug>MailFormat')
-		imap <buffer> <C-F> <Plug>MailFormat
-		map  <buffer> <C-F> <Plug>MailFormat
+	if !hasmapto('<Plug>TexFormat')
+		imap <buffer> <C-F> <Plug>TexFormat
+		map  <buffer> <C-F> <Plug>TexFormat
 	endif
-	inoremap <buffer> <Plug>MailFormat <Esc>gqapi
-	noremap  <buffer> <Plug>MailFormat gqap
-	vnoremap <buffer> <Plug>MailFormat gq
+	inoremap <buffer> <Plug>TexFormat <Esc>gqapi
+	noremap  <buffer> <Plug>TexFormat gqap
+	vnoremap <buffer> <Plug>TexFormat gq
 	
 	imap <buffer> =a \'{a}
 	imap <buffer> +a \v{a}
