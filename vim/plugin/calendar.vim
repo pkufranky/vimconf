@@ -1,0 +1,691 @@
+"=============================================================================
+" File: calendar.vim
+" Author: Yasuhiro Matsumoto <mattn_jp@hotmail.com>
+" Last Change:  Fri, 18 Jan 2002
+" Version: 1.3b
+" Thanks:
+"     Ralf.Schandl        : gave a hint for 1.3
+"     Bhaskar Karambelkar : bug fix
+"     Suresh Govindachar  : gave a hint for 1.2
+"     Michael Geddes      : bug fix
+"     Leif Wickland       : bug fix
+" ChangeLog:
+"     1.3b : bug fix for calendar_monday.
+"            it didn't work g:calendar_monday correctly.
+"            add g:calendar_version.
+"            add argument on action handler.
+"            see Additional:
+"     1.3a : bug fix for MakeDir().
+"            it was not able to make directory.
+"     1.3  : support handler for action.
+"            see Additional:
+"     1.2g : bug fix for today's sign.
+"            it could not display today's sign correctly.
+"     1.2f : bug fix for current Date.
+"            vtoday variable calculates date as 'YYYYMMDD'
+"            while the loop calculates date as 'YYYYMMD' i.e just 1 digit
+"            for date if < 10 so if current date is < 10 , the if condiction
+"            to check for current date fails and current date is not
+"            highlighted.
+"            simple solution changed vtoday calculation line divide the
+"            current-date by 1 so as to get 1 digit date.
+"     1.2e : change the way for setting title.
+"            auto configuration for g:calendar_wruler with g:calendar_monday
+"     1.2d : add option for show week number.
+"              let g:calendar_weeknm = 1
+"            add separator if horizontal.
+"            change all option's name
+"              g:calendar_mnth -> g:calendar_mruler
+"              g:calendar_week -> g:calendar_wruler
+"              g:calendar_smnd -> g:calendar_monday
+"     1.2c : add option for that the week starts with monday.
+"              let g:calendar_smnd = 1
+"     1.2b : bug fix for modifiable.
+"            setlocal nomodifiable (was set)
+"     1.2a : add default options.
+"            nonumber,foldcolumn=0,nowrap... as making gap
+"     1.2  : support wide display.
+"            add a command CalendarH
+"            add map <s-left> <s-right>
+"     1.1c : extra.
+"            add a titlestring for today.
+"     1.1b : bug fix by Michael Geddes.
+"            it happend when do ':Calender' twice
+"     1.1a : fix misspell.
+"            Calender -> Calendar
+"     1.1  : bug fix.
+"            it"s about strftime("%m")
+"     1.0a : bug fix by Leif Wickland.
+"            it"s about strftime("%w")
+"     1.0  : first release.
+" Usage:
+"     :Calendar
+"       show calendar at this year and this month
+"     :Calendar 8
+"       show calendar at this year and given month
+"     :Calendar 2001 8
+"       show calendar at given year and given month
+"     :CalendarH ...
+"       show wide calendar ...
+" Additional:
+"     *if you want to replace calendar header,
+"       add the following in your favorite language to your .vimrc:
+"
+"       let g:calendar_mruler = 'Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec'
+"       let g:calendar_wruler = 'Su Mo Tu We Th Fr Sa'
+"
+"     *if you want the week to start with monday, add below to your .vimrc:
+"
+"       let g:calendar_monday = 1
+"       (You don't have to to change g:calendar_wruler!)
+"
+"     *if you want to show week number, add this to your .vimrc:
+"
+"       let g:calendar_weeknm = 1
+"       (Can't be used together with g:calendar_monday.)
+"
+"     *if you want to hook calender when pressing enter,
+"       add this to your .vimrc:
+"
+"       function MyCalAction(day,month,year,week,dir)
+"         " day   : day you actioned
+"         " month : month you actioned
+"         " year  : year you actioned
+"         " week  : day of week (Mo=1 ... Su=7)
+"         " dir   : direction of calendar
+"       endfunction
+"       let calendar_action = 'MyCalAction'
+"
+"     *if you want to get the version of this.
+"       type below.
+"
+"       :echo calendar_version
+
+let g:calendar_version = "1.3b"
+if !exists("g:calendar_action")
+  let g:calendar_action = "<SID>CalendarDiary"
+endif
+
+"*****************************************************************
+"* Calendar commands
+"*****************************************************************
+:command! -nargs=* Calendar  call Calendar(0,<f-args>)
+:command! -nargs=* CalendarH call Calendar(1,<f-args>)
+
+"*****************************************************************
+"* GetToken : get token from source with count
+"*----------------------------------------------------------------
+"*   src : source
+"*   dlm : delimiter
+"*   cnt : skip count
+"*****************************************************************
+function! s:GetToken(src,dlm,cnt)
+  let tokn_hit=0     " flag of found
+  let tokn_fnd=''    " found path
+  let tokn_spl=''    " token
+  let tokn_all=a:src " all source
+
+  " safe for end
+  let tokn_all = tokn_all.a:dlm
+  while 1
+    let tokn_spl = strpart(tokn_all,0,match(tokn_all,a:dlm))
+    let tokn_hit = tokn_hit + 1
+    if tokn_hit == a:cnt
+      return tokn_spl
+    endif
+    let tokn_all = strpart(tokn_all,strlen(tokn_spl.a:dlm))
+    if tokn_all == ''
+      break
+    endif
+  endwhile
+  return ''
+endfunction
+
+"*****************************************************************
+"* CalendarDoAction : call the action handler function
+"*----------------------------------------------------------------
+"*****************************************************************
+function! s:CalendarDoAction()
+  " if no action defined return
+  if !exists("g:calendar_action")
+    return
+  endif
+
+  if b:CalendarDir
+    let dir = 'H'
+    if !exists('g:calendar_monday') && exists('g:calendar_weeknm')
+      let cnr = col('.') - (col('.')%(24+5)) + 1
+    else
+      let cnr = col('.') - (col('.')%(24)) + 1
+    endif
+    let lnr = line('.')
+    let hdr = 1
+    let week = ((col(".") - cnr - 1 + cnr/49) / 3)
+  else
+    let dir = 'V'
+    let cnr = 0
+    let lnr = 1
+    let hdr = 1
+    while 1
+      if lnr > line('.')
+        break
+      endif
+      let sline = getline(lnr)
+      if sline =~ '^\s*$'
+        let hdr = lnr + 1
+      endif
+      let lnr = lnr + 1
+    endwhile
+    let lnr = line('.')
+    let week = ((col(".")+1) / 3) - 1
+  endif
+  if(exists('g:calendar_monday'))
+      let week = week + 1
+  elseif(week == 0)
+      let week = 7
+  endif
+  if lnr-hdr < 2
+    return
+  endif
+  let sline = substitute(strpart(getline(hdr),cnr,21),'\s*\(.*\)\s*','\1','')
+
+  " extracr day
+  let day = expand("<cword>")/1
+  if day == 0
+    return
+  endif
+  " extracr year and month
+  let year = substitute(sline, '/.*', '', '')/1
+  let month = substitute(sline, '\d*/\(\d\d\=\).*', '\1', "")/1
+  " call the action function
+  exe("call " . g:calendar_action . "(day, month, year, week, dir)")
+endfunc
+
+"*****************************************************************
+"* Calendar : build calendar
+"*----------------------------------------------------------------
+"*   a1 : direction
+"*   a2 : month(if given a3, it's year)
+"*   a3 : if given, it's month
+"*****************************************************************
+function! Calendar(...)
+
+  "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  "+++ ready for build
+  "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  " remember today
+  " divide strftime('%d') by 1 so as to get "1, 2,3 .. 9" instead of "01, 02, 03 .. 09"
+  let vtoday = strftime('%Y').strftime('%m')/1.strftime('%d')/1
+
+  " get arguments
+  if a:0 == 0
+    let dir = 0
+    let vyear = strftime('%Y')
+    let vmnth = strftime('%m')
+  elseif a:0 == 1
+    let dir = a:1
+    let vyear = strftime('%Y')
+    let vmnth = strftime('%m')
+  elseif a:0 == 2
+    let dir = a:1
+    let vyear = strftime('%Y')
+    let vmnth = a:2/1
+  else
+    let dir = a:1
+    let vyear = a:2/1
+    let vmnth = a:3/1
+  endif
+
+  " remember constant
+  let vmnth_org = vmnth
+  let vyear_org = vyear
+
+  " start with last month
+  let vmnth = vmnth - 1
+  if vmnth < 1
+    let vmnth = 12
+    let vyear = vyear - 1
+  endif
+
+  " reset display variables
+  let vdisplay1 = ''
+  let vheight = 1
+  let vmcnt = 0
+
+  "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  "+++ build display
+  "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  while vmcnt < 3
+    let vcolumn = 22
+    let vnweek = -1
+    "--------------------------------------------------------------
+    "--- calculating
+    "--------------------------------------------------------------
+    " set boundary of the month
+    if vmnth == 1
+      let vmdays = 31
+      let vparam = 0
+      let vsmnth = 'Jan'
+    elseif vmnth == 2
+      let vmdays = 28
+      let vparam = 31
+      let vsmnth = 'Feb'
+    elseif vmnth == 3
+      let vmdays = 31
+      let vparam = 59
+      let vsmnth = 'Mar'
+    elseif vmnth == 4
+      let vmdays = 30
+      let vparam = 90
+      let vsmnth = 'Apr'
+    elseif vmnth == 5
+      let vmdays = 31
+      let vparam = 120
+      let vsmnth = 'May'
+    elseif vmnth == 6
+      let vmdays = 30
+      let vparam = 151
+      let vsmnth = 'Jun'
+    elseif vmnth == 7
+      let vmdays = 31
+      let vparam = 181
+      let vsmnth = 'Jul'
+    elseif vmnth == 8
+      let vmdays = 31
+      let vparam = 212
+      let vsmnth = 'Aug'
+    elseif vmnth == 9
+      let vmdays = 30
+      let vparam = 243
+      let vsmnth = 'Sep'
+    elseif vmnth == 10
+      let vmdays = 31
+      let vparam = 273
+      let vsmnth = 'Oct'
+    elseif vmnth == 11
+      let vmdays = 30
+      let vparam = 304
+      let vsmnth = 'Nov'
+    elseif vmnth == 12
+      let vmdays = 31
+      let vparam = 334
+      let vsmnth = 'Dec'
+    else
+      echo 'Invalid Year or Month'
+      return
+    endif
+
+    " calc vnweek of the day
+    if vnweek == -1
+      let vnweek = ( vyear * 365 ) + vparam + 1
+      let vnweek = vnweek + ( vyear/4 ) - ( vyear/100 ) + ( vyear/400 )
+      if vmnth < 3 && vyear % 4 == 0
+        if vyear % 100 != 0 || vyear % 400 == 0
+          let vnweek = vnweek - 1
+        endif
+      endif
+      let vnweek = vnweek - 1
+    endif
+    if vmnth == 2
+      if vyear % 400 == 0
+        let vmdays = 29
+      elseif vyear % 100 == 0
+        let vmdays = 28
+      elseif vyear % 4 == 0
+        let vmdays = 29
+      endif
+    endif
+    let vnweek = vnweek % 7
+
+    if exists('g:calendar_monday')
+      " if given g:calendar_monday, the week start with monday
+      if vnweek == 0
+        let vnweek = 6
+      endif
+        let vnweek = vnweek - 1
+    elseif exists('g:calendar_weeknm')
+      " if given g:calendar_weeknm, show week number(ref:ISO8601)
+      let viweek = (vparam + 1) / 7
+      let vfweek = (vparam + 1) % 7
+      if vnweek == 0
+        let vfweek = vfweek - 7
+      else
+        let vfweek = vfweek - vnweek
+      endif
+      if vfweek <= 0 && viweek > 0
+        let viweek = viweek - 1
+        let vfweek = vfweek + 7
+      endif
+      if vfweek > -4
+        let viweek = viweek + 1
+      endif
+      if vfweek > 3
+        let viweek = viweek + 1
+      endif
+      if viweek == 0
+        let viweek = '??'
+      elseif viweek > 52
+        if vnweek != 0 && vnweek < 4
+          let viweek = 1
+        endif
+      endif
+      let vcolumn = vcolumn + 5
+    endif
+
+    "--------------------------------------------------------------
+    "--- displaying
+    "--------------------------------------------------------------
+    " build header
+    if exists('g:calendar_mruler') && g:calendar_mruler !~ "^\s*$"
+      let vdisplay2='     '.vyear.'/'.vmnth.'('
+        \.s:GetToken(g:calendar_mruler,',',vmnth).')'."\n"
+    else
+      let vdisplay2='     '.vyear.'/'.vmnth.'('
+        \.vsmnth.')'."\n"
+    endif
+    let vwruler = "Su Mo Tu We Th Fr Sa"
+    if exists('g:calendar_wruler') && g:calendar_wruler !~ "^\s*$"
+      let vwruler = g:calendar_wruler
+    endif
+    if exists('g:calendar_monday')
+      let vwruler = strpart(vwruler,3).' '.strpart(vwruler,0,2)
+    endif
+    let vdisplay2 = vdisplay2.' '.vwruler."\n"
+
+    " build calendar
+    let vinpcur = 0
+    while (vinpcur < vnweek)
+      let vdisplay2=vdisplay2.'   '
+      let vinpcur = vinpcur + 1
+    endwhile
+    let vdaycur = 1
+    while (vdaycur <= vmdays)
+      let vtarget = vyear.vmnth.vdaycur
+      if vtarget == vtoday
+        let vdisplay2=vdisplay2.'*'
+      else
+        let vdisplay2=vdisplay2.' '
+      endif
+      if vdaycur < 10
+        let vdisplay2=vdisplay2.' '
+      endif
+      let vdisplay2=vdisplay2.vdaycur
+      let vdaycur = vdaycur + 1
+      let vinpcur = vinpcur + 1
+      if vinpcur % 7 == 0
+        if !exists('g:calendar_monday') && exists('g:calendar_weeknm')
+          " if given g:calendar_weeknm, show week number
+          if viweek < 10
+            let vdisplay2=vdisplay2.' WK0'.viweek
+          else
+            let vdisplay2=vdisplay2.' WK'.viweek
+          endif
+          let viweek = viweek + 1
+        endif
+        let vdisplay2=vdisplay2."\n"
+      endif
+    endwhile
+
+    " if it is needed, fill with space
+    if vinpcur % 7 
+      while (vinpcur % 7 != 0)
+        let vdisplay2=vdisplay2.'   '
+        let vinpcur = vinpcur + 1
+      endwhile
+      if !exists('g:calendar_monday') && exists('g:calendar_weeknm')
+        if viweek < 10
+          let vdisplay2=vdisplay2.' WK0'.viweek
+        else
+          let vdisplay2=vdisplay2.' WK'.viweek
+        endif
+      endif
+    endif
+
+    " build display
+    let vstrline = ''
+    if dir
+      " for horizontal
+      "--------------------------------------------------------------
+      " +---+   +---+   +------+
+      " |   |   |   |   |      |
+      " | 1 | + | 2 | = |  1'  |
+      " |   |   |   |   |      |
+      " +---+   +---+   +------+
+      "--------------------------------------------------------------
+      let vtokline = 1
+      while 1
+        let vtoken1 = s:GetToken(vdisplay1,"\n",vtokline)
+        let vtoken2 = s:GetToken(vdisplay2,"\n",vtokline)
+        if vtoken1 == '' && vtoken2 == ''
+          break
+        endif
+        while strlen(vtoken1) < (vcolumn+1)*vmcnt
+          if strlen(vtoken1) % (vcolumn+1) == 0
+            let vtoken1 = vtoken1.'|'
+          else
+            let vtoken1 = vtoken1.' '
+          endif
+        endwhile
+        let vstrline = vstrline.vtoken1.'|'.vtoken2.' '."\n"
+        let vtokline = vtokline + 1
+      endwhile
+      let vdisplay1 = vstrline
+      let vheight = vtokline-1
+    else
+      " for virtical
+      "--------------------------------------------------------------
+      " +---+   +---+   +---+
+      " | 1 | + | 2 | = |   |
+      " +---+   +---+   | 1'|
+      "                 |   |
+      "                 +---+
+      "--------------------------------------------------------------
+      let vtokline = 1
+      while 1
+        let vtoken1 = s:GetToken(vdisplay1,"\n",vtokline)
+        if vtoken1 == ''
+          break
+        endif
+        let vstrline = vstrline.vtoken1."\n"
+        let vtokline = vtokline + 1
+        let vheight = vheight + 1
+      endwhile
+      if vstrline != ''
+        let vstrline = vstrline.' '."\n"
+        let vheight = vheight + 1
+      endif
+      let vtokline = 1
+      while 1
+        let vtoken2 = s:GetToken(vdisplay2,"\n",vtokline)
+        if vtoken2 == ''
+          break
+        endif
+        while strlen(vtoken2) < vcolumn
+          let vtoken2 = vtoken2.' '
+        endwhile
+        let vstrline = vstrline.vtoken2."\n"
+        let vtokline = vtokline + 1
+        let vheight = vtokline + 1
+      endwhile
+      let vdisplay1 = vstrline
+    endif
+    let vmnth = vmnth + 1
+    let vmcnt = vmcnt + 1
+    if vmnth > 12
+      let vmnth = 1
+      let vyear = vyear + 1
+    endif
+  endwhile
+  if a:0 == 0
+    return vdisplay1
+  endif
+
+  "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  "+++ build window
+  "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  " make window
+  let vwinnum=bufnr('__Calendar')
+  if getbufvar(vwinnum, 'Calendar')=='Calendar'
+    let vwinnum=bufwinnr(vwinnum)
+  else
+    let vwinnum=-1
+  endif
+
+  if vwinnum >=0
+    " if already exist
+    exe 'norm \<c-w>'.vwinnum.'w'
+    setlocal modifiable
+    silent %d _
+  else
+    " make title
+    auto BufEnter *Calendar let &titlestring = strftime('%c')
+    auto BufLeave *Calendar let &titlestring = ''
+
+    " or not
+    if dir
+      execute vheight.'split __Calendar'
+    else
+      execute vcolumn.'vsplit __Calendar'
+    endif
+    setlocal noswapfile
+    setlocal buftype=nowrite
+    setlocal bufhidden=delete
+    setlocal nonumber
+    setlocal nowrap
+    setlocal norightleft
+    setlocal foldcolumn=0
+    setlocal modifiable
+    let b:Calendar='Calendar'
+    " is this a vertical (0) or a horizontal (1) split?
+    let b:CalendarDir=dir
+  endif
+  silent put! =vdisplay1
+  "let save_f=@f
+  "let @f=vdisplay1
+  "silent put! f
+  "let @f=save_f
+
+  setlocal nomodifiable
+
+  let vyear = vyear_org
+  let vmnth = vmnth_org
+
+  "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  "+++ build keymap
+  "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  " make keymap
+  if vmnth > 1
+    execute 'nnoremap <silent> <buffer> <s-left> '
+      \.':call Calendar('.dir.','.vyear.','.(vmnth-1).')<cr>'
+  else
+    execute 'nnoremap <silent> <buffer> <s-left> '
+      \.':call Calendar('.dir.','.(vyear-1).',12)<cr>'
+  endif
+  if vmnth < 12
+    execute 'nnoremap <silent> <buffer> <s-right> '
+      \.':call Calendar('.dir.','.vyear.','.(vmnth+1).')<cr>'
+  else
+    execute 'nnoremap <silent> <buffer> <s-right> '
+      \.':call Calendar('.dir.','.(vyear+1).',1)<cr>'
+  endif
+  execute 'nnoremap <silent> <buffer> q :close<cr>'
+
+  execute 'nnoremap <silent> <buffer> <cr> :call <SID>CalendarDoAction()<cr>'
+  "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  "+++ build highlight
+  "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  " today
+  syn clear
+  syn match Directory display "\*\s*\d*"
+  " header
+  syn match Special display "\d\+\/\d\+([^)]*)"
+
+  " saturday, sunday
+  let dayorspace = '\(\*\|\s\)\(\s\|\d\)\(\s\|\d\)'
+  let wknmstring = '\(\sWK\d\d\)*'
+  let eolnstring = '\s\(|\|$\)'
+  if exists('g:calendar_monday')
+    execute "syn match Statement display \'"
+      \.dayorspace.dayorspace.wknmstring.eolnstring."\'ms=s+1,me=s+3"
+    execute "syn match Type display \'"
+      \.dayorspace.wknmstring.eolnstring."\'ms=s+1,me=s+3"
+  else
+    if dir
+      execute "syn match Statement display \'"
+        \.dayorspace.wknmstring.eolnstring."\'ms=s+1,me=s+3"
+      execute "syn match Type display \'\|"
+        \.dayorspace."\'ms=s+2,me=s+4"
+    else
+      execute "syn match Statement display \'"
+        \.dayorspace.wknmstring.eolnstring."\'ms=s+1,me=s+3"
+      execute "syn match Type display \'^"
+        \.dayorspace."\'ms=s+1,me=s+3"
+    endif
+  endif
+
+  " week number
+  syn match Comment display "WK\d\+"
+
+  " ruler
+  execute 'syn match StatusLine "'.vwruler.'"'
+
+  if search("\*","w") > 0
+    silent execute "normal! gg/*\<cr>"
+  endif
+
+endfunction
+ 
+"*****************************************************************
+"* CalendarMakeDir : make directory
+"*----------------------------------------------------------------
+"*   dir : directory
+"*****************************************************************
+function! s:CalendarMakeDir(dir)
+  if(has("unix"))
+    call system("mkdir " . a:dir)
+    let rc = v:shell_error
+  elseif(has("win16") || has("win32") || has("win95") ||
+              \has("dos16") || has("dos32") || has("os2"))
+    call system("mkdir \"" . a:dir . "\"")
+    let rc = v:shell_error
+  else
+    let rc = 1
+  endif
+  if rc != 0
+    call confirm("can't create directory : " . a:dir, "&OK")
+  endif
+  return rc
+endfunc
+
+"*****************************************************************
+"* CalendarDiary : calendar hook function
+"*----------------------------------------------------------------
+"*   ...
+"*****************************************************************
+function! s:CalendarDiary(day, month, year, week, dir)
+  if !exists("g:calendar_diary")
+    let g:calendar_diary = "~/diary"
+  endif
+  " build the file name and create directories as needed
+  if expand(g:calendar_diary) == ''
+    call confirm("please create diary directory : ".g:calendar_diary, 'OK')
+    return
+  endif
+  let sfile = expand(g:calendar_diary) . "/" . a:year
+  if isdirectory(sfile) == 0
+    if s:CalendarMakeDir(sfile) != 0
+      return
+    endif
+  endif
+  let sfile = sfile . "/" . a:month
+  if isdirectory(sfile) == 0
+    if CalendarMakeDir(sfile) != 0
+      return
+    endif
+  endif
+  let sfile = expand(sfile) . "/" . a:day . ".cal"
+
+  " load the file
+  exe "norm \<c-w>p"
+  exe "n " . substitute(sfile, ' ', '\\ ', 'g')
+endfunc
