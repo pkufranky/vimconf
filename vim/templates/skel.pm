@@ -21,16 +21,15 @@ use strict;
 use Carp;
 use vars qw($VERSION @ISA @EXPORT $AUTOLOAD);
 
-@ISA	= qw(Exporter);
-@EXPORT	= qw( );
-
+@ISA     = qw(Exporter);
+@EXPORT  = qw( );
 $VERSION = '0.1';
 
 sub new
 {
-    my $this	= shift;
-    my $class	= ref($this) || $this;
-    my $self	= { };
+    my $this  = shift;
+    my $class = ref($this) || $this;
+    my $self  = {};
 
     bless $self, $class;
     $self->set(@_) if @_;
