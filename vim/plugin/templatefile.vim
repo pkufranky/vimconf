@@ -3,24 +3,32 @@
 " File: templatefile.vim
 " Maintainer:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " Last Change: 2002/02/05
-" Version: $Id: $
+" Version: $Id: templatefile.vim,v 1.1 2002/02/05 22:41:54 host8 Exp $
 " Thanks:
 " 		Scott Urban       : First version of templatefile.vim
 " 		                    http://vim.sourceforge.net/scripts/
 " 		                           script.php?script_id=198
-
-
+" 
 " Description: 
-" 		load template file for new files
+" 		Plugin load template file for new files
+" 		Templates for new files aren't loaded, if g:load_templates == "no"
+" 		if g:load_templates == "ask" you are asked before loading template
+" 		If exists enviroment variable $VIMTEMPLATE, templates are loaded from
+" 		this directory.
 
 augroup TemplateSystem
 	autocmd!
-	au BufNewFile * silent call LoadTemplateFile()
+	au BufNewFile * call LoadTemplateFile()
 augroup END
 
 
 " template file loaded
 fun! LoadTemplateFile()
+	if exists("g:load_templates")
+		if g:load_templates == "no"
+			return
+		endif
+	endif
 	let extension = expand ("%:e")
 	if extension == ""
 		let template_file = "templates/" . expand("%:t")
@@ -30,13 +38,13 @@ fun! LoadTemplateFile()
 		let template_func = "TemplateFileFunc_" . extension
 	endif
 	if filereadable(expand($VIMTEMPLATE . template_file))
-		execute "0r "  $VIMTEMPLATE . template_file 
+		call LoadTemplateFileConfirm($VIMTEMPLATE . template_file)
 	elseif filereadable(expand($HOME . "/.vim/" . template_file))
-		execute "0r " $HOME . "/.vim/" . template_file
+		call LoadTemplateFileConfirm($HOME . "/.vim/" . template_file)
 	elseif filereadable(expand($VIM . template_file))
-		execute "0r " $VIM . template_file
+		call LoadTemplateFileConfirm($VIM . template_file)
 	elseif filereadable(expand($VIMRUNTIME . template_file))
-		execute "0r " $VIMRUNTIME . template_file
+		call LoadTemplateFileConfirm($VIMRUNTIME . template_file)
 	else
 		" Template not found
 	endif
@@ -56,13 +64,44 @@ fun! LoadTemplateFile()
 	silent! execute "%s/@FILE_EXT@/" .  myfile_ext . "/g"
 	silent! execute "%s/@INCLUDE_GAURD@/" . inc_gaurd . "/g"
 	if exists ("*" . template_func)
-		" echo "calling " . template_func
-		" exec(":call " . template_func . "()")
+		if exists("g:load_templates")
+			if g:load_templates == "ask"
+				let choice = confirm("Call function " . template_func . "() ?:", 
+							\ "&yes\n" .
+							\ "&no\n")
+				if choice == 1
+					silent! execute ":call " . template_func . "()"
+				endif
+			elseif g:load_templates == "yes"
+				silent! execute ":call " . template_func . "()"
+			endif
+		else
+			silent! execute ":call " . template_func . "()"
+		endif
+	endif
+endfun
+
+fun! LoadTemplateFileConfirm(filename)
+	if filereadable(a:filename)
+		if exists("g:load_templates")
+			if g:load_templates == "ask"
+				let choice = confirm("NEW FILE! Load template file?:", 
+							\ "&yes\n" .
+							\ "&no\n")
+				if choice == 1
+					execute "0r "  . a:filename
+				endif
+			elseif g:load_templates == "yes"
+				execute "0r "  . a:filename
+			endif
+		else
+			execute "0r "  . a:filename
+		endif
 	endif
 endfun
 
 " example for no-extension file specific template processing
-fun! TemplateFileFunc_noext_makefile ()
+fun! TemplateFileFunc_noext_makefile()
 	let save_r = @r
 	let @r = "all:\n\techo your template files need work"
 	normal G
