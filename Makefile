@@ -5,7 +5,7 @@
 # (c) rajo <host8@kepler.fmph.uniba.sk>
 #
 
-# $Id: Makefile,v 1.15 2002/04/06 18:03:45 host8 Exp $
+# $Id: Makefile,v 1.16 2002/04/22 18:45:21 host8 Exp $
 
 PACKAGE = vimconfig
 VERSION = 1.7-2.unstable
@@ -21,7 +21,7 @@ DISTFILES_TEMPLATE_PLUGIN = vim \
 						vim/templates/skel.sh \
 						vim/templates/Makefile
 
-DISTFILES = README FEATURES.txt \
+DISTFILES = README FEATURES.txt tags \
 			Makefile vimrc vim \
 			vim/strace.vim \
 			vim/csyntax.vim \
