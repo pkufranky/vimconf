@@ -2,7 +2,7 @@
 " Vim global plugin for autoload template files
 " File:			templatefile.vim
 " Maintainer:	Lubomir Host 'rajo' <rajo AT platon.sk>
-" Version:		$Platon: vimconfig/vim/plugin/templatefile.vim,v 1.19 2004-03-29 14:48:53 rajo Exp $
+" Version:		$Platon: vimconfig/vim/plugin/templatefile.vim,v 1.20 2004-09-21 20:05:48 rajo Exp $
 "
 " Thanks:
 " 	Scott Urban:	First version of templatefile.vim
@@ -32,7 +32,7 @@ function! Escape(str)
 	return escape(a:str, '/\\')
 endfunction
 
-" template file loaded
+" Function LoadTemplateFile() {{{
 function! LoadTemplateFile()
 	if exists("g:load_templates")
 		if g:load_templates == "no"
@@ -130,53 +130,45 @@ function! LoadTemplateFile()
 	" go to first line
 	silent! execute "normal gg"
 endfunction
+" }}}
 
-function! LoadTemplateFileConfirm(filename)
+" Function <SID>_LoadFile(question, filename) {{{
+function! <SID>_LoadFile(question, filename)
 	if filereadable(expand(a:filename))
 		if exists("g:load_templates")
 			if g:load_templates == "ask"
-				let choice = confirm("NEW FILE! Load template file " .
+				let choice = confirm(a:question .
 							\ expand(a:filename) . " ?:", 
 							\ "&yes\n" .
 							\ "&no\n")
 				if choice == 1
-					execute "0r "  . a:filename
+					silent execute "0r "  . a:filename
 					setlocal modified
 				endif
 			elseif g:load_templates == "yes"
-				execute "0r "  . a:filename
+				silent execute "0r "  . a:filename
 				setlocal modified
 			endif
 		else
-			execute "0r "  . a:filename
+			silent execute "0r "  . a:filename
 			setlocal modified
 		endif
+	else
+		echo "File " . expand(a:filename) . " not found!"
 	endif
+endfunction
+" }}}
+
+function! LoadTemplateFileConfirm(filename)
+	call <SID>_LoadFile("NEW FILE! Load template file ", a:filename)
 endfunction
 
 function! LoadFile(filename)
-	if filereadable(expand(a:filename))
-		if exists("g:load_templates")
-			if g:load_templates == "ask"
-				let choice = confirm("Load file " .
-							\ expand(a:filename) . " ?:", 
-							\ "&yes\n" .
-							\ "&no\n")
-				if choice == 1
-					execute "0r "  . a:filename
-				endif
-			elseif g:load_templates == "yes"
-				execute "0r "  . a:filename
-			endif
-		else
-			execute "0r "  . a:filename
-		endif
-	else
-		echo "File not found!"
-	endif
+	call <SID>_LoadFile("Load file ", a:filename)
 endfunction
 
 " function from Hojin Choi <pynoos AT naver.com>
+" Function TryLoadTemplateInUpperDir(skelfile) {{{
 fun! TryLoadTemplateInUpperDir(skelfile)
 	let savewd = getcwd()
 	while (getcwd() != "/")
@@ -195,6 +187,7 @@ fun! TryLoadTemplateInUpperDir(skelfile)
 	execute "cd " . savewd
 	return 0
 endfun
+" }}}
 
 " example for no-extension file specific template processing
 function! TemplateFileFunc_noext_makefile()
