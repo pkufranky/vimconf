@@ -5,7 +5,7 @@
 " License:		GNU GPL
 " Version:		2002.02.05
 
-" $Id: vimrc,v 1.37 2002/02/05 20:38:51 host8 Exp $
+" $Id: vimrc,v 1.38 2002/02/05 22:41:53 host8 Exp $
 
 " Settings {{{
 " To be secure & Vi nocompatible
@@ -336,27 +336,6 @@ if version >= 600
 	endfun
 endif
 " FoldLongLines() }}}
-
-" Function SetVimVar() {{{
-" Functions set appropriate values in variables according to line in
-" 'modelines' VIM_VAR: var1=value1 var2=value2
-" 
-"fun! SetVimVar()
-":$-5,$ call SetVimVarFromLine()
-"endfun
-" SetVimVar() }}}
-
-" Function SetVimVarFromLine() {{{
-" 
-"fun! SetVimVarFromLine()
-":let matx = ".* VIM_VAR: "
-":let curr_line = getline(".")
-":if match(curr_line, matx) == 0
-":	echo "Match on line " . "|" . curr_line
-":	exec ":let " . substitute(curr_line, matx, "", "")
-":endif
-"endfun
-" SetVimVarFromLine() }}}
 
 " Function AutoLastMod() {{{
 " Provides atomatic change of date in files, if it is set via
