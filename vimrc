@@ -18,7 +18,7 @@
 " Please don't hesitate to correct my english :)
 " Send corrections to <8host AT pauliDOTfmph.uniba.sk>
 
-" $Id: vimrc,v 1.70 2002/08/12 01:43:15 rajo Exp $
+" $Id: vimrc,v 1.71 2002/08/12 02:17:52 rajo Exp $
 
 " Settings {{{
 " To be secure & Vi nocompatible
@@ -639,9 +639,21 @@ endfunction
 
 " Function UnquoteMailBody() {{{
 "
-function! UnquoteMailBody()
+function! UnquoteMailBody() range abort
 	" Every backslash character must be escaped in function -- Nepto
-	exec "normal :%s/^\\([ ]*>[ ]*\\)*\\(\\|[^>].*\\)$/\\2/g<CR>"
+	"exec "normal :%s/^\\([ ]*>[ ]*\\)*\\(\\|[^>].*\\)$/\\2/g<CR>"
+	let savelnum = line(".")
+	let lnum = a:firstline
+	let lend = a:lastline
+	if lnum == lend
+		" No visual area choosen --> whole file
+		let lnum = line(".")
+		let lend = line("$")
+		" Go to the begin of the file
+		exec "1go"
+	endif
+	exec ":" . lnum . "," . lend . "s/^[ >]\\+//"
+	exec "normal " . savelnum . "G"
 endfunction
 " UnquoteMailBody() }}}
 
