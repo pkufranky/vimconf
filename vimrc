@@ -19,7 +19,15 @@
 " Send corrections to
 "        Lubomir Host 'rajo' <rajo AT platon.sk>
 
-" Version: $Platon: vimconfig/vimrc,v 1.82 2003-03-06 22:53:55 rajo Exp $
+" Version: $Platon: vimconfig/vimrc,v 1.83 2003-04-13 13:19:51 rajo Exp $
+
+" Debian uses compressed helpfiles. We must inform vim that the main
+" helpfiles is compressed. Other helpfiles are stated in the tags-file.
+if !filereadable(expand("$VIMRUNTIME/doc/help.txt"))
+	if filereadable(expand("$VIMRUNTIME/doc/help.txt.gz"))
+		set helpfile=$VIMRUNTIME/doc/help.txt.gz
+	endif
+endif
 
 " Settings {{{
 " To be secure & Vi nocompatible
