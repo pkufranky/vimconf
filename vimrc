@@ -8,19 +8,22 @@
 " Please don't hesitate to correct my english :)
 " Send corrections to <host8@kepler.fmph.uniba.sk>
 
-" $Id: vimrc,v 1.46 2002/02/24 18:39:59 host8 Exp $
+" $Id: vimrc,v 1.47 2002/02/24 19:38:59 host8 Exp $
 
 " Settings {{{
 " To be secure & Vi nocompatible
-set secure nocompatible
-if version >= 600 
+:set secure nocompatible
+:if version < 600
+:	echo "Please update your vim to 6.0 version"
+:	finish
+:endif
+
+:if version >= 600 
 	syntax enable
 	filetype on
 	filetype plugin on
 	filetype indent on
-else
-	:finish
-endif
+:endif
 
 
 " Settings for C language {{{

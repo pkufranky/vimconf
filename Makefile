@@ -2,15 +2,15 @@
 # Type 'make dist' for create tar-gziped and zip archiv. 
 
 #
-# (c) rajo <host8@kepler.fmph.uniba.sk
+# (c) rajo <host8@kepler.fmph.uniba.sk>
 #
 
-# $Id: Makefile,v 1.10 2002/02/24 05:15:17 host8 Exp $
+# $Id: Makefile,v 1.11 2002/02/24 18:42:40 host8 Exp $
 
 PACKAGE = vimconfig
-VERSION = 1.6
+VERSION = 1.7.unstable
 PACKAGE_TEMPLATE_PLUGIN = templatefile
-VERSION_TEMPLATE_PLUGIN = 1.6
+VERSION_TEMPLATE_PLUGIN = 1.7.unstable
 
 DISTFILES_TEMPLATE_PLUGIN = vim \
 						vim/plugin \
@@ -24,14 +24,25 @@ DISTFILES_TEMPLATE_PLUGIN = vim \
 DISTFILES = Makefile vimrc vim \
 			vim/strace.vim \
 			vim/csyntax.vim \
+			vim/latextags \
+			vim/vimlatex \
+			vim/compiler \
+			vim/compiler/tex.vim \
 			vim/ftplugin \
+			vim/ftplugin/cvs.vim \
 			vim/ftplugin/mail.vim \
+			vim/ftplugin/miktexmenus.vim \
 			vim/ftplugin/perl.vim \
 			vim/ftplugin/tex.vim \
+			vim/ftplugin/vim.vim \
+			vim/indent/ \
+			vim/indent/tex.vim \
 			vim/plugin \
 			vim/plugin/CmdlineCompl.vim \
 			vim/plugin/calendar.vim \
-			vim/plugin/matchit.vim $(DISTFILES_TEMPLATE_PLUGIN)
+			vim/plugin/imaps.vim \
+			vim/plugin/matchit.vim \
+			vim/plugin/syntaxFolds.vim $(DISTFILES_TEMPLATE_PLUGIN)
 
 
 #TAR = gtar
