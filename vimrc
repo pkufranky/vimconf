@@ -18,7 +18,7 @@
 " Please don't hesitate to correct my english :)
 " Send corrections to <8host AT pauliDOTfmph.uniba.sk>
 
-" $Id: vimrc,v 1.59 2002/04/23 18:58:33 host8 Exp $
+" $Id: vimrc,v 1.60 2002/04/30 23:53:06 host8 Exp $
 
 " Settings {{{
 " To be secure & Vi nocompatible
@@ -40,6 +40,7 @@ function! Source(File)
 endfunction
 
 let VIMRC_EXTRA="~/.vim/vimrc-local"
+let GVIMRC_EXTRA="~/.vim/gvimrc-local"
 if executable("uname") && executable("awk")
 	let machine = system("uname -n | awk 'BEGIN {ORS=\"\"} {print; }'")
 else

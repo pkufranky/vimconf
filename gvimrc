@@ -18,7 +18,33 @@
 " Please don't hesitate to correct my english :)
 " Send corrections to <8host AT pauliDOTfmph.uniba.sk>
 
-" $Id: $
+" $Id: gvimrc,v 1.1 2002/04/30 23:53:06 host8 Exp $
+
+function! Source(File)
+	silent! execute "source " . a:File
+endfunction
+
+let VIMRC_EXTRA="~/.vim/vimrc-local"
+let GVIMRC_EXTRA="~/.vim/gvimrc-local"
+if executable("uname") && executable("awk")
+	let machine = system("uname -n | awk 'BEGIN {ORS=\"\"} {print; }'")
+else
+	let machine = ""
+endif
+if executable("awk")
+	let user = system("echo $USER | awk 'BEGIN {ORS=\"\"} {print; }'")
+else
+	let user = $USER
+endif
+
+call Source(GVIMRC_EXTRA.".pre")
+call Source(GVIMRC_EXTRA."-".user.".pre")
+call Source(GVIMRC_EXTRA."-".machine.".pre")
+call Source(GVIMRC_EXTRA."-".machine."-".user.".pre")
+call Source(GVIMRC_EXTRA."")
+call Source(GVIMRC_EXTRA."-".user)
+call Source(GVIMRC_EXTRA."-".machine)
+call Source(GVIMRC_EXTRA."-".machine."-".user)
 
 
 " When the GUI starts, 't_vb' is reset to its default value.
@@ -43,6 +69,11 @@ if &t_Co > 2 || has("gui_running")
 	hi Constant                                 gui=NONE 
 	hi Special                                  gui=NONE
 endif
+
+call Source(GVIMRC_EXTRA.".post")
+call Source(GVIMRC_EXTRA."-".user.".post")
+call Source(GVIMRC_EXTRA."-".machine.".post")
+call Source(GVIMRC_EXTRA."-".machine."-".user.".post")
 
 " Modeline {{{
 " vim:set ts=4:
