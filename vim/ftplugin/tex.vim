@@ -570,7 +570,8 @@ function! s:TexQuotes()
 	endif
 	return s:insert
 endfunction
-imap <buffer> " <C-R>=<SID>TexQuotes()<CR>
+" function TexQuotes() disabled - unwanted feature.
+" imap <buffer> " <C-R>=<SID>TexQuotes()<CR>
 " }}}
 " SmartBS: smart backspacing {{{
 let g:smartBS_tex = '\(' .
