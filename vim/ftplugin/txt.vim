@@ -2,7 +2,38 @@
 " Language:		
 " Maintainer:	Lubomir Host 'rajo' <8host AT pauli.fmph.uniba.sk>
 " License:		GNU GPL
-" Version:		$Platon: vimconfig/vim/ftplugin/txt.vim,v 1.1 2003-01-16 12:17:35 rajo Exp $
+" Version:		$Platon: vimconfig/vim/ftplugin/txt.vim,v 1.2 2003-01-21 13:46:07 rajo Exp $
 
-let g:input_method = "iso8859-2"
 
+" Only do this when not done yet for this buffer
+if exists("b:did_ftplugin")
+  finish
+endif
+let b:did_ftplugin = 1
+
+" Don't use modelines in e-mail messages, avoid trojan horses
+setlocal nomodeline
+
+" many people recommend keeping e-mail messages 72 chars wide
+setlocal textwidth=72
+
+" Set 'formatoptions' to break text lines and keep the comment leader ">".
+setlocal formatoptions=crqt12
+
+setlocal autoindent
+
+" Replace <Tab> with 4 spaces
+setlocal tabstop=4
+setlocal shiftwidth=4
+setlocal expandtab
+
+
+let b:input_method = "iso8859-2"
+
+" turn on IMAP() input method
+call UseDiacritics()
+
+" Modeline {{{
+" vim:set ts=4:
+" vim600:fdm=marker fdl=0 fdc=3 vb t_vb=:
+" }}}

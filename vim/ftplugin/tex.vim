@@ -39,7 +39,10 @@ setlocal textwidth=72
 setlocal formatoptions=croqt
 
 " disable IMAP() function in math environments
-let g:disabled_imap_syntax_items = "texMathZone\\|texStatement"
+let b:disabled_imap_syntax_items = "texMathZone\\|texStatement"
+
+let b:input_method = "tex-iso8859-2"
+call UseDiacritics()
 
 " These lines come from $VIMRUNTIME/ftplugin/tex.vim (modified by Lubomir Host) {{{
 " Thanks to Benji Fisher, Ph.D. <benji@member.AMS.org>
@@ -270,232 +273,6 @@ if !exists('s:doneMappings')
 	call IMAP('`Y', "\\Psi", "tex")
 	call IMAP('`Z', "\\Zeta", "tex")
 	" }}}
-	" Diacritics from Lubomir Host {{{
-	if exists("g:tex_input_method")
-		if g:tex_input_method == "tex-universal"
-			" universal TeX mappings {{{
-			call IMAP ('=a', "\\\'{a}", 'tex')
-			call IMAP ('+a', "\\v{a}", 'tex')
-			call IMAP ('+}', "\\\"{a}", 'tex')
-			call IMAP ('=b', "\\'{b}", 'tex')
-			call IMAP ('+b', "\\v{b}", 'tex')
-			call IMAP ('=c', "\\'{c}", 'tex')
-			call IMAP ('+c', "\\v{c}", 'tex')
-			call IMAP ('=d', "\\'{d}", 'tex')
-			call IMAP ('+d', "\\v{d}", 'tex')
-			call IMAP ('=e', "\\'{e}", 'tex')
-			call IMAP ('+e', "\\v{e}", 'tex')
-			call IMAP ('=f', "\\'{f}", 'tex')
-			call IMAP ('+f', "\\v{f}", 'tex')
-			call IMAP ('=g', "\\'{g}", 'tex')
-			call IMAP ('+g', "\\v{g}", 'tex')
-			call IMAP ('=h', "\\'{h}", 'tex')
-			call IMAP ('+h', "\\v{h}", 'tex')
-			call IMAP ('=i', "\\'{\\i}", 'tex')
-			call IMAP ('+i', "\\v{\\i}", 'tex')
-			"call IMAP ('=j', "\\'{\\j}", 'tex')
-			"call IMAP ('+j', "\\v{\\j}", 'tex')
-			"call IMAP ('=k', "\\'{k}", 'tex')
-			"call IMAP ('+k', "\\v{k}", 'tex')
-			call IMAP ('=l', "\\'{l}", 'tex')
-			call IMAP ('+l', "\\q l", 'tex')
-			call IMAP ('=m', "\\'{m}", 'tex')
-			call IMAP ('+m', "\\v{m}", 'tex')
-			call IMAP ('=n', "\\'{n}", 'tex')
-			call IMAP ('+n', "\\v{n}", 'tex')
-			call IMAP ('=o', "\\'{o}", 'tex')
-			call IMAP ('+o', "\\v{o}", 'tex')
-			call IMAP ('+:', "\\^{o}", 'tex')
-			call IMAP ('=p', "\\'{p}", 'tex')
-			call IMAP ('+p', "\\v{p}", 'tex')
-			call IMAP ('=q', "\\'{q}", 'tex')
-			call IMAP ('+q', "\\v{q}", 'tex')
-			call IMAP ('=r', "\\'{r}", 'tex')
-			call IMAP ('+r', "\\v{r}", 'tex')
-			call IMAP ('=s', "\\'{s}", 'tex')
-			call IMAP ('+s', "\\v{s}", 'tex')
-			call IMAP ('=t', "\\'{t}", 'tex')
-			call IMAP ('+t', "\\q t", 'tex')
-			call IMAP ('=u', "\\'{u}", 'tex')
-			call IMAP ('+u', "\\v{u}", 'tex')
-			call IMAP ('=v', "\\'{v}", 'tex')
-			call IMAP ('+v', "\\v{v}", 'tex')
-			call IMAP ('=w', "\\'{w}", 'tex')
-			call IMAP ('+w', "\\v{w}", 'tex')
-			call IMAP ('=x', "\\'{x}", 'tex')
-			call IMAP ('+x', "\\v{x}", 'tex')
-			call IMAP ('=y', "\\'{y}", 'tex')
-			call IMAP ('+y', "\\v{y}", 'tex')
-			call IMAP ('=z', "\\'{z}", 'tex')
-			call IMAP ('+z', "\\v{z}", 'tex')
-			call IMAP ('=A', "\\'{A}", 'tex')
-			call IMAP ('+A', "\\v{A}", 'tex')
-			call IMAP ('=B', "\\'{B}", 'tex')
-			call IMAP ('+B', "\\v{B}", 'tex')
-			call IMAP ('=C', "\\'{C}", 'tex')
-			call IMAP ('+C', "\\v{C}", 'tex')
-			call IMAP ('=D', "\\'{D}", 'tex')
-			call IMAP ('+D', "\\v{D}", 'tex')
-			call IMAP ('=E', "\\'{E}", 'tex')
-			call IMAP ('+E', "\\v{E}", 'tex')
-			call IMAP ('=F', "\\'{F}", 'tex')
-			call IMAP ('+F', "\\v{F}", 'tex')
-			call IMAP ('=G', "\\'{G}", 'tex')
-			call IMAP ('+G', "\\v{G}", 'tex')
-			call IMAP ('=H', "\\'{H}", 'tex')
-			call IMAP ('+H', "\\v{H}", 'tex')
-			call IMAP ('=I', "\\'{I}", 'tex')
-			call IMAP ('+I', "\\v{I}", 'tex')
-			"call IMAP ('=J', "\\'{J}", 'tex')
-			"call IMAP ('+J', "\\v{J}", 'tex')
-			call IMAP ('=K', "\\'{K}", 'tex')
-			call IMAP ('+K', "\\v{K}", 'tex')
-			call IMAP ('=L', "\\'{L}", 'tex')
-			call IMAP ('+L', "\\v{L}", 'tex')
-			call IMAP ('=M', "\\'{M}", 'tex')
-			call IMAP ('+M', "\\v{M}", 'tex')
-			call IMAP ('=N', "\\'{N}", 'tex')
-			call IMAP ('+N', "\\v{N}", 'tex')
-			call IMAP ('=O', "\\'{O}", 'tex')
-			call IMAP ('+O', "\\v{O}", 'tex')
-			call IMAP ('=P', "\\'{P}", 'tex')
-			call IMAP ('+P', "\\v{P}", 'tex')
-			call IMAP ('=Q', "\\'{Q}", 'tex')
-			call IMAP ('+Q', "\\v{Q}", 'tex')
-			call IMAP ('=R', "\\'{R}", 'tex')
-			call IMAP ('+R', "\\v{R}", 'tex')
-			call IMAP ('=S', "\\'{S}", 'tex')
-			call IMAP ('+S', "\\v{S}", 'tex')
-			call IMAP ('=T', "\\'{T}", 'tex')
-			call IMAP ('+T', "\\v{T}", 'tex')
-			call IMAP ('=U', "\\'{U}", 'tex')
-			call IMAP ('+U', "\\v{U}", 'tex')
-			call IMAP ('=V', "\\'{V}", 'tex')
-			call IMAP ('+V', "\\v{V}", 'tex')
-			call IMAP ('=W', "\\'{W}", 'tex')
-			call IMAP ('+W', "\\v{W}", 'tex')
-			call IMAP ('=X', "\\'{X}", 'tex')
-			call IMAP ('+X', "\\v{X}", 'tex')
-			call IMAP ('=Y', "\\'{Y}", 'tex')
-			call IMAP ('+Y', "\\v{Y}", 'tex')
-			call IMAP ('=Z', "\\'{Z}", 'tex')
-			call IMAP ('+Z', "\\v{Z}", 'tex')
-			" end universal TeX mappings }}}
-		elseif g:tex_input_method == "tex-iso8859-2" ||
-					\ g:tex_input_method == "iso8859-2" ||
-					\ g:tex_input_method == "tex-latin2" ||
-					\ g:tex_input_method == "latin2"
-			" iso8859-2(latin2) TeX mappings {{{
-			call IMAP ('=a', "á", 'tex')
-			call IMAP ('+a', "\\v{a}", 'tex')
-			call IMAP ('+}', "ä", 'tex')
-			call IMAP ('=b', "\\'{b}", 'tex')
-			call IMAP ('+b', "\\v{b}", 'tex')
-			call IMAP ('=c', "æ", 'tex')
-			call IMAP ('+c', "è", 'tex')
-			call IMAP ('=d', "\\'{d}", 'tex')
-			call IMAP ('+d', "ï", 'tex')
-			call IMAP ('=e', "é", 'tex')
-			call IMAP ('+e', "ì", 'tex')
-			call IMAP ('=f', "\\'{f}", 'tex')
-			call IMAP ('+f', "\\v{f}", 'tex')
-			call IMAP ('=g', "\\'{g}", 'tex')
-			call IMAP ('+g', "\\v{g}", 'tex')
-			call IMAP ('=h', "\\'{h}", 'tex')
-			call IMAP ('+h', "\\v{h}", 'tex')
-			call IMAP ('=i', "í", 'tex')
-			call IMAP ('+i', "\\v{\\i}", 'tex')
-			"call IMAP ('=j', "\\'{\\j}", 'tex')
-			"call IMAP ('+j', "\\v{\\j}", 'tex')
-			"call IMAP ('=k', "\\'{k}", 'tex')
-			"call IMAP ('+k', "\\v{k}", 'tex')
-			call IMAP ('=l', "å", 'tex')
-			call IMAP ('+l', "µ", 'tex')
-			call IMAP ('=m', "\\'{m}", 'tex')
-			call IMAP ('+m', "\\v{m}", 'tex')
-			call IMAP ('=n', "ñ", 'tex')
-			call IMAP ('+n', "ò", 'tex')
-			call IMAP ('=o', "ó", 'tex')
-			call IMAP ('+o', "ö", 'tex')
-			call IMAP ('+:', "ô", 'tex')
-			call IMAP ('=p', "\\'{p}", 'tex')
-			call IMAP ('+p', "\\v{p}", 'tex')
-			call IMAP ('=q', "\\'{q}", 'tex')
-			call IMAP ('+q', "\\v{q}", 'tex')
-			call IMAP ('=r', "à", 'tex')
-			call IMAP ('+r', "ø", 'tex')
-			call IMAP ('=s', "¶", 'tex')
-			call IMAP ('+s', "¹", 'tex')
-			call IMAP ('=t', "\\'{t}", 'tex')
-			call IMAP ('+t', "»", 'tex')
-			call IMAP ('=u', "ú", 'tex')
-			call IMAP ('+u', "ü", 'tex')
-			call IMAP ('=v', "\\'{v}", 'tex')
-			call IMAP ('+v', "\\v{v}", 'tex')
-			call IMAP ('=w', "\\'{w}", 'tex')
-			call IMAP ('+w', "\\v{w}", 'tex')
-			call IMAP ('=x', "\\'{x}", 'tex')
-			call IMAP ('+x', "\\v{x}", 'tex')
-			call IMAP ('=y', "ý", 'tex')
-			call IMAP ('+y', "\\v{y}", 'tex')
-			call IMAP ('=z', "¼", 'tex')
-			call IMAP ('+z', "¾", 'tex')
-			call IMAP ('=A', "Á", 'tex')
-			call IMAP ('+A', "Ä", 'tex')
-			call IMAP ('=B', "\\'{B}", 'tex')
-			call IMAP ('+B', "\\v{B}", 'tex')
-			call IMAP ('=C', "Æ", 'tex')
-			call IMAP ('+C', "È", 'tex')
-			call IMAP ('=D', "\\'{D}", 'tex')
-			call IMAP ('+D', "Ï", 'tex')
-			call IMAP ('=E', "É", 'tex')
-			call IMAP ('+E', "Ì", 'tex')
-			call IMAP ('=F', "\\'{F}", 'tex')
-			call IMAP ('+F', "\\v{F}", 'tex')
-			call IMAP ('=G', "\\'{G}", 'tex')
-			call IMAP ('+G', "\\v{G}", 'tex')
-			call IMAP ('=H', "\\'{H}", 'tex')
-			call IMAP ('+H', "\\v{H}", 'tex')
-			call IMAP ('=I', "Í", 'tex')
-			call IMAP ('+I', "\\v{I}", 'tex')
-			"call IMAP ('=J', "\\'{J}", 'tex')
-			"call IMAP ('+J', "\\v{J}", 'tex')
-			call IMAP ('=K', "\\'{K}", 'tex')
-			call IMAP ('+K', "\\v{K}", 'tex')
-			call IMAP ('=L', "Å", 'tex')
-			call IMAP ('+L', "¥", 'tex')
-			call IMAP ('=M', "\\'{M}", 'tex')
-			call IMAP ('+M', "\\v{M}", 'tex')
-			call IMAP ('=N', "Ñ", 'tex')
-			call IMAP ('+N', "Ò", 'tex')
-			call IMAP ('=O', "Ó", 'tex')
-			call IMAP ('+O', "Ô", 'tex')
-			call IMAP ('=P', "\\'{P}", 'tex')
-			call IMAP ('+P', "\\v{P}", 'tex')
-			call IMAP ('=Q', "\\'{Q}", 'tex')
-			call IMAP ('+Q', "\\v{Q}", 'tex')
-			call IMAP ('=R', "À", 'tex')
-			call IMAP ('+R', "Ø", 'tex')
-			call IMAP ('=S', "¦", 'tex')
-			call IMAP ('+S', "©", 'tex')
-			call IMAP ('=T', "\\'{T}", 'tex')
-			call IMAP ('+T', "«", 'tex')
-			call IMAP ('=U', "Ú", 'tex')
-			call IMAP ('+U', "Ü", 'tex')
-			call IMAP ('=V', "\\'{V}", 'tex')
-			call IMAP ('+V', "\\v{V}", 'tex')
-			call IMAP ('=W', "\\'{W}", 'tex')
-			call IMAP ('+W', "\\v{W}", 'tex')
-			call IMAP ('=X', "\\'{X}", 'tex')
-			call IMAP ('+X', "\\v{X}", 'tex')
-			call IMAP ('=Y', "Ý", 'tex')
-			call IMAP ('+Y', "\\v{Y}", 'tex')
-			call IMAP ('=Z', "¬", 'tex')
-			call IMAP ('+Z', "®", 'tex')
-			" end iso8859-2(latin2) TeX mappings }}}
-		endif
-	endif
-	" }}}
 	" vmaps: enclose selected region in brackts, environments {{{
 	vnoremap <Leader>( "rxi\left(<cr>\right)<cr><esc>k"rP
 	vnoremap <Leader>[ "rxi\left[<cr>\right]<cr><esc>k"rP
@@ -574,6 +351,8 @@ endfunction
 "imap <buffer> " <C-R>=<SID>TexQuotes()<CR>
 " }}}
 " SmartBS: smart backspacing {{{
+
+" set regular expresion for Smart backspacing
 let g:smartBS_tex = '\(' .
 			\ "\\\\[\"^'=v]{\\S}"      . '\|' .
 			\ "\\\\[\"^'=]\\S"         . '\|' .
@@ -584,22 +363,8 @@ let g:smartBS_tex = '\(' .
 			\ '\\-'                    .
 			\ '\)' . "$"
 
-" This function comes from Benji Fisher <benji AT e-mathDOTAMSDOTorg>
-" http://vim.sourceforge.net/scripts/download.php?src_id=409
-" (modified/patched by: Lubomir Host 'rajo' <host8 AT keplerDOTfmphDOTuniba.sk>
-"                       Srinath Avadhanula  <srinath AT fastmailDOTfm> )
-function! s:SmartBS()
-	let init = strpart(getline("."), 0, col(".")-1)
-	let matchtxt = matchstr(init, g:smartBS_tex)
-	echo "SmartBS(" . matchtxt . ")"
-	if matchtxt != ''
-		let bstxt = substitute(matchtxt, '.', "\<bs>", 'g')
-		return bstxt
-	else
-		return "\<bs>"
-	endif
-endfun
-inoremap <buffer> <BS> <C-R>=<SID>SmartBS()<CR>
+" map <BS> to function SmartBS()
+inoremap <buffer> <BS> <C-R>=SmartBS()<CR>
 " }}} 
 
 " MakeTexFolds: see ../plugin/syntaxFolds.vim for documentation {{{

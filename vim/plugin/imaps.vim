@@ -89,6 +89,14 @@
 "--------------------------------------%<--------------------------------------
 " }}}
 
+" Only do this when not done yet
+" This plugin is (must be) sourced by ~/.vimrc, because 
+" many ftplugins are using function IMAP()
+if exists("b:did_imap_plugin")
+  finish
+endif
+let b:did_imap_plugin = 1
+
 " IMAP: Adds a "fake" insert mode mapping. {{{
 "       For example, doing
 "           IMAP('abc', 'def') 
@@ -185,16 +193,16 @@ endfunction
 " character and then if a possible match exists, ereases the left-hand side
 " and inserts the right hand side instead.
 silent! function! <SID>LookupCharacter(char)
-	if exists("g:disable_imap")
-		if g:disable_imap == 1
-			"echo "LookupCharacter(\"" . a:char . "\") - disabled (g:disabled=1)"
+	if exists("b:disable_imap")
+		if b:disable_imap == 1
+			"echo "LookupCharacter(\"" . a:char . "\") - disabled (b:disabled=1)"
 			" here we must return parameter 
 			return a:char
 		endif
 	endif
-	if exists("g:disabled_imap_syntax_items")
+	if exists("b:disabled_imap_syntax_items")
 		let currentSyntaxItem = synIDattr(synID(line("."), col(".") - 1, 1), "name")
-		if match(currentSyntaxItem, g:disabled_imap_syntax_items) != -1
+		if match(currentSyntaxItem, b:disabled_imap_syntax_items) != -1
 			echo "IMAP mappings are disabled here"
 			return a:char
 		endif
@@ -202,7 +210,7 @@ silent! function! <SID>LookupCharacter(char)
 	"echo "currentSyntaxItem = " . synIDattr(synID(line("."), col(".") - 1, 1), "name")
 				\ 'line = ' . line(".")
 				\ 'col  = ' .col(".")
-	echo "LookupCharacter(\"" . a:char . "\") - enabled (g:disabled=0)"
+	echo "LookupCharacter(\"" . a:char . "\") - enabled (b:disabled=0)"
 	let charHash = char2nr(a:char)
 
 	if !exists('s:charLens_' . &ft . '_' . charHash)
@@ -327,17 +335,18 @@ endfunction
 let s:ml = exists('g:mapleader') ? g:mapleader : '\'
 " these are mappings which were originally in imaps.vim. ideally they should
 " be in the corresponding ftplugin/<ft>.vim directory.
+ 
 " General purpose mappings {{{
-call IMAP ('date'   .s:ml, "\<c-r>=strftime('%b %d %Y')\<cr>", '')
-call IMAP ('stamp'  .s:ml, "Last Change: \<c-r>=strftime('%a %b %d %I:00 %p %Y PST')\<cr>", '')
-call IMAP ('winm'   .s:ml, "http://robotics.eecs.berkeley.edu/~srinath/vim/winmanager-2.0.htm", '')
-call IMAP ('latexs' .s:ml, "http://robotics.eecs.berkeley.edu/~srinath/vim/latexSuite.zip", '')
-call IMAP ('homep'  .s:ml, "http://robotics.eecs.berkeley.edu/~srinath", '')
+"call IMAP ('date'   . s:ml, "\<c-r>=strftime('%b %d %Y')\<cr>", '')
+"call IMAP ('stamp'  . s:ml, "Last Change: \<c-r>=strftime('%a %b %d %I:00 %p %Y PST')\<cr>", '')
+"call IMAP ('winm'   . s:ml, "http://robotics.eecs.berkeley.edu/~srinath/vim/winmanager-2.0.htm", '')
+"call IMAP ('latexs' . s:ml, "http://robotics.eecs.berkeley.edu/~srinath/vim/latexSuite.zip", '')
+"call IMAP ('homep'  . s:ml, "http://robotics.eecs.berkeley.edu/~srinath", '')
 " End general purpose mappings }}}
 " Vim Mappings {{{
-call IMAP ('while' . s:ml,
-			\ "let i = הה\<cr>while i <= \<cr>\<cr>\tlet i = i + 1\<cr>\<bs>endwhile", 'vim')
-call IMAP ('fdesc'.s:ml, "\"Description: ", 'vim')
+"call IMAP ('while' . s:ml,
+"			\ "let i = הה\<cr>while i <= \<cr>\<cr>\tlet i = i + 1\<cr>\<bs>endwhile", 'vim')
+"call IMAP ('fdesc'. s:ml, "\"Description: ", 'vim')
 " end vim mappings }}}
 
 " Snip: puts a scissor string above and below block of text {{{

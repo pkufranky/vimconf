@@ -19,7 +19,7 @@
 " Send corrections to
 "        Lubomir Host 'rajo' <8host AT pauli.fmph.uniba.sk>
 
-" Version: $Platon: vimconfig/vimrc,v 1.77 2003-01-16 12:16:49 rajo Exp $
+" Version: $Platon: vimconfig/vimrc,v 1.78 2003-01-21 13:46:06 rajo Exp $
 
 " Settings {{{
 " To be secure & Vi nocompatible
@@ -325,16 +325,18 @@ noremap ZX mzggvGzX'z
 " }}}
 
 " }}}
+
 " Settings for IMAP input method (IMAP plugin) {{{
 
-" set variable "g:tex_input_method" to change input method
-let g:tex_input_method = "latin2"
+" set variable "b:input_method" to change input method
+let b:input_method = "latin2"
 
-" you may disable actions of IMAP plugin with variable g:disable_imap
+" you may disable actions of IMAP plugin with variable b:disable_imap
 " 0 - enabled
 " 1 - disabled
-let g:disable_imap = 0
+let b:disable_imap = 0
 
+call Source("~/.vim/plugin/imaps.vim")
 
 " }}}
 
@@ -347,91 +349,6 @@ command! -nargs=0 OpenAllWin call OpenAllWin()
 command! -nargs=* ReadFileAboveCursor call ReadFileAboveCursor(<f-args>)
 command! -nargs=* R call ReadFileAboveCursor(<f-args>)
 " }}}
-
-" Autocomands {{{
-if has("autocmd")
-
-	" Autocomands for PlatonCopyright {{{
-	augroup PlatonCopyright
-	autocmd!
-	autocmd BufLeave * set titlestring=
-	autocmd BufLeave * silent! call RemoveAutogroup("PlatonCopyright")
-	autocmd WinEnter * set titlestring=
-	autocmd WinEnter * silent! call RemoveAutogroup("PlatonCopyright")
-	autocmd BufWrite * set titlestring=
-	autocmd BufWrite * silent! call RemoveAutogroup("PlatonCopyright")
-	autocmd CmdwinEnter * set titlestring=
-	autocmd CmdwinEnter * silent! call RemoveAutogroup("PlatonCopyright")
-	augroup END
-	" }}}
-
-	" Autocomands for GUIEnter {{{
-	augroup GUIEnter
-	autocmd!
-	if has("gui_win32")
-		autocmd GUIEnter * simalt ~x
-	endif
-	augroup END
-	" }}}
-
-	" Autocomands for ~/.vimrc {{{
-	augroup VimConfig
-	autocmd!
-	" Reread configuration of ViM if file ~/.vimrc is saved
-	autocmd BufWritePost ~/.vimrc	so ~/.vimrc | exec "normal zv"
-	autocmd BufWritePost vimrc   	so ~/.vimrc | exec "normal zv"
-	augroup END
-	" }}}
-
-	" Autocommands for *.c, *.h, *.cc *.cpp {{{
-	augroup C
-	autocmd!
-	"formatovanie C-zdrojakov
-	autocmd BufEnter     *.c,*.h,*.cc,*.cpp	map  <buffer> <C-F> mfggvG$='f
-	autocmd BufEnter     *.c,*.h,*.cc,*.cpp	imap <buffer> <C-F> <Esc>mfggvG$='fi
-	autocmd BufEnter     *.c,*.h,*.cc,*.cpp	map <buffer> yii yyp3wdwi
-	autocmd BufEnter     *.c,*.h,*.cc,*.cpp	map <buffer> <C-K> :call CallProg()<CR>
-	autocmd BufRead,BufNewFile  *.c,*.h,*.cc,*.cpp	setlocal cindent
-	autocmd BufRead,BufNewFile  *.c,*.h,*.cc,*.cpp	setlocal cinoptions=>4,e0,n0,f0,{0,}0,^0,:4,=4,p4,t4,c3,+4,(2s,u1s,)20,*30,g4,h4
-	autocmd BufRead,BufNewFile  *.c,*.h,*.cc,*.cpp	setlocal cinkeys=0{,0},:,0#,!<C-F>,o,O,e
-	augroup END
-	" }}}
-
-	" Autocommands for *.html *.cgi {{{
-	" Automatic updates date of last modification in HTML files. File must
-	" contain line "^\([<space><Tab>]*\)Last modified: ",
-	" else will be date writtend on the current " line.
-	augroup HtmlCgiPHP
-	autocmd!
-	" Appending right part of tag in HTML files.
-	autocmd BufEnter                 *.html	imap <buffer> QQ </><Esc>2F<lywf>f/pF<i
-	autocmd BufWritePre,FileWritePre *.html	call AutoLastMod()
-	autocmd BufEnter                 *.cgi	imap <buffer> QQ </><Esc>2F<lywf>f/pF<i
-	autocmd BufWritePre,FileWritePre *.cgi	call AutoLastMod()
-	autocmd BufEnter                 *.php	imap <buffer> QQ </><Esc>2F<lywf>f/pF<i
-	autocmd BufWritePre,FileWritePre *.php	call AutoLastMod()
-	autocmd BufEnter                 *.php3	imap <buffer> QQ </><Esc>2F<lywf>f/pF<i
-	autocmd BufWritePre,FileWritePre *.php3	call AutoLastMod()
-	augroup END
-	" }}}
-
-	" Autocomands for *.tcl {{{
-	augroup Tcl
-	autocmd!
-	autocmd WinEnter            *.tcl	map <buffer> <C-K> :call CallProg()<CR>
-	autocmd BufRead,BufNewFile  *.tcl	setlocal autoindent
-	augroup END
-	" }}}
-
-	" Autocomands for Makefile {{{
-	augroup Makefile
-	autocmd!
-	autocmd BufEnter            [Mm]akefile*	map <buffer> <C-K> :call CallProg()<CR>
-	augroup END
-	" }}}
-
-endif " if has("autocmd")
-" }}} Autocomands
 
 " Functions {{{
 " Function ChangeFoldMethod() {{{
@@ -556,18 +473,6 @@ function! OpenAllWin()
 		set nosplitbelow
 	endif
 endfunction
-
-if exists("g:open_all_win")
-	if g:open_all_win == 1
-		" Open all windows only if we are not running (g)vimdiff
-		if match(v:progname, "diff") < 0
-			call OpenAllWin()
-		endif
-	endif
-	" turn g:open_all_win off after opening all windows
-	" it prevents reopen windows after 2nd sourcing .vimrc
-	let g:open_all_win = 0
-endif
 " OpenAllWin() }}}
 
 " Function CallProg() {{{
@@ -632,7 +537,7 @@ function! Compile(do_chdir) abort
 	elseif choice == 4
 		exec cmd . "gcc " . g:cflags . 
 					\ " -o " . filename . " " . filename_ext . 
-					\ substitute(getline(2), "VIMGCC", "", "g")
+					\ substitute(substitute(getline(2), "VIMGCC", "", "g"), "GCC", "", "g" )
 	endif
 endfunction
 " Compile() }}}
@@ -719,8 +624,147 @@ silent! function! RemoveAutogroup(group)
 silent exec "augroup! ". a:group
 endfunction
 " RemoveAutogroup() }}}
+
+" Function SmartBS() {{{
+"
+" This function comes from Benji Fisher <benji AT e-mathDOTAMSDOTorg>
+" http://vim.sourceforge.net/scripts/download.php?src_id=409
+" (modified/patched by: Lubomir Host 'rajo' <host8 AT keplerDOTfmphDOTuniba.sk>
+"                       Srinath Avadhanula  <srinath AT fastmailDOTfm> )
+silent function! SmartBS()
+	let init = strpart(getline("."), 0, col(".")-1)
+	if exists("g:smartBS_" . &filetype)
+		silent exec "let matchtxt = matchstr(init, g:smartBS_" . &filetype . ")"
+		echo "SmartBS(" . matchtxt . ")"
+		if matchtxt != ''
+			let bstxt = substitute(matchtxt, '.', "\<bs>", 'g')
+			return bstxt
+		else
+			return "\<bs>"
+		endif
+	else
+		return "\<bs>"
+	endif
+endfunction
+
+" You can turn on smart backspacing in ftplugin by setting
+" g:smartBS_<filetype> variable and turning on mapping
+" inoremap <buffer> <BS> <C-R>=SmartBS()<CR>
+"
+" Example: TeX plugin
+"	" set regular expresion for Smart backspacing
+"	let g:smartBS_tex = '\(' .
+"			\ "\\\\[\"^'=v]{\\S}"      . '\|' .
+"			\ "\\\\[\"^'=]\\S"         . '\|' .
+" 			\ '\\v \S'                 . '\|' .
+"			\ "\\\\[\"^'=v]{\\\\[iI]}" . '\|' .
+"			\ '\\v \\[iI]'             . '\|' .
+"			\ '\\q \S'                 . '\|' .
+" 			\ '\\-'                    .
+"			\ '\)' . "$"
+"
+"	" map <BS> to function SmartBS()
+"	inoremap <buffer> <BS> <C-R>=SmartBS()<CR>
+
+" }}} 
+
+" Function UseDiacritics() {{{
+function! UseDiacritics()
+	call Source("~/.vim/modules/diacritics.vim")
+endfunction
 " }}}
 
+" }}}
+
+" Autocomands {{{
+if has("autocmd")
+
+	" Autocomands for PlatonCopyright {{{
+	augroup PlatonCopyright
+	autocmd!
+	autocmd BufLeave * set titlestring=
+	autocmd BufLeave * silent! call RemoveAutogroup("PlatonCopyright")
+	autocmd WinEnter * set titlestring=
+	autocmd WinEnter * silent! call RemoveAutogroup("PlatonCopyright")
+	autocmd BufWrite * set titlestring=
+	autocmd BufWrite * silent! call RemoveAutogroup("PlatonCopyright")
+	autocmd CmdwinEnter * set titlestring=
+	autocmd CmdwinEnter * silent! call RemoveAutogroup("PlatonCopyright")
+	augroup END
+	" }}}
+
+	" Autocomands for GUIEnter {{{
+	augroup GUIEnter
+	autocmd!
+	if has("gui_win32")
+		autocmd GUIEnter * simalt ~x
+	endif
+	augroup END
+	" }}}
+
+	" Autocomands for ~/.vimrc {{{
+	augroup VimConfig
+	autocmd!
+	" Reread configuration of ViM if file ~/.vimrc is saved
+	autocmd BufWritePost ~/.vimrc	so ~/.vimrc | exec "normal zv"
+	autocmd BufWritePost vimrc   	so ~/.vimrc | exec "normal zv"
+	augroup END
+	" }}}
+
+	" Autocommands for *.c, *.h, *.cc *.cpp {{{
+	augroup C
+	autocmd!
+	"formatovanie C-zdrojakov
+	autocmd BufEnter     *.c,*.h,*.cc,*.cpp	map  <buffer> <C-F> mfggvG$='f
+	autocmd BufEnter     *.c,*.h,*.cc,*.cpp	imap <buffer> <C-F> <Esc>mfggvG$='fi
+	autocmd BufEnter     *.c,*.h,*.cc,*.cpp	map <buffer> yii yyp3wdwi
+	autocmd BufEnter     *.c,*.h,*.cc,*.cpp	map <buffer> <C-K> :call CallProg()<CR>
+	autocmd BufRead,BufNewFile  *.c,*.h,*.cc,*.cpp	setlocal cindent
+	autocmd BufRead,BufNewFile  *.c,*.h,*.cc,*.cpp	setlocal cinoptions=>4,e0,n0,f0,{0,}0,^0,:4,=4,p4,t4,c3,+4,(2s,u1s,)20,*30,g4,h4
+	autocmd BufRead,BufNewFile  *.c,*.h,*.cc,*.cpp	setlocal cinkeys=0{,0},:,0#,!<C-F>,o,O,e
+	augroup END
+	" }}}
+
+	" Autocommands for *.html *.cgi {{{
+	" Automatic updates date of last modification in HTML files. File must
+	" contain line "^\([<space><Tab>]*\)Last modified: ",
+	" else will be date writtend on the current " line.
+	augroup HtmlCgiPHP
+	autocmd!
+	" Appending right part of tag in HTML files.
+	autocmd BufEnter                 *.html	imap <buffer> QQ </><Esc>2F<lywf>f/pF<i
+	autocmd BufWritePre,FileWritePre *.html	call AutoLastMod()
+	autocmd BufEnter                 *.cgi	imap <buffer> QQ </><Esc>2F<lywf>f/pF<i
+	autocmd BufWritePre,FileWritePre *.cgi	call AutoLastMod()
+	autocmd BufEnter                 *.php	imap <buffer> QQ </><Esc>2F<lywf>f/pF<i
+	autocmd BufWritePre,FileWritePre *.php	call AutoLastMod()
+	autocmd BufEnter                 *.php3	imap <buffer> QQ </><Esc>2F<lywf>f/pF<i
+	autocmd BufWritePre,FileWritePre *.php3	call AutoLastMod()
+	augroup END
+	" }}}
+
+	" Autocomands for *.tcl {{{
+	augroup Tcl
+	autocmd!
+	autocmd WinEnter            *.tcl	map <buffer> <C-K> :call CallProg()<CR>
+	autocmd BufRead,BufNewFile  *.tcl	setlocal autoindent
+	augroup END
+	" }}}
+
+	" Autocomands for *.txt {{{
+	augroup Txt
+	autocmd BufNewFile,BufRead  *.txt   setf txt
+	" }}}
+
+	" Autocomands for Makefile {{{
+	augroup Makefile
+	autocmd!
+	autocmd BufEnter            [Mm]akefile*	map <buffer> <C-K> :call CallProg()<CR>
+	augroup END
+	" }}}
+
+endif " if has("autocmd")
+" }}} Autocomands
 
 " Colors {{{
 set background=dark
@@ -739,6 +783,18 @@ call Source(VIMRC_EXTRA.".post")
 call Source(VIMRC_EXTRA."-".user.".post")
 call Source(VIMRC_EXTRA."-".machine.".post")
 call Source(VIMRC_EXTRA."-".machine."-".user.".post")
+
+if exists("g:open_all_win")
+	if g:open_all_win == 1
+		" Open all windows only if we are not running (g)vimdiff
+		if match(v:progname, "diff") < 0
+			call OpenAllWin()
+		endif
+	endif
+	" turn g:open_all_win off after opening all windows
+	" it prevents reopen windows after 2nd sourcing .vimrc
+	let g:open_all_win = 0
+endif
 
 " Modeline {{{
 " vim:set ts=4:
