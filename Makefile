@@ -9,10 +9,10 @@
 # All rights reserved.
 #
 
-# $Platon: vimconfig/Makefile,v 1.43 2005-03-09 19:50:06 rajo Exp $
+# $Platon: vimconfig/Makefile,v 1.44 2005-03-09 21:19:21 rajo Exp $
 
 PACKAGE = vimconfig
-VERSION = 1.9
+VERSION = 1.10
 PACKAGE_TEMPLATE_PLUGIN = templatefile
 VERSION_TEMPLATE_PLUGIN = $(VERSION)
 
@@ -28,15 +28,20 @@ DISTFILES_TEMPLATE_PLUGIN = vim                         \
 							vim/templates/skel.java     \
 							vim/templates/skel.lisp     \
 							vim/templates/skel.php      \
-							vim/templates/skel.pl       \
-							vim/templates/skel.pm       \
 							vim/templates/skel.pkb      \
 							vim/templates/skel.pks      \
+							vim/templates/skel.pl       \
+							vim/templates/skel.pm       \
 							vim/templates/skel.sh       \
 							vim/templates/skel.tex      \
+							vim/templates/skel.xml      \
 							vim/templates/Makefile
 
 # DISTFILES_TEMPLATE_PLUGIN }}}
+
+DOC_DISTFILES	= ./vim/doc/FEATURES.txt \
+				  ./vim/doc/matchit.txt \
+				  ./vim/doc/taglist.txt
 
 # DISTFILES {{{
 DISTFILES = README \
@@ -51,9 +56,7 @@ DISTFILES = README \
 			vim/compiler/tex.vim \
 			vim/diary \
 			vim/doc \
-			vim/doc/FEATURES.txt \
-			vim/doc/matchit.txt \
-			vim/doc/taglist.txt \
+			$(DOC_DISTFILES) \
 			vim/doc/tags \
 			vim/ftplugin \
 			vim/ftplugin/cvs.vim \
@@ -63,6 +66,7 @@ DISTFILES = README \
 			vim/ftplugin/mail.vim \
 			vim/ftplugin/miktexmenus.vim \
 			vim/ftplugin/perl.vim \
+			vim/ftplugin/po.vim \
 			vim/ftplugin/sgml.vim \
 			vim/ftplugin/tex.vim \
 			vim/ftplugin/tt2.vim \
@@ -79,6 +83,7 @@ DISTFILES = README \
 			vim/local/vimrc-nepto \
 			vim/modules/ \
 			vim/modules/diacritics.vim \
+			vim/modules/database-client.vim \
 			vim/plugin \
 			vim/plugin/CmdlineCompl.vim \
 			vim/plugin/calendar.vim \
@@ -89,6 +94,9 @@ DISTFILES = README \
 			vim/plugin/taglist.vim \
 			vim/syntax/ \
 			vim/syntax/FEATURES.vim \
+			vim/syntax/sql_data.vim \
+			vim/syntax/sql_log.vim \
+			vim/syntax/sql_menu.vim \
 			vim/syntax/tt2.vim \
 			vim/syntax/wtt2.vim \
 			$(DISTFILES_TEMPLATE_PLUGIN)
@@ -118,7 +126,7 @@ all: tags dist dist-template-plugin
 
 tags: ./vim/doc
 
-./vim/doc/tags: ./vim/doc/FEATURES.txt
+./vim/doc/tags: $(DOC_DISTFILES)
 	vim -u NONE -U NONE -c ":helptags ./vim/doc" -c ":q" > /dev/null
 
 # Clean {{{
