@@ -1,15 +1,23 @@
 
 # XXX XXX XXX  THIS IS A NEW FILE XXX XXX XXX
 
-# Makefile for creating distribution of test package
-# Type 'make dist' for create tar-gziped archiv. 
-
 #
-# Author: Lubomir Host 'rajo' <rajo AT host.sk>
+# @FILE_EXT@
+#
+# Developed by @AUTHOR@ <@EMAIL@>
+# Copyright (c) @YEAR@ @COMPANY@
+# Licensed under terms of GNU General Public License.
+# All rights reserved.
+#
+# Changelog:
+# @DATE@ - created
 #
 
 # $Id$
 # $Platon$ 
+
+# Makefile for creating distribution of test package
+# Type 'make dist' for create tar-gziped archiv. 
 
 PACKAGE = test
 VERSION = 1.0
