@@ -9,7 +9,7 @@
 # All rights reserved.
 #
 
-# $Platon: vimconfig/Makefile,v 1.44 2005-03-09 21:19:21 rajo Exp $
+# $Platon: vimconfig/Makefile,v 1.45 2005-03-09 21:25:47 rajo Exp $
 
 PACKAGE = vimconfig
 VERSION = 1.10
@@ -259,11 +259,20 @@ update:
 	 echo "tarball, 'make update' failed. You can update manualy"; \
 	 echo "running"; \
 	 echo ""; \
-	 echo "    cvs -d :pserver:anonymous@kepler.fmph.uniba.sk:/home/cvs login"; \
-	 echo "    cvs -d :pserver:anonymous@kepler.fmph.uniba.sk:/home/cvs co vimconfig"; \
+	 echo "    cvs -d :pserver:anonymous@cvs.platon.sk:/home/cvs login"; \
+	 echo "    cvs -d :pserver:anonymous@cvs.platon.sk:/home/cvs co vimconfig"; \
 	 echo "";
 # next command may failed, if user doesn't have CVS version of vimconfig
-	-cvs update;
+	-cvs -d :pserver:anonymous@cvs.platon.sk:/home/cvs update;
+	@echo ""; \
+	 echo "Please, manualy check these URLs for scripts update:"; \
+	 echo ""; \
+	 echo "calendar.vim	http://www.vim.org/scripts/script.php?script_id=52"; \
+	 echo "imaps.vim	http://www.vim.org/scripts/script.php?script_id=244"; \
+	 echo "matchit.vim	http://www.vim.org/scripts/script.php?script_id=39"; \
+	 echo "taglist.vim	http://www.vim.org/scripts/script.php?script_id=273"; \
+	 echo "";
+
 
 .PHONY: clean all
 
