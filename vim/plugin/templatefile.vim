@@ -2,7 +2,7 @@
 " Vim global plugin for autoload template files
 " File:			templatefile.vim
 " Maintainer:	Lubomir Host 'rajo' <rajo AT platon.sk>
-" Version:		$Platon: vimconfig/vim/plugin/templatefile.vim,v 1.16 2003-11-20 15:02:17 rajo Exp $
+" Version:		$Platon: vimconfig/vim/plugin/templatefile.vim,v 1.17 2003-11-20 15:53:25 rajo Exp $
 "
 " Thanks:
 " 	Scott Urban:	First version of templatefile.vim
@@ -79,6 +79,18 @@ function! LoadTemplateFile()
 	if exists("g:company")
 		let Company  = Escape(g:company)
 	endif
+
+	" build variable for @JAVA_PACKAGE@ substitution
+	" Suggested by Ondrej Jombik 'Nepto' <nepto AT platon.sk>
+	" Algoritmus description:
+	" nepto@platon.sk    --> #.platon.sk --> sk.platon.@INCLUDE_GAURD@
+	" rajo AT platon.sk  --> #.platon.sk  --> sk.platon.@INCLUDE_GAURD@
+	let java_pkg = substitute(Email, '^[^@\s]\+\(@\|\s\+AT\s\+\)\(.*\)$', '#.\2', '')
+	while match(java_pkg, '#$') == -1
+		let java_pkg = substitute(java_pkg, '^\([^#]*\)#\(.*\)\.\([a-zA-Z0-9_]\+\)$', '\1.\3#\2', 'g')
+	endwhile
+	let java_pkg = substitute(java_pkg, '^\.\(.*\)#$', '\1.' . tolower(inc_gaurd), '')
+	
 	silent! execute "%s/@DATE@/"          . date       . "/g"
 	silent! execute "%s/@YEAR@/"          . year       . "/g"
 	silent! execute "%s/@LASTDIR@/"       . lastdir    . "/g"
@@ -89,6 +101,7 @@ function! LoadTemplateFile()
 	silent! execute "%s/@AUTHOR@/"        . Author     . "/g"
 	silent! execute "%s/@EMAIL@/"         . Email      . "/g"
 	silent! execute "%s/@COMPANY@/"       . Company    . "/g"
+	silent! execute "%s/@JAVA_PACKAGE@/"  . java_pkg   . "/g"
 	if exists ("*" . template_func)
 		if exists("g:load_templates")
 			if g:load_templates == "ask"
