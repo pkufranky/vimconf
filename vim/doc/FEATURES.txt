@@ -1,10 +1,11 @@
-*vimconfig*     For Vim version 6.1.  Last change: 2002 Apr 22
+*vimconfig*     For Vim version 6.1.  Last change: 2003 Feb 28
 *vimconfig.txt*
 
 
-		   VIMCONFIG USER MANUAL    by Lubomir Host
-		   http://www.platon.sk/projects/vimconfig/
-	      http://vim.sf.net/scripts/script.php?script_id=204
+                VIMCONFIG USER MANUAL -- by Lubomir Host
+                          <rajo AT platon.sk>
+                http://www.platon.sk/projects/vimconfig/
+           http://vim.sf.net/scripts/script.php?script_id=204
 		
 
 The notation used in this manual is explained here: |notation|
@@ -365,4 +366,4 @@ Here is a list of contributors (alphabetical order): ~
 
 
 ==============================================================================
-  vim:tw=78:ts=8:ft=FEATURES:norl:iskeyword=!-~,^*,^|,^"
+  vim: tw=78 ts=8 ft=FEATURES norl iskeyword=!-~,^*,^|,^"
