@@ -35,9 +35,9 @@ And that's all folks.
 
 You can checkout vimconfig from CVS Repository manualy running command:
 
-	cvs -d :pserver:anonymous@kepler.fmph.uniba.sk:/home/cvs login
+	cvs -d :pserver:anonymous@cvs.platon.sk:/home/cvs login
 (Simply press <ENTER> at password prompt.)
-	cvs -d :pserver:anonymous@kepler.fmph.uniba.sk:/home/cvs co vimconfig
+	cvs -d :pserver:anonymous@cvs.platon.sk:/home/cvs co vimconfig
 
 Visit also website of vimconfig project at
 
