@@ -2,7 +2,7 @@
 " Language:		TeX, LaTeX
 " Maintainer:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " License:		GNU GPL
-" Version:		$Id: tex.vim,v 1.3 2002/01/15 03:32:49 host8 Exp $
+" Version:		$Id: tex.vim,v 1.4 2002/01/18 21:38:39 host8 Exp $
 " Language Of Comments:	English
 
 
@@ -107,6 +107,7 @@ if !exists("no_plugin_maps") && !exists("no_tex_maps")
 	
 	imap <buffer> =a \'{a}
 	imap <buffer> +a \v{a}
+	imap <buffer> +} \"{a}
 	imap <buffer> =b \'{b}
 	imap <buffer> +b \v{b}
 	imap <buffer> =c \'{c}
@@ -135,6 +136,7 @@ if !exists("no_plugin_maps") && !exists("no_tex_maps")
 	imap <buffer> +n \v{n}
 	imap <buffer> =o \'{o}
 	imap <buffer> +o \v{o}
+	imap <buffer> +: \^{o}
 	imap <buffer> =p \'{p}
 	imap <buffer> +p \v{p}
 	imap <buffer> =q \'{q}
