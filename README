@@ -11,8 +11,9 @@ This document is fast howto install this vimconfig.
 
 
 Copy content of vimconfig/ directory somewhere in your home directory.
-Suppose that it will be ~/prog/vimconfig/. Than create symlinks in
-root of your home directory:
+Suppose that it will be ~/prog/vimconfig/. Go to this directory
+(~/prog/vimconfig/) and type 'make install'. Or simply create symlinks
+in root of your home directory:
 
 	cd $HOME
 	ln -s prog/vimconfig/vimrc .vimrc
