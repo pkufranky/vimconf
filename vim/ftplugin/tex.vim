@@ -37,6 +37,7 @@ setlocal sw=4
 setlocal ts=4
 setlocal textwidth=72
 setlocal formatoptions=croqt
+setlocal iskeyword=@,161-255,\\
 
 " disable IMAP() function in math environments
 let b:disabled_imap_syntax_items = "texMathZone\\|texStatement"
