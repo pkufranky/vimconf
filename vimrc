@@ -8,7 +8,7 @@
 " Please don't hesitate to correct my english :)
 " Send corrections to <host8@kepler.fmph.uniba.sk>
 
-" $Id: vimrc,v 1.48 2002/03/21 19:18:52 host8 Exp $
+" $Id: vimrc,v 1.49 2002/04/06 15:15:44 host8 Exp $
 
 " Settings {{{
 " To be secure & Vi nocompatible
@@ -29,7 +29,7 @@ function! Source(File)
 	silent! execute "source " . a:File
 endfunction
 
-let VIMRC_EXTRA="~/vimconfig/vimrc-local"
+let VIMRC_EXTRA="~/.vim/vimrc-local"
 if executable("uname") && executable("awk")
 	let machine = system("uname -n | awk 'BEGIN {ORS=\"\"} {print; }'")
 else
