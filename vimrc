@@ -8,13 +8,13 @@
 " Please don't hesitate to correct my english :)
 " Send corrections to <host8@kepler.fmph.uniba.sk>
 
-" $Id: vimrc,v 1.47 2002/02/24 19:38:59 host8 Exp $
+" $Id: vimrc,v 1.48 2002/03/21 19:18:52 host8 Exp $
 
 " Settings {{{
 " To be secure & Vi nocompatible
 :set secure nocompatible
 :if version < 600
-:	echo "Please update your vim to 6.0 version"
+:	echo "Please update your vim to 6.0 version (version 6.1 already available!)"
 :	finish
 :endif
 
@@ -25,6 +25,30 @@
 	filetype indent on
 :endif
 
+function! Source(File)
+	silent! execute "source " . a:File
+endfunction
+
+let VIMRC_EXTRA="~/vimconfig/vimrc-local"
+if executable("uname") && executable("awk")
+	let machine = system("uname -n | awk 'BEGIN {ORS=\"\"} {print; }'")
+else
+	let machine = ""
+endif
+if executable("awk")
+	let user = system("echo $USER | awk 'BEGIN {ORS=\"\"} {print; }'")
+else
+	let user = $USER
+endif
+
+call Source(VIMRC_EXTRA.".pre")
+call Source(VIMRC_EXTRA."-".user.".pre")
+call Source(VIMRC_EXTRA."-".machine.".pre")
+call Source(VIMRC_EXTRA."-".machine."-".user.".pre")
+call Source(VIMRC_EXTRA."")
+call Source(VIMRC_EXTRA."-".user)
+call Source(VIMRC_EXTRA."-".machine)
+call Source(VIMRC_EXTRA."-".machine."-".user)
 
 " Settings for C language {{{
 let c_gnu=1
@@ -336,7 +360,7 @@ endif " if has("autocmd")
 " Function for changing folding method.
 "
 if version >= 600
-	fun! ChangeFoldMethod()
+	function! ChangeFoldMethod()
 		let choice = confirm("Which folde method?", "&manual\n&indent\n&expr\nma&rker\n&syntax", 2)
 		if choice == 1
 			set foldmethod=manual
@@ -350,7 +374,7 @@ if version >= 600
 			set foldmethod=syntax
 		else
 		endif
-	endfun
+	endfunction
 endif
 " ChangeFoldMethod() }}}
 
@@ -392,7 +416,7 @@ if version >= 600
 "		Skip back to the mark
 		exec "normal 'F"
 		redraw!
-	endfun
+	endfunction
 endif
 " FoldLongLines() }}}
 
@@ -400,7 +424,7 @@ endif
 " Provides atomatic change of date in files, if it is set via
 " modeline variable autolastmod to appropriate value.
 "
-fun! AutoLastMod()
+function! AutoLastMod()
 if exists("g:autolastmod")
 	if g:autolastmod < 0
 		return 0;
@@ -408,13 +432,13 @@ if exists("g:autolastmod")
 		call LastMod(g:autolastmodtext)
 	endif
 endif
-endfun
+endfunction
 " AutoLastMod() }}}
 
 " Function LastMod() {{{
 " Automatic change date in *.html files.
 "
-fun! LastMod(text, ...)
+function! LastMod(text, ...)
 	mark d
 	let line = "\\1" . strftime("%Y %b %d %X") " text of changed line
 	let find = "g/" . a:text           " regexpr to find line
@@ -426,7 +450,7 @@ fun! LastMod(text, ...)
 		call setline(line("."), substitute(getline("."), matx, line, ""))
 		exec "'d"
 	endif
-endfun
+endfunction
 " LastMod() }}}
 
 " Function OpenAllWin() {{{
@@ -435,7 +459,7 @@ endfun
 " or not. This is prevention for repeat window opening after ViM config file
 " reload.
 "
-fun! OpenAllWin()
+function! OpenAllWin()
 	let i = 0
 	if !exists("opened")
 		while i < argc() - 1
@@ -445,7 +469,7 @@ fun! OpenAllWin()
 		endwhile
 	endif
 	let opened = 1
-endfun
+endfunction
 
 if exists("g:open_all_win")
 	if g:open_all_win == 1
@@ -455,7 +479,7 @@ endif
 " OpenAllWin() }}}
 
 " Function CallProg() {{{
-fun! CallProg()
+function! CallProg()
 	let choice = confirm("Call:", "&make\nm&ake in cwd\n" .
 						\ "&compile\nc&ompile in cwd\n" .
 						\ "&run\nr&un in cwd")
@@ -475,11 +499,11 @@ fun! CallProg()
 	elseif choice == 6
 		exec "! cd " . getcwd() . "; pwd; ./%<"
 	endif
-endfun
+endfunction
 " CallProg() }}}
 
 " Function Compile() {{{
-fun! Compile(do_chdir)
+function! Compile(do_chdir)
 	let cmd = ""
 	let filename = ""
 	let filename_ext = ""
@@ -518,12 +542,12 @@ fun! Compile(do_chdir)
 			\ " -o " . filename . " " . filename_ext . 
 			\ substitute(getline(2), "VIMGCC", "", "g")
 	endif
-endfun
+endfunction
 " Compile() }}}
 
 " Function Indent() {{{
 " Indents source code.
-fun! Indent()
+function! Indent()
 " If there is set equalprg to source indenting (ie. perltidy for perl sources)
 " we have not to executes "'f" at the end, else we will got "Mark not set"
 " error message.
@@ -532,22 +556,22 @@ fun! Indent()
 	else
 		exec "normal mfggvG$="
 	endif
-endfun
+endfunction
 " Indent() }}}
 
 " Function UnquoteMailBody() {{{
 "
-fun! UnquoteMailBody()
+function! UnquoteMailBody()
 " Every backslash character must be escaped in function -- Nepto
 	exec "normal :%s/^\\([ ]*>[ ]*\\)*\\(\\|[^>].*\\)$/\\2/g<CR>"
-endfun
+endfunction
 " UnquoteMailBody() }}}
 
 " Function SafeLineDelete() {{{
 "
-fun! SafeLineDelete()
+function! SafeLineDelete()
 	exec "normal \"_dd"
-endfun
+endfunction
 " SafeLineDelete() }}}
 
 " Function GetID() {{{
@@ -556,24 +580,22 @@ endfun
 "                                                  statusline
 " If you aren't root, function return empty string --> nothing is visible
 let g:get_id=""
-if executable("id")
-	" Check for your name ID
-	let g:get_id = $USER
-	" If you are root, set to '#', else set to ''
-	if g:get_id == "root"
-		let g:get_id = "# "
-	else
-		let g:get_id = ""
-	endif
+" Check for your name ID
+let g:get_id = $USER
+" If you are root, set to '#', else set to ''
+if g:get_id == "root"
+	let g:get_id = "# "
+else
+	let g:get_id = ""
 endif
-fun! GetID()
+function! GetID()
 	return g:get_id
-endfun
+endfunction
 " GetID() }}}
 
 " Function ReadFileAboveCursor() {{{
 "
-fun! ReadFileAboveCursor(file, ...)
+function! ReadFileAboveCursor(file, ...)
 	let str = ":" . (v:lnum - 1) . "read " . a:file
 	let idx = 1
 	while idx <= a:0
@@ -581,7 +603,7 @@ fun! ReadFileAboveCursor(file, ...)
 		let idx = idx + 1
 	endwhile
 	exec str
-endfun
+endfunction
 " ReadFileAboveCursor() }}}
 " }}}
 
@@ -617,6 +639,11 @@ hi Folded     gui=bold guibg=Black guifg=Blue
 hi FoldColumn          guibg=Black guifg=Blue
 
 " }}}
+
+call Source(VIMRC_EXTRA.".post")
+call Source(VIMRC_EXTRA."-".user.".post")
+call Source(VIMRC_EXTRA."-".machine.".post")
+call Source(VIMRC_EXTRA."-".machine."-".user.".post")
 
 " Modeline {{{
 " vim:set ts=4:

@@ -3,3 +3,4 @@ viminfo
 .*.sw?
 *.zip
 *.tar.gz
+vimrc-local*
