@@ -20,14 +20,14 @@
 "
 "        Lubomir Host 'rajo' <8host AT pauli.fmph.uniba.sk>
 
-" Version: $Platon: vimconfig/gvimrc,v 1.4 2003-01-16 12:16:49 rajo Exp $
+" Version: $Platon: vimconfig/gvimrc,v 1.5 2003-02-28 01:42:33 rajo Exp $
 
 function! Source(File)
 	silent! execute "source " . a:File
 endfunction
 
-let VIMRC_EXTRA="~/.vim/vimrc-local"
-let GVIMRC_EXTRA="~/.vim/gvimrc-local"
+let VIMRC_EXTRA="~/.vim/local/vimrc"
+let GVIMRC_EXTRA="~/.vim/local/gvimrc"
 if executable("uname") && executable("awk")
 	let machine = system("uname -n | awk 'BEGIN {ORS=\"\"} {print; }'")
 else
