@@ -18,7 +18,7 @@
 " Please don't hesitate to correct my english :)
 " Send corrections to <8host AT pauliDOTfmph.uniba.sk>
 
-" $Id: vimrc,v 1.55 2002/04/22 13:20:50 host8 Exp $
+" $Id: vimrc,v 1.56 2002/04/22 18:45:21 host8 Exp $
 
 " Settings {{{
 " To be secure & Vi nocompatible
@@ -695,6 +695,7 @@ hi Folded     term=standout cterm=bold ctermfg=4        ctermbg=Black
 hi FoldColumn term=standout            ctermfg=DarkBlue ctermbg=Black 
 hi Folded     gui=bold guibg=Black guifg=Blue
 hi FoldColumn          guibg=Black guifg=Blue
+hi Normal              guibg=Black guifg=LightGray 
 
 " }}}
 
