@@ -2,9 +2,16 @@
 " What Is This: Calendar
 " File: calendar.vim
 " Author: Yasuhiro Matsumoto <mattn_jp@hotmail.com>
-" Last Change: Thu, 19 Jun 2003
-" Version: 1.3u
+" Last Change: Thu, 04 Nov 2004
+" Version: 1.4
 " Thanks:
+"     Peter Findeisen     : bug fix
+"     Chip Campbell       : gave a hint for 1.3z
+"     PAN Shizhu          : gave a hint for 1.3y
+"     Eric Wald           : bug fix
+"     Sascha Wuestemann   : advise
+"     Linas Vasiliauskas  : bug report
+"     Per Winkvist        : bug report
 "     Ronald Hoelwarth    : gave a hint for 1.3s
 "     Vikas Agnihotri     : bug report
 "     Steve Hall          : gave a hint for 1.3q
@@ -40,6 +47,34 @@
 "     <Leader>ch
 "       show horizontal calendar ...
 " ChangeLog:
+"     1.4  : bug fix, and one improvement.
+"            bug 1:
+"              when marking the current date, there is not distinguished e.g. between
+"              20041103 and 20040113, both dates are marked as today
+"            bug 2:
+"              the navigation mark "today" doesn't work
+"            improvement:
+"              the mapping t worked only when today was displayed, now it works always
+"              and redisplays the cuurent month and today
+"     1.3z : few changes
+"            asign <Left>, <Right> for navigation.
+"            set ws for search navigation.
+"            add tag for GetLatestVimScripts(AutoInstall)
+"     1.3y : bug fix, few changes
+"            changed color syntax name. (ex. CalNavi, see bottom of this)
+"            changed a map CalendarV for <Leader>cal
+"            changed a map CalendarH for <Leader>caL
+"            (competitive map for cvscommand.vim)
+"            the date on the right-hand side didn't work correctoly.
+"            make a map to rebuild Calendar window(r).
+"     1.3x : bug fix
+"            viweek can't refer when not set calendar_weeknm.
+"     1.3w : bug fix
+"            on leap year, week number decreases.
+"     1.3v : bug fix
+"            add nowrapscan 
+"            use s:bufautocommandsset for making title
+"            don't focus to navi when doubleclick bottom next>.
 "     1.3u : bug fix
 "             when enter diary first time,
 "              it don't warn that you don't have diary directory.
@@ -232,8 +267,13 @@
 "       type below.
 "
 "       :echo calendar_version
+" GetLatestVimScripts: 52 1 :AutoInstall: calendar.vim
 
-let g:calendar_version = "1.3u"
+let g:calendar_version = "1.4"
+if &compatible
+  finish
+endif
+
 if !exists("g:calendar_action")
   let g:calendar_action = "<SID>CalendarDiary"
 endif
@@ -270,10 +310,10 @@ endif
 :command! -nargs=* CalendarH call Calendar(1,<f-args>)
 
 if !hasmapto("<Plug>CalendarV")
-  nmap <unique> <Leader>ca <Plug>CalendarV
+  nmap <unique> <Leader>cal <Plug>CalendarV
 endif
 if !hasmapto("<Plug>CalendarH")
-  nmap <unique> <Leader>ch <Plug>CalendarH
+  nmap <unique> <Leader>caL <Plug>CalendarH
 endif
 nmap <silent> <Plug>CalendarV :cal Calendar(0)<CR>
 nmap <silent> <Plug>CalendarH :cal Calendar(1)<CR>
@@ -311,7 +351,7 @@ endfunction
 "* CalendarDoAction : call the action handler function
 "*----------------------------------------------------------------
 "*****************************************************************
-function! s:CalendarDoAction()
+function! s:CalendarDoAction(...)
   " if no action defined return
   if !exists("g:calendar_action")
     return
@@ -319,11 +359,11 @@ function! s:CalendarDoAction()
 
   " for navi
   if exists('g:calendar_navi')
-    let navi = expand("<cword>")
+    let navi = (a:0 > 0)? a:1 : expand("<cWORD>")
     let curl = line(".")
-    if navi == s:GetToken(g:calendar_navi_label, ',', 1)
+    if navi == '<' . s:GetToken(g:calendar_navi_label, ',', 1)
       exec substitute(maparg('<s-left>', 'n'), '<CR>', '', '')
-    elseif navi == s:GetToken(g:calendar_navi_label, ',', 3)
+    elseif navi == s:GetToken(g:calendar_navi_label, ',', 3) . '>'
       exec substitute(maparg('<s-right>', 'n'), '<CR>', '', '')
     elseif navi == s:GetToken(g:calendar_navi_label, ',', 2)
       call Calendar(b:CalendarDir)
@@ -335,11 +375,13 @@ function! s:CalendarDoAction()
         silent execute "normal! gg/\*\<cr>"
         return
       else
+	    setlocal ws
         if curl < line('$')/2
-          silent execute "normal! gg/".navi."\<cr>"
-        elseif curl < line('$')/2
-          silent execute "normal! gg?".navi."\<cr>"
+          silent execute "normal! gg0/".navi."\<cr>"
+        else
+          silent execute "normal! G0/".navi."\<cr>"
         endif
+	    setlocal nows
         return
       endif
     endif
@@ -380,16 +422,22 @@ function! s:CalendarDoAction()
     return
   endif
   let sline = substitute(strpart(getline(hdr),cnr,21),'\s*\(.*\)\s*','\1','')
-  if (col(".")-cnr) > 20
+  if (col(".")-cnr) > 21
     return
   endif
 
-  " extracr day
-  let day = matchstr(expand("<cword>"), '[^0].*')
+  " extract day
+  if g:calendar_mark == 'right' && col('.') > 1
+    normal! h
+    let day = matchstr(expand("<cword>"), '[^0].*')
+    normal! l
+  else
+    let day = matchstr(expand("<cword>"), '[^0].*')
+  endif
   if day == 0
     return
   endif
-  " extracr year and month
+  " extract year and month
   if exists('g:calendar_erafmt') && g:calendar_erafmt !~ "^\s*$"
     let year = matchstr(substitute(sline, '/.*', '', ''), '\d\+')
     let month = matchstr(substitute(sline, '.*/\(\d\d\=\).*', '\1', ""), '[^0].*')
@@ -400,7 +448,7 @@ function! s:CalendarDoAction()
       endif
     endif
   else
-    let year = matchstr(substitute(sline, '/.*', '', ''), '[^0].*')
+    let year  = matchstr(substitute(sline, '/.*', '', ''), '[^0].*')
     let month = matchstr(substitute(sline, '\d*/\(\d\d\=\).*', '\1', ""), '[^0].*')
   endif
   " call the action function
@@ -421,8 +469,7 @@ function! Calendar(...)
   "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   " remember today
   " divide strftime('%d') by 1 so as to get "1, 2,3 .. 9" instead of "01, 02, 03 .. 09"
-  let vtoday = strftime('%Y').
-    \matchstr(strftime('%m'), '[^0].*').matchstr(strftime('%d'), '[^0].*')
+  let vtoday = strftime('%Y').strftime('%m').strftime('%d')
 
   " get arguments
   if a:0 == 0
@@ -584,6 +631,9 @@ function! Calendar(...)
         endif
       endif
       let vcolumn = vcolumn + 5
+      if vyear % 4 == 0 && vmnth >= 3
+        let viweek = viweek + 1
+      endif
     endif
 
     "--------------------------------------------------------------
@@ -634,7 +684,16 @@ function! Calendar(...)
     endwhile
     let vdaycur = 1
     while (vdaycur <= vmdays)
-      let vtarget = vyear.vmnth.vdaycur
+      if vmnth < 10
+         let vtarget =vyear."0".vmnth
+      else
+         let vtarget =vyear.vmnth
+      endif
+      if vdaycur < 10
+         let vtarget = vtarget."0".vdaycur
+      else
+         let vtarget = vtarget.vdaycur
+      endif
       if exists("g:calendar_sign")
         exe "let vsign = " . g:calendar_sign . "(vdaycur, vmnth, vyear)"
         if vsign != ""
@@ -653,8 +712,7 @@ function! Calendar(...)
           let vdisplay2=vdisplay2.' '
         endif
         let vdisplay2=vdisplay2.vdaycur
-      endif
-      if g:calendar_mark == 'left-fit'
+      elseif g:calendar_mark == 'left-fit'
         if vdaycur < 10
           let vdisplay2=vdisplay2.' '
         endif
@@ -844,8 +902,11 @@ function! Calendar(...)
     silent %d _
   else
     " make title
-    auto BufEnter *Calendar let &titlestring = strftime('%c')
-    auto BufLeave *Calendar let &titlestring = ''
+    if (!exists('s:bufautocommandsset'))
+      auto BufEnter *Calendar let b:sav_titlestring = &titlestring | let &titlestring = '%{strftime("%c")}'
+      auto BufLeave *Calendar let &titlestring = b:sav_titlestring
+      let s:bufautocommandsset=1
+    endif
 
     if exists('g:calendar_navi') && dir
       if g:calendar_navi == 'both'
@@ -866,6 +927,7 @@ function! Calendar(...)
     setlocal bufhidden=delete
     setlocal nonumber
     setlocal nowrap
+    setlocal nowrapscan
     setlocal norightleft
     setlocal foldcolumn=0
     setlocal modifiable
@@ -873,6 +935,8 @@ function! Calendar(...)
     " is this a vertical (0) or a horizontal (1) split?
   endif
   let b:CalendarDir=dir
+  let b:CalendarYear = vyear_org
+  let b:CalendarMonth = vmnth_org
 
   " navi
   if exists('g:calendar_navi')
@@ -885,6 +949,9 @@ function! Calendar(...)
     else
       let navcol = (vcolumn-strlen(navi_label)+2)/2
     endif
+	if navcol < 3
+	  let navcol = 3
+	endif
 
     if g:calendar_navi == 'top'
       execute "normal gg".navcol."i "
@@ -936,35 +1003,40 @@ function! Calendar(...)
 
   execute 'nnoremap <silent> <buffer> <cr> :call <SID>CalendarDoAction()<cr>'
   execute 'nnoremap <silent> <buffer> <2-LeftMouse> :call <SID>CalendarDoAction()<cr>'
-  execute 'nnoremap <silent> <buffer> t gg/\*<cr>'
+  execute 'nnoremap <silent> <buffer> t :call Calendar(b:CalendarDir)<cr>'
   execute 'nnoremap <silent> <buffer> ? :call <SID>CalendarHelp()<cr>'
+  execute 'nnoremap <silent> <buffer> r :call Calendar(' . dir . ',' . vyear . ',' . vmnth . ')<cr>'
+  let pnav = s:GetToken(g:calendar_navi_label, ',', 1)
+  let nnav = s:GetToken(g:calendar_navi_label, ',', 3)
+  execute 'nnoremap <silent> <buffer> <Up>    :call <SID>CalendarDoAction("<' . pnav . '")<cr>'
+  execute 'nnoremap <silent> <buffer> <Left>  :call <SID>CalendarDoAction("<' . pnav . '")<cr>'
+  execute 'nnoremap <silent> <buffer> <Down>  :call <SID>CalendarDoAction("' . nnav . '>")<cr>'
+  execute 'nnoremap <silent> <buffer> <Right> :call <SID>CalendarDoAction("' . nnav . '>")<cr>'
 
   "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   "+++ build highlight
   "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   " today
   syn clear
-  if g:calendar_mark =~ 'left'
-    syn match Directory display "\*\s*\d*"
-    syn match Identifier display "[+!#$%&@?]\s*\d*"
-  endif
   if g:calendar_mark =~ 'left-fit'
-    syn match Directory display "\s*\*\d*"
-    syn match Identifier display "\s*[+!#$%&@?]\d*"
-  endif
-  if g:calendar_mark =~ 'right'
-    syn match Directory display "\d*\*\s*"
-    syn match Identifier display "\d*[+!#$%&@?]\s*"
+    syn match CalToday display "\s*\*\d*"
+    syn match CalMemo display "\s*[+!#$%&@?]\d*"
+  elseif g:calendar_mark =~ 'right'
+    syn match CalToday display "\d*\*\s*"
+    syn match CalMemo display "\d*[+!#$%&@?]\s*"
+  else
+    syn match CalToday display "\*\s*\d*"
+    syn match CalMemo display "[+!#$%&@?]\s*\d*"
   endif
   " header
-  syn match Special display "[^ ]*\d\+\/\d\+([^)]*)"
+  syn match CalHeader display "[^ ]*\d\+\/\d\+([^)]*)"
 
   " navi
   if exists('g:calendar_navi')
-    exec "syn match Search display \"\\(<"
+    exec "silent! syn match CalNavi display \"\\(<"
         \.s:GetToken(g:calendar_navi_label, ',', 1)."\\|"
         \.s:GetToken(g:calendar_navi_label, ',', 3).">\\)\""
-    exec "syn match Search display \"\\s"
+    exec "silent! syn match CalNavi display \"\\s"
         \.s:GetToken(g:calendar_navi_label, ',', 2)."\\s\"hs=s+1,he=e-1"
   endif
 
@@ -977,33 +1049,33 @@ function! Calendar(...)
   endif
   let eolnstring = '\s\(|\|$\)'
   if exists('g:calendar_monday')
-    execute "syn match Statement display \'"
+    execute "syn match CalSaturday display \'"
       \.dayorspace.dayorspace.wknmstring.eolnstring."\'ms=s+1,me=s+3"
-    execute "syn match Type display \'"
+    execute "syn match CalSunday display \'"
       \.dayorspace.wknmstring.eolnstring."\'ms=s+1,me=s+3"
   else
     if dir
-      execute "syn match Statement display \'"
+      execute "syn match CalSaturday display \'"
         \.dayorspace.wknmstring.eolnstring."\'ms=s+1,me=s+3"
-      execute "syn match Type display \'\|"
+      execute "syn match CalSunday display \'\|"
         \.dayorspace."\'ms=s+2,me=s+4"
     else
-      execute "syn match Statement display \'"
+      execute "syn match CalSaturday display \'"
         \.dayorspace.wknmstring.eolnstring."\'ms=s+1,me=s+3"
-      execute "syn match Type display \'^"
+      execute "syn match CalSunday display \'^"
         \.dayorspace."\'ms=s+1,me=s+3"
     endif
   endif
 
   " week number
   if !exists('g:calendar_weeknm') || g:calendar_weeknm <= 2
-    syn match Comment display "WK[0-9\ ]\d"
+    syn match CalWeeknm display "WK[0-9\ ]\d"
   else
-    syn match Comment display "KW[0-9\ ]\d"
+    syn match CalWeeknm display "KW[0-9\ ]\d"
   endif
 
   " ruler
-  execute 'syn match StatusLine "'.vwruler.'"'
+  execute 'syn match CalRuler "'.vwruler.'"'
 
   if search("\*","w") > 0
     silent execute "normal! gg/\*\<cr>"
@@ -1061,12 +1133,15 @@ function! s:CalendarDiary(day, month, year, week, dir)
   endif
   let sfile = expand(sfile) . "/" . a:day . ".cal"
   let sfile = substitute(sfile, ' ', '\\ ', 'g')
-  let vwinnum = bufwinnr('__Calendar')
+  let vbufnr = bufnr('__Calendar')
 
   " load the file
   exe "sp " . sfile
-  set ft=calendar
-  exe "auto BufLeave ".escape(sfile, ' \\')." normal! ".vwinnum."<c-w>w"
+  setlocal ft=calendar
+  let dir = getbufvar(vbufnr, "CalendarDir")
+  let vyear = getbufvar(vbufnr, "CalendarYear")
+  let vmnth = getbufvar(vbufnr, "CalendarMonth")
+  exe "auto BufLeave ".escape(sfile, ' \\')." w|call Calendar(" . dir . "," . vyear . "," . vmnth . ")"
 endfunc
 
 "*****************************************************************
@@ -1102,6 +1177,7 @@ function! s:CalendarHelp()
   echo '<s-right> : goto next month'
   echo 't         : goto today'
   echo 'q         : close window'
+  echo 'r         : re-display window'
   echo '?         : show this help'
   if g:calendar_action == "<SID>CalendarDiary"
     echo '<cr>      : show diary'
@@ -1122,3 +1198,12 @@ function! s:CalendarHelp()
   call getchar()
   redraw!
 endfunction
+
+hi def link CalNavi	Search
+hi def link CalSaturday	Statement
+hi def link CalSunday	Type
+hi def link CalRuler	StatusLine
+hi def link CalWeeknm	Comment
+hi def link CalToday	Directory
+hi def link CalHeader	Special
+hi def link CalMemo	Identifier
