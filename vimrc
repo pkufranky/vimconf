@@ -5,7 +5,7 @@
 " License:		GNU GPL
 " Version:		2002.02.05
 
-" $Id: vimrc,v 1.35 2002/02/05 19:22:56 host8 Exp $
+" $Id: vimrc,v 1.36 2002/02/05 20:34:15 host8 Exp $
 
 " Settings {{{
 " To be secure & Vi nocompatible
@@ -546,7 +546,7 @@ endfun
 let g:get_id=""
 if executable("id")
 	" Check for your name ID
-	let g:get_id = substitute(system("id -n -u"), "[\r\n]", "", "g")
+	let g:get_id = $USER
 	" If you are root, set to '#', else set to ''
 	if g:get_id == "root"
 		let g:get_id = "# "
