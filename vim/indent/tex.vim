@@ -57,7 +57,8 @@ setlocal indentexpr=GetTeXIndent()
 setlocal nolisp
 setlocal nosmartindent
 setlocal autoindent
-setlocal indentkeys+=},=\\item,=\\bibitem
+"setlocal indentkeys+=},=\\item,=\\bibitem
+setlocal indentkeys+==\\item,=\\bibitem
 
 
 " Only define the function once

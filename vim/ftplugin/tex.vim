@@ -33,8 +33,8 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 setlocal isk+=:
-setlocal sw=2
-setlocal ts=2
+setlocal sw=4
+setlocal ts=4
 setlocal textwidth=72
 setlocal formatoptions=croqt
 
