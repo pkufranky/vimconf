@@ -5,7 +5,7 @@
 " ____________________________________________________________
 "
 " Developed by Lubomir Host 'rajo' <rajo AT platon.sk>
-" Copyright (c) 2000-2003 Platon SDG, http://platon.sk/
+" Copyright (c) 2000-2005 Platon SDG, http://platon.sk/
 " All rights reserved.
 "
 " See README file for more information about this software.
@@ -20,7 +20,7 @@
 "
 "        Lubomir Host 'rajo' <rajo AT platon.sk>
 
-" Version: $Platon: vimconfig/gvimrc,v 1.10 2005-01-13 11:34:22 rajo Exp $
+" Version: $Platon: vimconfig/gvimrc,v 1.11 2005-03-09 19:50:06 rajo Exp $
 
 function! Source(File)
 	silent! execute "source " . a:File

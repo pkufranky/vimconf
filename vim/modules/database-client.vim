@@ -2,13 +2,13 @@
 "
 " File:			database-client.vim
 " Maintainer:	Lubomir Host 'rajo' <rajo AT platon.sk>
-" Version:		$Platon: vimconfig/vim/modules/database-client.vim,v 1.7 2004-03-12 08:13:09 rajo Exp $
+" Version:		$Platon: vimconfig/vim/modules/database-client.vim,v 1.8 2005-03-09 19:50:15 rajo Exp $
 "
-" Copyright (c) 2003 Platon SDG, http://platon.sk/
+" Copyright (c) 2003-2005 Platon SDG, http://platon.sk/
 " Licensed under terms of GNU General Public License.
 " All rights reserved.
 "
-" $Platon: vimconfig/vim/modules/database-client.vim,v 1.7 2004-03-12 08:13:09 rajo Exp $
+" $Platon: vimconfig/vim/modules/database-client.vim,v 1.8 2005-03-09 19:50:15 rajo Exp $
 " 
 
 " This plugin needs Perl interpreter to be enabled (+perl feature)

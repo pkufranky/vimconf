@@ -5,7 +5,7 @@
 " ____________________________________________________________
 "
 " Developed by Lubomir Host 'rajo' <rajo AT platon.sk>
-" Copyright (c) 2000-2004 Platon SDG, http://platon.sk/
+" Copyright (c) 2000-2005 Platon SDG, http://platon.sk/
 " All rights reserved.
 "
 " See README file for more information about this software.
@@ -20,7 +20,7 @@
 "
 "        Lubomir Host 'rajo' <rajo AT platon.sk>
 
-" Version: $Platon: vimconfig/vimrc,v 1.104 2005-01-13 11:34:22 rajo Exp $
+" Version: $Platon: vimconfig/vimrc,v 1.105 2005-03-09 19:50:06 rajo Exp $
 
 " Debian uses compressed helpfiles. We must inform vim that the main
 " helpfiles is compressed. Other helpfiles are stated in the tags-file.
@@ -187,7 +187,7 @@ set showcmd showmatch showmode
 
 " Set title of the window to Platon's copyright
 set titleold=
-set titlestring=ViMconfig\ (c)\ 2000-2004\ Platon\ SDG
+set titlestring=ViMconfig\ (c)\ 2000-2005\ Platon\ SDG
 set title
 
 " Indent of 1 tab with size of 4 spaces

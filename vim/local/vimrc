@@ -2,10 +2,10 @@
 " User's local vim configuration
 "  
 " Developed by Lubomir Host 'rajo' <rajo AT platon.sk>
-" Copyright (c) 2000-2003 Platon SDG, http://platon.sk/
+" Copyright (c) 2000-2005 Platon SDG, http://platon.sk/
 " All rights reserved.
 "
-" $Platon: vimconfig/vim/local/vimrc,v 1.4 2003-11-03 08:20:22 rajo Exp $
+" $Platon: vimconfig/vim/local/vimrc,v 1.5 2005-03-09 19:50:12 rajo Exp $
 
 let g:company = "Platon SDG, http://platon.sk/"
 

@@ -45,7 +45,7 @@ Visit also website of vimconfig project at
 
 --
 Developed by Lubomir Host 'rajo' <rajo AT platon.sk>
-Copyright (c) 2000-2003 Platon SDG, http://platon.sk/
+Copyright (c) 2000-2005 Platon SDG, http://platon.sk/
 
 Comments, suggestions, bug reports and patches are always welcome.  Please
 e-mail them to the address <platon AT pobox.sk> or use bugtracking system at
@@ -55,5 +55,5 @@ The latest official release of vimconfig is available from:
 http://platon.sk/projects/vimconfig/
 http://vim.sourceforge.net/script.php?script_id=204
 
-This document was written by Ondrej Jombik in 28th March 2002. Updated 2th Nov 2003.
+This document was written by Ondrej Jombik in 28th March 2002. Updated 9th Mar 2005.
 
