@@ -9,7 +9,7 @@
 # All rights reserved.
 #
 
-# $Platon: vimconfig/Makefile,v 1.45 2005-03-09 21:25:47 rajo Exp $
+# $Platon: vimconfig/Makefile,v 1.46 2005-03-09 21:29:56 rajo Exp $
 
 PACKAGE = vimconfig
 VERSION = 1.10
@@ -39,9 +39,12 @@ DISTFILES_TEMPLATE_PLUGIN = vim                         \
 
 # DISTFILES_TEMPLATE_PLUGIN }}}
 
-DOC_DISTFILES	= ./vim/doc/FEATURES.txt \
-				  ./vim/doc/matchit.txt \
-				  ./vim/doc/taglist.txt
+# DOC_DISTFILES {{{
+DOC_DISTFILES	= vim/doc/FEATURES.txt \
+				  vim/doc/matchit.txt \
+				  vim/doc/taglist.txt
+
+# DOC_DISTFILES }}}
 
 # DISTFILES {{{
 DISTFILES = README \
@@ -126,7 +129,7 @@ all: tags dist dist-template-plugin
 
 tags: ./vim/doc
 
-./vim/doc/tags: $(DOC_DISTFILES)
+./vim/doc/tags: Makefile $(DOC_DISTFILES)
 	vim -u NONE -U NONE -c ":helptags ./vim/doc" -c ":q" > /dev/null
 
 # Clean {{{
