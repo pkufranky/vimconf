@@ -86,6 +86,10 @@ function! IncrementColumn(pad, ...)
 	let c2 = col("'>")
 	let c1v = virtcol("'<")
 	let c2v = virtcol("'>")
+	if c1 + c2 + c1v + c2v == 0 " little trick to test, if there is c1 = c2 = c1v = c2v = 0
+		echo "No column choosen. Please use Ctrl-V or V to select area."
+		return
+	endif
 	let clen = c2v - c1v
 	if c1 > c2
 		let temp = c1
@@ -103,7 +107,8 @@ function! IncrementColumn(pad, ...)
 
 	exe r1
 
-	exe "let presNum = ".strpart(getline('.'), c1-1, clen+1)
+	let presNum = 1
+	silent! exe "let presNum = ".strpart(getline('.'), c1-1, clen+1)
 
 	let lastnum = presNum + incr*(r2-r1)
 	" a simple way to find the number of digits in a number (including decimal
@@ -111,7 +116,7 @@ function! IncrementColumn(pad, ...)
 	let maxstrlen = strlen("".lastnum)
 
 	let r = r1
-	exe 'normal '.c1v.'|'
+	silent! exe 'normal '.c1v.'|'
 	while (r <= r2)
 		let cnow = col(".")
 		let linebef = strpart(getline('.'), 0, cnow-1)
