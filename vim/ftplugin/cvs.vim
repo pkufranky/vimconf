@@ -2,7 +2,7 @@
 " Language:		CVS
 " Maintainer:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " License:		GNU GPL
-" Version:		$Id: cvs.vim,v 1.1 2002/02/17 01:22:16 host8 Exp $
+" Version:		$Id: cvs.vim,v 1.2 2002/02/17 03:24:58 host8 Exp $
 
 
 " Only do this when not done yet for this buffer
@@ -18,6 +18,11 @@ setlocal textwidth=72
 setlocal formatoptions=crqt12
 
 setlocal autoindent
+
+" Replace <Tab> with 4 spaces
+setlocal tabstop=4
+setlocal shiftwidth=4
+setlocal expandtab
 
 " Comment lines:
 setlocal comments+=:CVS\:\ 
