@@ -5,12 +5,12 @@
 # (c) rajo <host8@kepler.fmph.uniba.sk
 #
 
-# $Id: Makefile,v 1.9 2002/02/24 05:13:22 host8 Exp $
+# $Id: Makefile,v 1.10 2002/02/24 05:15:17 host8 Exp $
 
 PACKAGE = vimconfig
-VERSION = 1.5
+VERSION = 1.6
 PACKAGE_TEMPLATE_PLUGIN = templatefile
-VERSION_TEMPLATE_PLUGIN = 1.5
+VERSION_TEMPLATE_PLUGIN = 1.6
 
 DISTFILES_TEMPLATE_PLUGIN = vim \
 						vim/plugin \
