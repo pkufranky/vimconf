@@ -2,7 +2,7 @@
 " Language:		TeX, LaTeX
 " Maintainer:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " License:		GNU GPL
-" Version:		$Id: tex.vim,v 1.7 2002/02/05 22:41:53 host8 Exp $
+" Version:		$Id: tex.vim,v 1.8 2002/02/17 01:00:35 host8 Exp $
 
 
 " Only do this when not done yet for this buffer
@@ -215,16 +215,23 @@ if !exists("no_plugin_maps") && !exists("no_tex_maps")
 	" To avoid complications (start of line, end of line, etc.) the
 	" mapping inserts a character, the function deletes all but two
 	" characters, and the mapping deletes the last two.
-	inoremap <buffer> <BS> x<Esc>:call <SID>SmartBS('\(\\.{\S}\)')<CR>a<BS><BS>
+	inoremap <buffer> <BS> x<Esc>:call <SID>SmartBS()<CR>a<BS><BS>
 
 endif
 " }}} end mappings	
 
 " This function comes from Benji Fisher <benji@e-math.AMS.org>
 " http://vim.sourceforge.net/scripts/download.php?src_id=409 
-fun! s:SmartBS(pat, ...)
+fun! s:SmartBS()
   let init = strpart(getline("."), 0, col(".")-1)
-  let len = strlen(matchstr(init, a:pat . "$")) - 1
+  let len = strlen(matchstr(init, '\(' .
+				\ '\\[^\"]{\S}'     . '\|' .
+				\ '\\[^\"]{\\[iI]}' . '\|' .
+				\ '\\q \S'      . '\|' .
+				\ '\\[^\"]\S'  . '\|' .
+				\ '\\-'  . '\|' .
+				\ '\\v \S'      .
+				\ '\)' . "$")) - 1
   if len > 0
     execute "normal!" . len . "X"
   endif

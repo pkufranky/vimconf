@@ -2,7 +2,7 @@
 " Language:		CVS
 " Maintainer:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " License:		GNU GPL
-" Version:		$Id: $
+" Version:		$Id: cvs.vim,v 1.1 2002/02/17 01:22:16 host8 Exp $
 
 
 " Only do this when not done yet for this buffer
@@ -19,6 +19,7 @@ setlocal formatoptions=crqt12
 
 setlocal autoindent
 
+" Comment lines:
 setlocal comments+=:CVS\:\ 
 
 " Add mappings, unless the user didn't want this.
