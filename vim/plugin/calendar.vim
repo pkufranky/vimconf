@@ -1,9 +1,18 @@
 "=============================================================================
 " File: calendar.vim
 " Author: Yasuhiro Matsumoto <mattn_jp@hotmail.com>
-" Last Change:  Mon, 8 Apr 2002
-" Version: 1.3h
+" Last Change:  Fri, 10 Jan 2003
+" Version: 1.3r
 " Thanks:
+"     Vikas Agnihotri     : bug report
+"     Steve Hall          : gave a hint for 1.3q
+"     James Devenish      : bug fix
+"     Carl Mueller        : gave a hint for 1.3o
+"     Klaus Fabritius     : bug fix
+"     Stucki              : gave a hint for 1.3m
+"     Rosta               : bug report
+"     Richard Bair        : bug report
+"     Yin Hao Liew        : bug report
 "     Bill McCarthy       : bug fix and gave a hint
 "     Srinath Avadhanula  : bug fix
 "     Ronald Hoellwarth   : few advices
@@ -29,6 +38,32 @@
 "     <Leader>ch
 "       show horizontal calendar ...
 " ChangeLog:
+"     1.3r : bug fix
+"            if clicked navigator, cursor go to strange position.
+"     1.3q : bug fix
+"             coundn't set calendar_navi
+"              in its horizontal direction
+"     1.3p : bug fix
+"             coundn't edit diary when the calendar is
+"              in its horizontal direction
+"     1.3o : add option calendar_mark, and delete calendar_rmark
+"             see Additional:
+"            add option calendar_navi
+"             see Additional:
+"     1.3n : bug fix
+"             s:CalendarSign() should use filereadable(expand(sfile)).
+"     1.3m : tuning
+"             using topleft or botright for opening Calendar.
+"            use filereadable for s:CalendarSign().
+"     1.3l : bug fix
+"             if set calendar_monday, it can see that Sep 1st is Sat
+"               as well as Aug 31st.
+"     1.3k : bug fix
+"             it didn't escape the file name on calendar.
+"     1.3j : support for fixed Gregorian
+"             added the part of Sep 1752.
+"     1.3i : bug fix
+"             Calculation mistake for week number.
 "     1.3h : add option for position of displaying '*' or '+'.
 "             see Additional:
 "     1.3g : centering header
@@ -100,7 +135,16 @@
 "     *if you want to place the mark('*' or '+') after the day,
 "       add the following to your .vimrc:
 "
-"       let g:calendar_rmark = ''
+"       let g:calendar_mark = 'right'
+"
+"       NOTE:you can set 'left', 'left-fit', 'right' for this option.
+"
+"     *if you want to use navigator,
+"       add the following to your .vimrc:
+"
+"       let g:calendar_navi = ''
+"
+"       NOTE:you can set 'top', 'bottom', 'both' for this option.
 "
 "     *if you want to replace calendar header,
 "       add the following in your favorite language to your .vimrc:
@@ -161,7 +205,7 @@
 "
 "       :echo calendar_version
 
-let g:calendar_version = "1.3h"
+let g:calendar_version = "1.3r"
 if !exists("g:calendar_action")
   let g:calendar_action = "<SID>CalendarDiary"
 endif
@@ -171,6 +215,18 @@ endif
 if !exists("g:calendar_sign")
   let g:calendar_sign = "<SID>CalendarSign"
 endif
+if !exists("g:calendar_mark")
+ \|| (g:calendar_mark != 'left'
+ \&& g:calendar_mark != 'left-fit'
+ \&& g:calendar_mark != 'right')
+  let g:calendar_mark = 'left'
+endif
+if !exists("g:calendar_navi")
+ \|| (g:calendar_navi != 'top'
+ \&& g:calendar_navi != 'bottom'
+ \&& g:calendar_navi != 'both')
+  let g:calendar_navi = 'top'
+endif
 
 "*****************************************************************
 "* Calendar commands
@@ -178,8 +234,14 @@ endif
 :command! -nargs=* Calendar  call Calendar(0,<f-args>)
 :command! -nargs=* CalendarH call Calendar(1,<f-args>)
 
-nmap <Leader>ca :cal Calendar(0)<CR>
-nmap <Leader>ch :cal Calendar(1)<CR>
+if !hasmapto("<Plug>Calendar")
+  nmap <unique> <Leader>ca <Plug>Calendar
+endif
+if !hasmapto("<Plug>CalendarH")
+  nmap <unique> <Leader>ch <Plug>CalendarH
+endif
+nmap <silent> <Plug>Calendar  :cal Calendar(0)<CR>
+nmap <silent> <Plug>CalendarH :cal Calendar(1)<CR>
 
 "*****************************************************************
 "* GetToken : get token from source with count
@@ -220,6 +282,29 @@ function! s:CalendarDoAction()
     return
   endif
 
+  " for navi
+  if exists('g:calendar_navi')
+    let navi = expand("<cword>")
+    let curl = line(".")
+    if navi == 'Prev'
+      exec substitute(maparg('<s-left>', 'n'), '<CR>', '', '')
+    elseif navi == 'Next'
+      exec substitute(maparg('<s-right>', 'n'), '<CR>', '', '')
+    elseif navi == 'Today'
+      call Calendar(b:CalendarDir)
+    else
+      let navi = ''
+    endif
+    if navi != ''
+      if curl < line('$')/2
+        silent execute "normal! gg/".navi."\<cr>"
+      else
+        silent execute "normal! gg?".navi."\<cr>"
+      endif
+      return
+    endif
+  endif
+
   if b:CalendarDir
     let dir = 'H'
     if !exists('g:calendar_monday') && exists('g:calendar_weeknm')
@@ -227,27 +312,25 @@ function! s:CalendarDoAction()
     else
       let cnr = col('.') - (col('.')%(24)) + 1
     endif
-    let lnr = line('.')
-    let hdr = 1
     let week = ((col(".") - cnr - 1 + cnr/49) / 3)
   else
     let dir = 'V'
     let cnr = 1
-    let lnr = 1
-    let hdr = 1
-    while 1
-      if lnr > line('.')
-        break
-      endif
-      let sline = getline(lnr)
-      if sline =~ '^\s*$'
-        let hdr = lnr + 1
-      endif
-      let lnr = lnr + 1
-    endwhile
-    let lnr = line('.')
     let week = ((col(".")+1) / 3) - 1
   endif
+  let lnr = 1
+  let hdr = 1
+  while 1
+    if lnr > line('.')
+      break
+    endif
+    let sline = getline(lnr)
+    if sline =~ '^\s*$'
+      let hdr = lnr + 1
+    endif
+    let lnr = lnr + 1
+  endwhile
+  let lnr = line('.')
   if(exists('g:calendar_monday'))
       let week = week + 1
   elseif(week == 0)
@@ -419,20 +502,27 @@ function! Calendar(...)
         let vmdays = 29
       endif
     endif
+
+    " fix Gregorian
+    if vyear <= 1752
+      let vnweek = vnweek - 3
+    endif
+
     let vnweek = vnweek % 7
 
     if exists('g:calendar_monday')
       " if given g:calendar_monday, the week start with monday
       if vnweek == 0
-        let vnweek = 6
+        let vnweek = 7
       endif
-        let vnweek = vnweek - 1
+      let vnweek = vnweek - 1
     elseif exists('g:calendar_weeknm')
       " if given g:calendar_weeknm, show week number(ref:ISO8601)
       let viweek = (vparam + 1) / 7
       let vfweek = (vparam + 1) % 7
       if vnweek == 0
         let vfweek = vfweek - 7
+        let viweek = viweek + 1
       else
         let vfweek = vfweek - vnweek
       endif
@@ -492,7 +582,7 @@ function! Calendar(...)
       let vwruler = strpart(vwruler,3).' '.strpart(vwruler,0,2)
     endif
     let vdisplay2 = vdisplay2.' '.vwruler."\n"
-    if exists("g:calendar_rmark")
+    if g:calendar_mark == 'right'
       let vdisplay2 = vdisplay2.' '
     endif
 
@@ -507,39 +597,55 @@ function! Calendar(...)
       let vtarget = vyear.vmnth.vdaycur
       if exists("g:calendar_sign")
         exe "let vsign = " . g:calendar_sign . "(vdaycur, vmnth, vyear)"
+        if vsign != ""
+          let vsign = vsign[0]
+          if vsign !~ "[+!#$%&@?]"
+            let vsign = "+"
+          endif
+        endif
       else
         let vsign = ''
       endif
-      if !exists("g:calendar_rmark")
-        if vtarget == vtoday
-          let vdisplay2=vdisplay2.'*'
-        elseif vsign != ''
-          let vdisplay2=vdisplay2.'+'
-        else
-          let vdisplay2=vdisplay2.' '
-        endif
+
+      " show mark
+      if g:calendar_mark == 'right'
         if vdaycur < 10
           let vdisplay2=vdisplay2.' '
         endif
         let vdisplay2=vdisplay2.vdaycur
-      else
+      endif
+      if g:calendar_mark == 'left-fit'
         if vdaycur < 10
-          let vdisplay2=vdisplay2.' '
-        endif
-        let vdisplay2=vdisplay2.vdaycur
-        if vtarget == vtoday
-          let vdisplay2=vdisplay2.'*'
-        elseif vsign != ''
-          let vdisplay2=vdisplay2.'+'
-        else
           let vdisplay2=vdisplay2.' '
         endif
       endif
+      if vtarget == vtoday
+        let vdisplay2=vdisplay2.'*'
+      elseif vsign != ''
+        let vdisplay2=vdisplay2.vsign
+      else
+        let vdisplay2=vdisplay2.' '
+      endif
+      if g:calendar_mark == 'left'
+        if vdaycur < 10
+          let vdisplay2=vdisplay2.' '
+        endif
+        let vdisplay2=vdisplay2.vdaycur
+      endif
+      if g:calendar_mark == 'left-fit'
+        let vdisplay2=vdisplay2.vdaycur
+      endif
       let vdaycur = vdaycur + 1
+
+      " fix Gregorian
+      if vyear == 1752 && vmnth == 9 && vdaycur == 3
+        let vdaycur = 14
+      endif
+
       let vinpcur = vinpcur + 1
       if vinpcur % 7 == 0
         if !exists('g:calendar_monday') && exists('g:calendar_weeknm')
-          if !exists("g:calendar_rmark")
+          if g:calendar_mark != 'right'
             let vdisplay2=vdisplay2.' '
           endif
           " if given g:calendar_weeknm, show week number
@@ -563,7 +669,7 @@ function! Calendar(...)
           let viweek = viweek + 1
         endif
         let vdisplay2=vdisplay2."\n"
-        if exists("g:calendar_rmark")
+        if g:calendar_mark == 'right'
           let vdisplay2 = vdisplay2.' '
         endif
       endif
@@ -576,7 +682,7 @@ function! Calendar(...)
         let vinpcur = vinpcur + 1
       endwhile
       if !exists('g:calendar_monday') && exists('g:calendar_weeknm')
-        if !exists("g:calendar_rmark")
+        if g:calendar_mark != 'right'
           let vdisplay2=vdisplay2.' '
         endif
         if viweek < 10
@@ -701,11 +807,19 @@ function! Calendar(...)
     auto BufEnter *Calendar let &titlestring = strftime('%c')
     auto BufLeave *Calendar let &titlestring = ''
 
+    if exists('g:calendar_navi') && dir
+      if g:calendar_navi == 'both'
+        let vheight = vheight + 4
+      else
+        let vheight = vheight + 2
+      endif
+    endif
+
     " or not
     if dir
-      execute vheight.'split __Calendar'
+      execute 'bo '.vheight.'split __Calendar'
     else
-      execute vcolumn.'vsplit __Calendar'
+      execute 'to '.vcolumn.'vsplit __Calendar'
     endif
     setlocal noswapfile
     setlocal buftype=nowrite
@@ -719,11 +833,37 @@ function! Calendar(...)
     " is this a vertical (0) or a horizontal (1) split?
   endif
   let b:CalendarDir=dir
-  silent put! =vdisplay1
-  "let save_f=@f
-  "let @f=vdisplay1
-  "silent put! f
-  "let @f=save_f
+
+  " navi
+  if exists('g:calendar_navi')
+    if dir
+      let navcol = ((vcolumn/2)*3-8)
+    else
+      let navcol = ((vcolumn/2)-8)
+    endif
+
+    if g:calendar_navi == 'top'
+      execute "normal gg".navcol."i "
+      silent exec "normal! i<Prev Today Next>\<cr>\<cr>"
+      silent put! =vdisplay1
+    endif
+    if g:calendar_navi == 'bottom'
+      silent put! =vdisplay1
+      silent exec "normal! Gi\<cr>"
+      execute "normal ".navcol."i "
+      silent exec "normal! i<Prev Today Next>"
+    endif
+    if g:calendar_navi == 'both'
+      execute "normal gg".navcol."i "
+      silent exec "normal! i<Prev Today Next>\<cr>\<cr>"
+      silent put! =vdisplay1
+      silent exec "normal! Gi\<cr>"
+      execute "normal ".navcol."i "
+      silent exec "normal! i<Prev Today Next>"
+    endif
+  else
+    silent put! =vdisplay1
+  endif
 
   setlocal nomodifiable
 
@@ -751,20 +891,32 @@ function! Calendar(...)
   execute 'nnoremap <silent> <buffer> q :close<cr>'
 
   execute 'nnoremap <silent> <buffer> <cr> :call <SID>CalendarDoAction()<cr>'
+  execute 'nnoremap <silent> <buffer> <2-LeftMouse> :call <SID>CalendarDoAction()<cr>'
   "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   "+++ build highlight
   "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   " today
   syn clear
-  if !exists("g:calendar_rmark")
+  if g:calendar_mark =~ 'left'
     syn match Directory display "\*\s*\d*"
-    syn match Identifier display "+\s*\d*"
-  else
+    syn match Identifier display "[+!#$%&@?]\s*\d*"
+  endif
+  if g:calendar_mark =~ 'left-fit'
+    syn match Directory display "\s*\*\d*"
+    syn match Identifier display "\s*[+!#$%&@?]\d*"
+  endif
+  if g:calendar_mark =~ 'right'
     syn match Directory display "\d*\*\s*"
-    syn match Identifier display "\d*+\s*"
+    syn match Identifier display "\d*[+!#$%&@?]\s*"
   endif
   " header
   syn match Special display "[^ ]*\d\+\/\d\+([^)]*)"
+
+  " navi
+  if exists('g:calendar_navi')
+    syn match Search display "\(<Prev\|Next>\)"
+    syn match Search display "\sToday\s"hs=s+1,he=e-1
+  endif
 
   " saturday, sunday
   let dayorspace = '\(\*\|\s\)\(\s\|\d\)\(\s\|\d\)'
@@ -863,7 +1015,7 @@ function! s:CalendarDiary(day, month, year, week, dir)
 
   " load the file
   exe "sp " . sfile
-  exe "auto BufLeave ".sfile." normal! ".vwinnum."\<c-w>\<c-w>"
+  exe "auto BufLeave ".escape(sfile, ' \\')." normal! ".vwinnum."<c-w>w"
 endfunc
 
 "*****************************************************************
@@ -875,5 +1027,5 @@ endfunc
 "*****************************************************************
 function! s:CalendarSign(day, month, year)
   let sfile = g:calendar_diary."/".a:year."/".a:month."/".a:day.".cal"
-  return expand(sfile)
+  return filereadable(expand(sfile))
 endfunction
