@@ -3,11 +3,11 @@
 " Maintainer:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " Bugs Report:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " Copyright:	GNU GPL
-" Last Change:	2001 Oct 06 07:17:07 PM
+" Last Change:	2001 Oct 14 01:11:55 AM
 " Version:		01.09.08
 " Language Of Comments:	Slovak
 
-" $Id: .vimrc,v 1.6 2001/09/25 15:46:02 host8 Exp $
+" $Id: .vimrc,v 1.7 2001/10/13 22:28:40 host8 Exp $
 
 " Settings {{{1
 " ... to be secure & Vi nocompatible
@@ -46,6 +46,12 @@
 "}}}
 " Settings for folding long lines {{{
 :let g:fold_long_lines=300
+" }}}
+" Settings for AutoLastMod {{{
+" Set this to 1 if you will automaticaly change date of modification of file.
+:let g:autolastmod=1
+" Modification is made on line like this variable:
+:let g:autolastmodtext="Last modified: "
 " }}}
 
 " Automatically setting options in various files
@@ -368,15 +374,15 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
 " Function AutoLastMod() {{{2
 " funkcia zabezpeci automaticku zmenu datumu suborov *.html
-" ak je napr. zec modeline nastavena premmenna autolastmod
+" ak je napr. cez modeline nastavena premmenna autolastmod
 " na prislusnu hodnotu
 "
 fun! AutoLastMod()
-:if exists("autolastmod")
-:	if autolastmod < 0
+:if exists("g:autolastmod")
+:	if g:autolastmod < 0
 :		return 0;
-:	elseif autolastmod == 1
-:		call LastMod("Last modified: ")
+:	elseif g:autolastmod == 1
+:		call LastMod(g:autolastmodtext)
 :	endif
 :endif
 endfun
