@@ -1,6 +1,16 @@
+
+// XXX XXX XXX  THIS IS A NEW FILE XXX XXX XXX
+
 /*
- * $Id$
+ * '@FILE_EXT@' created: @DATE@
+ *
+ * Copyright @YEAR@ by @AUTHOR@ @EMAIL@
+ *
+ * License: GNU GPL (GNU Public License)
+ *
  */
+
+/* $Id$ */
 
 #include <stdio.h>
 #include "@FILE@.h"
@@ -15,7 +25,7 @@ int main(int argc, char **argv)
 
 
 /* Modeline for ViM {{{
- * vim:set ts=4:
- * vim600:fdm=marker fdl=0 fdc=3:
+ * vim: set ts=4:
+ * vim600: fdm=marker fdl=0 fdc=3:
  * }}} */
 

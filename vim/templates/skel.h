@@ -1,6 +1,17 @@
+
+// XXX XXX XXX  THIS IS A NEW FILE XXX XXX XXX
+
 /*
- * $Id$
+ * '@FILE_EXT@' created: @DATE@
+ *
+ * Copyright @YEAR@ by @AUTHOR@ @EMAIL@
+ *
+ * License: GNU GPL (GNU Public License)
+ *
  */
+
+/* $Id$ */
+
 #ifndef @INCLUDE_GAURD@_H
 #  define @INCLUDE_GAURD@_H
 

@@ -1,8 +1,11 @@
+
+# XXX XXX XXX  THIS IS A NEW FILE XXX XXX XXX
+
 # Makefile for creating distribution of test package
 # Type 'make dist' for create tar-gziped archiv. 
 
 #
-# Author: Lubomir Host 'rajo' <host8@kepler.fmph.uniba.sk
+# Author: Lubomir Host 'rajo' <rajo AT host.sk>
 #
 
 # $Id$

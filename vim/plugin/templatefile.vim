@@ -3,11 +3,12 @@
 " File: templatefile.vim
 " Maintainer:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " Last Change: 2002/02/05
-" Version: $Id: templatefile.vim,v 1.2 2002/02/06 00:43:23 host8 Exp $
+" Version: $Id: templatefile.vim,v 1.3 2002/02/06 01:13:40 host8 Exp $
 " Thanks:
-" 		Scott Urban       : First version of templatefile.vim
-" 		                    http://vim.sourceforge.net/scripts/
-" 		                           script.php?script_id=198
+" 	Scott Urban:	First version of templatefile.vim
+" 		        	http://vim.sourceforge.net/scripts/script.php?script_id=198
+"	Roland Lezuo:	<roland.lezuo AT chello.at> 
+"	             	some suggestions	
 " 
 " Description: 
 " 		Plugin load template file for new files
@@ -53,18 +54,24 @@ fun! LoadTemplateFile()
 
 	let date = strftime("%c")
 	let year = strftime("%Y")
-	let cwd = getcwd()
+	let cwd  = getcwd()
 	let lastdir = substitute(cwd, ".*/", "", "g")
-	let myfile = expand("%:t:r")
+	let myfile  = expand("%:t:r")
 	let myfile_ext = expand("%")
+	let myfile_ext = substitute(myfile_ext, "/", "@PATH_SEP@", "")
 	let inc_gaurd = substitute(myfile, "\\.", "_", "g")
 	let inc_gaurd = toupper(inc_gaurd)
+	let Author = g:author
+	let Email  = g:email
 	silent! execute "%s/@DATE@/" .  date . "/g"
 	silent! execute "%s/@YEAR@/" .  year . "/g"
-	silent! execute "%s/@LASTDIR@/" .  lastdir . "/g"
-	silent! execute "%s/@FILE@/" .  myfile . "/g"
+	silent! execute "%s/@LASTDIR@/"  .  lastdir    . "/g"
+	silent! execute "%s/@FILE@/"     .  myfile     . "/g"
 	silent! execute "%s/@FILE_EXT@/" .  myfile_ext . "/g"
+	silent! execute "%s/@PATH_SEP@/\\//g"
 	silent! execute "%s/@INCLUDE_GAURD@/" . inc_gaurd . "/g"
+	silent! execute "%s/@AUTHOR@/" . Author . "/g"
+	silent! execute "%s/@EMAIL@/"  . Email  . "/g"
 	if exists ("*" . template_func)
 		if exists("g:load_templates")
 			if g:load_templates == "ask"
