@@ -6,7 +6,7 @@
 " Version:		01.09.08
 " Language Of Comments:	English
 
-" $Id: vimrc,v 1.31 2002/01/25 21:43:59 host8 Exp $
+" $Id: vimrc,v 1.32 2002/01/25 22:00:11 host8 Exp $
 
 " Settings {{{
 " To be secure & Vi nocompatible
@@ -40,7 +40,7 @@ set nobackup
 ":set ruler
 " Display a status-bar.
 set laststatus=2
-set statusline=%<%f%h\ %3*%m%1*%r%0*\ %2*%y%4*%w%0*%=[%b\ 0x%B]\ \ %8l,%10([%c%V/%{strlen(getline(line('.')))}]%)\ %P
+set statusline=%1*%{GetID()}%0*%<%f\ %3*%m%1*%r%0*\ %2*%y%4*%w%0*%=[%b\ 0x%B]\ \ %8l,%10([%c%V/%{strlen(getline(line('.')))}]%)\ %P
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}
 " Settings for Explorer script {{{
 let g:explDetailedHelp=1
@@ -485,6 +485,29 @@ endfun
 "
 fun! SafeLineDelete()
 	exec "normal \"_dd"
+endfun
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}
+" Function GetID() {{{
+" - used in statusline.
+" If you are root, function return "# " string --> it is showed at begin of
+"                                                  statusline
+" If you aren't root, function return empty string --> nothing is visible
+if executable("id")
+	" Check for your name ID
+	let g:get_id = substitute(system("id -n -u"), "[\r\n]", "", "g")
+	" If you are root, set to '#', else set to ''
+	if g:get_id == "root"
+		let g:get_id = "# "
+	else
+		let g:get_id = ""
+	endif
+endif
+fun! GetID()
+	if exists("g:get_id")
+		return g:get_id
+	else
+		return ""
+	endif
 endfun
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}
 " Function ReadFileAboveCursor() {{{
