@@ -26,7 +26,7 @@ use vars qw($VERSION @ISA @EXPORT $AUTOLOAD);
 $VERSION = '0.1';
 
 sub new
-{
+{ #{{{
     my $this  = shift;
     my $class = ref($this) || $this;
     my $self  = {};
@@ -35,7 +35,7 @@ sub new
     $self->set(@_) if @_;
 
     return $self;
-}
+} # }}}
 
 1;
 
