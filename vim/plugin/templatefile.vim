@@ -2,8 +2,8 @@
 " Vim global plugin for autoload template files
 " File: templatefile.vim
 " Maintainer:	Lubomir Host <8host AT pauli.fmph.uniba.sk>
-" Last Change: 2003/01/10
-" Version: $Platon: vimconfig/vim/plugin/templatefile.vim,v 1.7 2003-01-10 11:52:11 rajo Exp $
+" Last Change: 2003/01/12
+" Version: $Platon: vimconfig/vim/plugin/templatefile.vim,v 1.8 2003-01-12 18:25:20 nepto Exp $
 " Thanks:
 " 	Scott Urban:	First version of templatefile.vim
 " 		        	http://vim.sourceforge.net/scripts/script.php?script_id=198
@@ -52,7 +52,7 @@ fun! LoadTemplateFile()
 		" Template not found
 	endif
 
-	let date = strftime("%c")
+	let date = strftime("%d/%m/%Y")
 	let year = strftime("%Y")
 	let cwd  = getcwd()
 	let lastdir = substitute(cwd, ".*/", "", "g")
@@ -67,6 +67,9 @@ fun! LoadTemplateFile()
 	if exists("g:email")
 		let Email  = g:email
 	endif
+	if exists("g:company")
+		let Company  = g:company
+	endif
 	silent! execute "%s/@DATE@/" .  date . "/g"
 	silent! execute "%s/@YEAR@/" .  year . "/g"
 	silent! execute "%s/@LASTDIR@/"  .  lastdir    . "/g"
@@ -76,6 +79,7 @@ fun! LoadTemplateFile()
 	silent! execute "%s/@INCLUDE_GAURD@/" . inc_gaurd . "/g"
 	silent! execute "%s/@AUTHOR@/" . Author . "/g"
 	silent! execute "%s/@EMAIL@/"  . Email  . "/g"
+	silent! execute "%s/@COMPANY@/"  . Company  . "/g"
 	if exists ("*" . template_func)
 		if exists("g:load_templates")
 			if g:load_templates == "ask"
