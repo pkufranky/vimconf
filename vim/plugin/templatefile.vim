@@ -2,7 +2,7 @@
 " Vim global plugin for autoload template files
 " File:			templatefile.vim
 " Maintainer:	Lubomir Host 'rajo' <rajo AT platon.sk>
-" Version:		$Platon: vimconfig/vim/plugin/templatefile.vim,v 1.14 2003-11-03 08:20:22 rajo Exp $
+" Version:		$Platon: vimconfig/vim/plugin/templatefile.vim,v 1.15 2003-11-18 13:49:50 rajo Exp $
 "
 " Thanks:
 " 	Scott Urban:	First version of templatefile.vim
@@ -105,6 +105,7 @@ function! LoadTemplateFile()
 			silent! execute ":call " . template_func . "()"
 		endif
 	endif
+	silent! execute "normal gg"
 endfunction
 
 function! LoadTemplateFileConfirm(filename)
