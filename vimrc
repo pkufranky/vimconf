@@ -132,6 +132,7 @@
 :command! -nargs=1 Printf call libcallnr("/lib/libc.so.6", "printf", <args>)
 :command! -nargs=0 FoldLongLines call FoldLongLines()
 :command! -nargs=0 Indent call Indent()
+:command! -nargs=0 CallProg call CallProg()
 "################################################################# }}}1
 " Autocomands {{{1
 " Startup autocommands {{{2
