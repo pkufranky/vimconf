@@ -20,7 +20,7 @@
 "
 "        Lubomir Host 'rajo' <rajo AT platon.sk>
 
-" Version: $Platon: vimconfig/vimrc,v 1.95 2003-11-28 10:16:02 rajo Exp $
+" Version: $Platon: vimconfig/vimrc,v 1.96 2003-12-02 07:56:01 rajo Exp $
 
 " Debian uses compressed helpfiles. We must inform vim that the main
 " helpfiles is compressed. Other helpfiles are stated in the tags-file.
@@ -145,6 +145,12 @@ set suffixes+=.pdf
 
 set wildignore+=*.dvi
 set wildignore+=*.pdf
+set wildignore+=*.o
+set wildignore+=*.ko
+set wildignore+=*.swp
+set wildignore+=*.aux
+set wildignore+=*.bbl
+set wildignore+=*.blg
 " }}}
 
 " The cursor is kept in the same column (if possible).  This applies to the
@@ -173,8 +179,10 @@ set noignorecase
 
 set showfulltag 
 
-set ch=2 bs=2
-set incsearch report=0
+set cmdheight=2
+set backspace=2
+set incsearch
+set report=0
 set showcmd showmatch showmode
 
 " Set title of the window to Platon's copyright
@@ -211,6 +219,11 @@ set lazyredraw
 " time out on mapping after one second, time out on key codes after
 " a tenth of a second
 set timeout timeoutlen=1000 ttimeoutlen=100
+
+" command completition
+set wildchar=<Tab>
+set wildmenu
+set wildmode=longest:full,full
 
 " Customize display {{{
 " lastline	When included, as much as possible of the last line
