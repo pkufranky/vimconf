@@ -1,7 +1,7 @@
 " File: csyntax.vim
-" Maintainer:	Lubomir Host 'rajo' <8host AT pauli.fmph.uniba.sk>
-" Last Change: 2003/01/10
-" Version: $Platon: vimconfig/vim/csyntax.vim,v 1.3 2003-01-16 12:16:50 rajo Exp $
+" Maintainer:	Lubomir Host 'rajo' <rajo AT platon.sk>
+" Last Change: 2003/02/28
+" Version: $Platon: vimconfig/vim/csyntax.vim,v 1.4 2003-02-28 02:00:51 rajo Exp $
 "
 " Description: Source this file while editing C source code
 "              for better formating.

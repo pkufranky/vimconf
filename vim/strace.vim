@@ -1,7 +1,7 @@
 " File: strace.vim
-" Maintainer:	Lubomir Host 'rajo' <8host AT pauli.fmph.uniba.sk>
-" Last Change: 2003/01/10
-" Version: $Platon: vimconfig/vim/strace.vim,v 1.4 2003-01-16 12:16:50 rajo Exp $
+" Maintainer:	Lubomir Host 'rajo' <rajo AT platon.sk>
+" Last Change: 2003/02/28
+" Version: $Platon: vimconfig/vim/strace.vim,v 1.5 2003-02-28 02:00:51 rajo Exp $
 "
 " Description: Source this file for removing some unimportang
 "              lines from strace output.

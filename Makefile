@@ -1,14 +1,15 @@
 # 
 # Makefile for creating distribution of vim config files.
+#
 # Type 'make dist' for create tar-gziped and zip archiv. 
 #
-# Developed by Lubomir Host 'rajo' <8host AT pauli.fmph.uniba.sk>
+# Developed by Lubomir Host <rajo AT platon.sk>
 # Copyright (c) 2001 - 2003 Platon SDG
 # Licensed under terms of GNU General Public License.
 # All rights reserved.
 #
 
-# $Platon: vimconfig/Makefile,v 1.29 2003-02-16 21:40:39 rajo Exp $
+# $Platon: vimconfig/Makefile,v 1.30 2003-02-28 02:00:51 rajo Exp $
 
 PACKAGE = vimconfig
 VERSION = 1.8pre2
