@@ -7,7 +7,8 @@
 " Version:		01.09.08
 " Language Of Comments:	Slovak
 
-" $Id: $
+" $Id: .vimrc,v 1.5 2001/09/25 15:15:44 host8 Exp $
+
 " Settings {{{1
 " ... to be secure & Vi nocompatible
 :set secure nocompatible
