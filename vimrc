@@ -4,7 +4,7 @@
 " vimrc - main configuration file
 " ____________________________________________________________
 "
-" Developed by Lubomir Host <8host AT pauliDOTfmph.uniba.sk>
+" Developed by Lubomir Host <8host AT pauli.fmph.uniba.sk>
 " Copyright (c) 2000-2002 Platon SDG, http://www.platon.sk/
 " All rights reserved.
 "
@@ -16,7 +16,7 @@
 "
 
 " Please don't hesitate to correct my english :)
-" Send corrections to <8host AT pauliDOTfmph.uniba.sk>
+" Send corrections to <8host AT pauli.fmph.uniba.sk>
 
 " $Id: vimrc,v 1.72 2002/08/15 22:44:44 rajo Exp $
 
