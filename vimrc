@@ -3,11 +3,10 @@
 " Maintainer:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " Bugs Reports:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " License:		GNU GPL
-" Last Change:	2001 Nov 26 21:14:06
 " Version:		01.09.08
 " Language Of Comments:	English
 
-" $Id: vimrc,v 1.19 2001/11/21 23:29:59 jombik9 Exp $
+" $Id: vimrc,v 1.20 2001/11/26 20:16:06 host8 Exp $
 
 " Settings {{{1
 " To be secure & Vi nocompatible
