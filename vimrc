@@ -20,7 +20,7 @@
 "
 "        Lubomir Host 'rajo' <rajo AT platon.sk>
 
-" Version: $Platon: vimconfig/vimrc,v 1.98 2003-12-03 10:52:44 rajo Exp $
+" Version: $Platon: vimconfig/vimrc,v 1.99 2003-12-09 07:18:06 rajo Exp $
 
 " Debian uses compressed helpfiles. We must inform vim that the main
 " helpfiles is compressed. Other helpfiles are stated in the tags-file.
@@ -204,10 +204,17 @@ set undolevels=10000
 ":set expandtab 
 
 " Settings for mouse (gvim under Xwindows)
-set nomousefocus mousehide
+set nomousefocus
+set mousehide
+set mousemodel=popup
 
-" Cursor always in the middle of the screen
-set scrolloff=999
+" Cursor always in the middle of the screen if GUI is not running
+if ! has("gui_running")
+	set scrolloff=999
+endif
+set sidescroll=5
+set sidescrolloff=1
+
 
 " Make window maximalized
 set winheight=100
@@ -224,6 +231,8 @@ set timeout timeoutlen=1000 ttimeoutlen=100
 set wildchar=<Tab>
 set wildmenu
 set wildmode=longest:full,full
+
+set clipboard=unnamed
 
 " Allow specified keys that move the cursor left/right to wrap to the
 " previous/next line when the cursor is on the first/last character in the
@@ -330,6 +339,8 @@ imap <C-D> <Esc>:call SafeLineDelete()<CR>i
 
 " Search for the current Visual selection.
 vmap S y/<C-R>=escape(@",'/\')<CR>
+" replace selected text with text in register
+vnoremap p <Esc>:let current_reg = @"<CR>gvdi<C-R>=current_reg<CR><Esc>
 
 " Good pasting toggle {{{
 " From  Christopher Swingley <cswingle AT iarc.uaf.edu>
