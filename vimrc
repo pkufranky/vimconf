@@ -6,7 +6,7 @@
 " Version:		01.09.08
 " Language Of Comments:	English
 
-" $Id: vimrc,v 1.32 2002/01/25 22:00:11 host8 Exp $
+" $Id: vimrc,v 1.33 2002/02/01 15:55:04 host8 Exp $
 
 " Settings {{{
 " To be secure & Vi nocompatible
@@ -492,6 +492,7 @@ endfun
 " If you are root, function return "# " string --> it is showed at begin of
 "                                                  statusline
 " If you aren't root, function return empty string --> nothing is visible
+let g:get_id=""
 if executable("id")
 	" Check for your name ID
 	let g:get_id = substitute(system("id -n -u"), "[\r\n]", "", "g")
@@ -503,11 +504,7 @@ if executable("id")
 	endif
 endif
 fun! GetID()
-	if exists("g:get_id")
-		return g:get_id
-	else
-		return ""
-	endif
+	return g:get_id
 endfun
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}
 " Function ReadFileAboveCursor() {{{
