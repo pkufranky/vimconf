@@ -3,12 +3,14 @@
 " File: templatefile.vim
 " Maintainer:	Lubomir Host 'rajo' <8host AT pauli.fmph.uniba.sk>
 " Last Change:	2003/01/10
-" Version: $Platon: vimconfig/vim/plugin/templatefile.vim,v 1.12 2003-03-06 20:09:11 rajo Exp $
+" Version: $Platon: vimconfig/vim/plugin/templatefile.vim,v 1.13 2003-11-03 08:09:44 rajo Exp $
 " Thanks:
 " 	Scott Urban:	First version of templatefile.vim
 " 		        	http://vim.sourceforge.net/scripts/script.php?script_id=198
 "	Roland Lezuo:	<roland.lezuo AT chello.at> 
 "	             	some suggestions	
+" Hojin Choi:		<pynoos AT naver.com>
+"            		function TryLoadTemplateInUpperDir()
 " 
 " Description: 
 " 		Plugin load template file for new files
@@ -47,6 +49,9 @@ function! LoadTemplateFile()
 	endif
 	if filereadable(expand($VIMTEMPLATE . template_file))
 		call LoadTemplateFileConfirm($VIMTEMPLATE . template_file)
+	elseif TryLoadTemplateInUpperDir("skel." . extension)
+		" I found a template file in an upper directory!
+		pwd
 	elseif filereadable(expand($HOME . "/.vim" . template_file))
 		call LoadTemplateFileConfirm($HOME . "/.vim" . template_file)
 	elseif filereadable(expand($VIM . template_file))
@@ -146,6 +151,27 @@ function! LoadFile(filename)
 		echo "File not found!"
 	endif
 endfunction
+
+" function from Hojin Choi <pynoos AT naver.com>
+fun! TryLoadTemplateInUpperDir(skelfile)
+	let savewd = getcwd()
+	while (getcwd() != "/")
+		if filereadable(a:skelfile)
+			call LoadTemplateFileConfirm(a:skelfile)
+			execute "cd " . savewd
+			return 1
+		endif
+		if filereadable("templates/" . a:skelfile)
+			call LoadTemplateFileConfirm( "templates/" . a:skelfile)
+			execute "cd " . savewd
+			return 1
+		endif
+		cd ..
+	endwhile
+	execute "cd " . savewd
+	return 0
+endfun
+
 
 " example for no-extension file specific template processing
 function! TemplateFileFunc_noext_makefile()
