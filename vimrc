@@ -3,19 +3,18 @@
 " Maintainer:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " Bugs Reports:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " License:		GNU GPL
-" Last Change:	2001 Nov 08 04:25:42 PM
+" Last Change:	2001 Nov 08 16:31:54
 " Version:		01.09.08
 " Language Of Comments:	English
 
-" $Id: vimrc,v 1.14 2001/11/07 21:32:27 host8 Exp $
+" $Id: vimrc,v 1.15 2001/11/08 15:28:31 jombik9 Exp $
 
 " Settings {{{1
 " To be secure & Vi nocompatible
 :set secure nocompatible
 :if version >= 600 
 :	syntax enable
-":	syntax on
-: else
+:else
 :	syntax on
 :endif
 
@@ -26,7 +25,11 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
 " History and viminfo settings {{{2
 :set history=10000
-:set viminfo=!,%,'5000,\"10000,:10000,/10000,n~/.vim/viminfo
+:echo filewritable("$HOME/.vim/viminfo") . " " . filewritable("$HOME/.vim/") 
+:if filewritable("$HOME/.vim/viminfo") == 1 ||
+	\ filewritable("$HOME/.vim/") == 2
+:	set viminfo=!,%,'5000,\"10000,:10000,/10000,n~/.vim/viminfo
+:endif
 " Don't save backups of files.
 :set nobackup
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
@@ -55,6 +58,11 @@
 " Modification is made on line like this variable:
 :let g:autolastmodtext="Last modified: "
 " }}}
+let s:line1 = getline(1)
+if s:line1 =~ '^From [a-zA-Z][a-zA-Z_0-9\.=-]*\(@[^ ]*\)\= .*[12][09]\d\d$'
+  set ft=mail
+endif
+unlet s:line1
 
 " Automatically setting options in various files
 :set modeline
