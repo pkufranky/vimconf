@@ -5,12 +5,19 @@
 "		   URL: 
 "  Last Change: Thu Mar 21 06:00 AM 2002 PST
 "
-" Version: $Platon: vimconfig/vim/ftplugin/html.vim,v 1.6 2003-09-03 08:04:13 rajo Exp $
+" Version: $Platon: vimconfig/vim/ftplugin/html.vim,v 1.7 2003-11-03 08:09:00 rajo Exp $
 
 " HTML mappings {{{
 if !exists('s:doneMappings')
 	let s:doneMappings = 1
 	let s:ml = exists('g:mapleader') ? g:mapleader : '\'
+
+	" Create parent tag for tag on current line
+	imap <buffer> QQ </><Esc>2F<lywf>f/pF<i
+	" Create tag from previous word
+	imap <buffer> ,, ></><ESC>3hbi<<ESC>lvt>ugvy/</><CR>lp?></<CR>a<C-O>:nohlsearch<CR>
+	" Create tag from previous word but add also newlines
+	imap <buffer> ,. ,,<CR><CR><Up><Space><Space>
 
 	" HTML commands {{{2
 	call IMAP ('tab' .s:ml, "<table border=2 cellspacing=2 cellpadding=5>\<cr><tr>\<cr>\<tab><td>הה</td>\<cr>\<bs></tr>\<cr></table>", 'html')
