@@ -3,11 +3,11 @@
 " Maintainer:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " Bugs Reports:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " License:		GNU GPL
-" Last Change:	2001 Nov 10 00:33:23
+" Last Change:	2001 Nov 21 10:11:46 PM
 " Version:		01.09.08
 " Language Of Comments:	English
 
-" $Id: vimrc,v 1.17 2001/11/08 16:05:18 host8 Exp $
+" $Id: vimrc,v 1.18 2001/11/09 23:37:07 host8 Exp $
 
 " Settings {{{1
 " To be secure & Vi nocompatible
@@ -175,12 +175,27 @@ endif
 unlet s:line1
 " }}}
 " Filetypes settings {{{1
+" Function SetsByFiletype() is defined as autocommand for each file and it is
+" always called when new file is read or opened. There are settings which will
+" be sets according to specific file type. Try to avoid of use 'set' command
+" here. Use 'setlocal' command instead.
+fun! SetsByFiletype()
+" Mail {{{2
 :if &filetype == "mail"
 :	setlocal textwidth=72
 :	setlocal noautoindent
 :	map  gqap
 :	imap  gqapi
 :endif
+" }}}2
+" Perl {{{2
+:if &filetype == "perl"
+:	if executable("perltidy")
+:		setlocal equalprg=perltidy\ -q\ -se\ -fnl
+:	endif
+:endif
+" }}}2
+endfun
 "################################################################# }}}1
 " Autocomands {{{1
 " Startup autocommands {{{2
@@ -200,6 +215,7 @@ unlet s:line1
 " Autocommands for * (all files) {{{2
 :augroup AllFiles
 :  autocmd!
+:	autocmd BufRead,BufNewFile  *	call SetsByFiletype()
 :augroup END
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
 " Autocomands for ~/.vimrc {{{2
@@ -555,9 +571,16 @@ endfun
 :endfun
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
 " Function Indent() {{{2
-"
+" Indents source code.
 fun! Indent()
+" If there is set equalprg to source indenting (ie. perltidy for perl sources)
+" we have not to executes "'f" at the end, else we will got "Mark not set"
+" error message.
+:if &equalprg == ""
 :	exec "normal mfggvG$='f"
+:else
+:	exec "normal mfggvG$="
+:endif
 endfun
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
 " Function UnquoteMailBody() {{{2
