@@ -9,7 +9,7 @@
 # All rights reserved.
 #
 
-# $Platon: vimconfig/Makefile,v 1.41 2004-02-11 09:23:45 rajo Exp $
+# $Platon: vimconfig/Makefile,v 1.42 2005-01-13 11:34:22 rajo Exp $
 
 PACKAGE = vimconfig
 VERSION = 1.9
@@ -261,6 +261,6 @@ update:
 
 # Modeline {{{
 # vim:set ts=4:
-# vim600:fdm=marker fdl=0 fdc=3 vb t_vb=:
+# vim600:fdm=marker fdl=0 fdc=3
 # }}}
 

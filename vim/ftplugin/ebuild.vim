@@ -2,7 +2,7 @@
 " Language:		Ebuild (Gentoo Linux)
 " Maintainer:	Ondrej Jombík <nepto AT platon.sk>
 " License:		GNU GPL
-" Version:		$Platon: vimconfig/vim/ftplugin/ebuild.vim,v 1.1 2003-11-22 14:08:46 nepto Exp $
+" Version:		$Platon: vimconfig/vim/ftplugin/ebuild.vim,v 1.2 2005-01-13 11:32:18 rajo Exp $
 
 
 " Only do this when not done yet for this buffer
@@ -20,6 +20,6 @@ setlocal noexpandtab
 
 " Modeline {{{
 " vim:set ts=4:
-" vim600:fdm=marker fdl=0 fdc=3 vb t_vb=:
+" vim600:fdm=marker fdl=0 fdc=3
 " }}}
 

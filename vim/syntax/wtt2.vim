@@ -3,7 +3,7 @@
 "               template for WML (WAP page) 
 " Maintainer:	Lubomir Host 'rajo' <rajo AT platon.sk>
 " License:		GNU GPL
-" Version:		$Platon: vimconfig/vim/syntax/wtt2.vim,v 1.1 2003-11-18 13:05:12 rajo Exp $
+" Version:		$Platon: vimconfig/vim/syntax/wtt2.vim,v 1.2 2005-01-13 11:34:33 rajo Exp $
 
 
 if version < 600
@@ -203,6 +203,6 @@ endif
 
 " Modeline {{{
 " vim:set ts=4:
-" vim600:fdm=marker fdl=0 fdc=3 vb t_vb=:
+" vim600:fdm=marker fdl=0 fdc=3
 " }}}
 

@@ -20,7 +20,7 @@
 "
 "        Lubomir Host 'rajo' <rajo AT platon.sk>
 
-" Version: $Platon: vimconfig/gvimrc,v 1.9 2003-11-28 10:17:11 rajo Exp $
+" Version: $Platon: vimconfig/gvimrc,v 1.10 2005-01-13 11:34:22 rajo Exp $
 
 function! Source(File)
 	silent! execute "source " . a:File
@@ -89,5 +89,5 @@ call Source(GVIMRC_EXTRA."-".machine."-".user.".post")
 
 " Modeline {{{
 " vim:set ts=4:
-" vim600:fdm=marker fdl=0 fdc=3 vb t_vb=:
+" vim600:fdm=marker fdl=0 fdc=3
 " }}}

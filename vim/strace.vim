@@ -1,6 +1,6 @@
 " File: strace.vim
 " Maintainer:	Lubomir Host 'rajo' <rajo AT platon.sk>
-" Version:		$Platon: vimconfig/vim/strace.vim,v 1.6 2003-11-03 08:20:21 rajo Exp $
+" Version:		$Platon: vimconfig/vim/strace.vim,v 1.7 2005-01-13 11:34:25 rajo Exp $
 "
 " Description: Source this file for removing some unimportang
 "              lines from strace output.
@@ -15,6 +15,6 @@
 
 " Modeline {{{
 " vim:set ts=4:
-" vim600:fdm=marker fdl=0 fdc=3 vb t_vb=:
+" vim600:fdm=marker fdl=0 fdc=3
 " }}}
 

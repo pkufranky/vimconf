@@ -2,7 +2,7 @@
 " Language:		PHP
 " Maintainer:	Lubomir Host 'rajo' <rajo AT platon.sk>
 " License:		GNU GPL
-" Version:		$Platon: vimconfig/vim/indent/php.vim,v 1.2 2003-11-03 08:20:22 rajo Exp $
+" Version:		$Platon: vimconfig/vim/indent/php.vim,v 1.3 2005-01-13 11:34:27 rajo Exp $
 "
 
 
@@ -56,5 +56,5 @@ unlet s:cpo_save
 
 " Modeline {{{
 " vim:set ts=4:
-" vim600:fdm=marker fdl=0 fdc=3 vb t_vb=:
+" vim600:fdm=marker fdl=0 fdc=3
 " }}}

@@ -2,7 +2,7 @@
 " Language:		Perl
 " Maintainer:	Lubomir Host 'rajo' <rajo AT platon.sk>
 " License:		GNU GPL
-" Version:		$Platon: vimconfig/vim/ftplugin/perl.vim,v 1.6 2003-02-28 02:02:26 rajo Exp $
+" Version:		$Platon: vimconfig/vim/ftplugin/perl.vim,v 1.7 2005-01-13 11:32:19 rajo Exp $
 
 
 " Only do this when not done yet for this buffer
@@ -41,5 +41,5 @@ endif
 
 " Modeline {{{
 " vim:set ts=4:
-" vim600:fdm=marker fdl=0 fdc=3 vb t_vb=:
+" vim600:fdm=marker fdl=0 fdc=3
 " }}}

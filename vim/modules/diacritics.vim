@@ -2,7 +2,7 @@
 " File:			diacritics.vim
 " Maintainer:	Lubomir Host 'rajo' <rajo AT platon.sk>
 " License:		GNU GPL
-" Version:		$Platon: vimconfig/vim/modules/diacritics.vim,v 1.5 2003-11-03 08:20:22 rajo Exp $
+" Version:		$Platon: vimconfig/vim/modules/diacritics.vim,v 1.6 2005-01-13 11:34:29 rajo Exp $
 "
 " This file is sourced if some ftplugin require diacritics (IMAP() mappings)
 
@@ -565,6 +565,6 @@ endif
 
 " Modeline {{{
 " vim:set ts=4:
-" vim600:fdm=marker fdl=0 fdc=3 vb t_vb=:
+" vim600:fdm=marker fdl=0 fdc=3
 " }}}
 

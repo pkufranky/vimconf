@@ -2,7 +2,7 @@
 " Language:		Mail
 " Maintainer:	Lubomir Host 'rajo' <rajo AT platon.sk>
 " License:		GNU GPL
-" Version:		$Platon: vimconfig/vim/ftplugin/mail.vim,v 1.8 2003-11-03 08:20:21 rajo Exp $
+" Version:		$Platon: vimconfig/vim/ftplugin/mail.vim,v 1.9 2005-01-13 11:32:19 rajo Exp $
 
 
 " Only do this when not done yet for this buffer
@@ -51,6 +51,6 @@ endif
 
 " Modeline {{{
 " vim:set ts=4:
-" vim600:fdm=marker fdl=0 fdc=3 vb t_vb=:
+" vim600:fdm=marker fdl=0 fdc=3
 " }}}
 

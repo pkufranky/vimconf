@@ -3,7 +3,7 @@
 "               template for HTML (WWW page) 
 " Maintainer:	Lubomir Host 'rajo' <rajo AT platon.sk>
 " License:		GNU GPL
-" Version:		$Platon: vimconfig/vim/syntax/tt2.vim,v 1.5 2004-07-12 09:04:15 rajo Exp $
+" Version:		$Platon: vimconfig/vim/syntax/tt2.vim,v 1.6 2005-01-13 11:34:33 rajo Exp $
 
 
 if version < 600
@@ -202,6 +202,6 @@ endif
 
 " Modeline {{{
 " vim:set ts=4:
-" vim600:fdm=marker fdl=0 fdc=3 vb t_vb=:
+" vim600:fdm=marker fdl=0 fdc=3
 " }}}
 

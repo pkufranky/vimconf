@@ -2,7 +2,7 @@
 " Language:	Vim help file
 " Maintainer:	Lubomir Host 'rajo' <rajo AT platon.sk>
 " Last Change:	2003/11/02
-" Version:	$Platon: vimconfig/vim/syntax/FEATURES.vim,v 1.7 2003-11-03 08:20:23 rajo Exp $
+" Version:	$Platon: vimconfig/vim/syntax/FEATURES.vim,v 1.8 2005-01-13 11:34:33 rajo Exp $
 " Based On:	help.vim syntax file from Bram Moolenar
 
 " For version 5.x: Clear all syntax items
@@ -110,6 +110,6 @@ let b:current_syntax = "help"
 
 " Modeline {{{
 " vim:set ts=4
-" vim600:fdm=marker fdl=0 fdc=3 vb t_vb=:
+" vim600:fdm=marker fdl=0 fdc=3
 " }}}
 
