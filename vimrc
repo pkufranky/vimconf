@@ -6,7 +6,7 @@
 " Version:		01.09.08
 " Language Of Comments:	English
 
-" $Id: vimrc,v 1.20 2001/11/26 20:16:06 host8 Exp $
+" $Id: vimrc,v 1.21 2001/11/28 15:28:52 host8 Exp $
 
 " Settings {{{1
 " To be secure & Vi nocompatible
@@ -240,7 +240,7 @@ endfun
 :	autocmd BufLeave            *.c,*.h,*.cc,*.cpp	iunmap 
 :	autocmd BufLeave            *.c,*.h,*.cc,*.cpp	unmap 
 :	autocmd BufRead,BufNewFile  *.c,*.h,*.cc,*.cpp	setlocal cindent
-:	autocmd BufRead,BufNewFile  *.c,*.h,*.cc,*.cpp	setlocal cinoptions=>4,e0,n0,f0,{0,}0,^0,:4,=4,p4,t4,c3,+4,(24,u4,)20,*30,g4,h4
+:	autocmd BufRead,BufNewFile  *.c,*.h,*.cc,*.cpp	setlocal cinoptions=>4,e0,n0,f0,{0,}0,^0,:4,=4,p4,t4,c3,+4,(2s,u1s,)20,*30,g4,h4
 :	autocmd BufRead,BufNewFile  *.c,*.h,*.cc,*.cpp	setlocal cinkeys=0{,0},:,0#,!,o,O,e
 " vytvaranie hlaviciek novych *.c, *.h suborov
 :	autocmd BufNewFile  *.c,*.cc,*.cpp	0r ~/.vim/skelet.c
