@@ -3,7 +3,7 @@
 " File: templatefile.vim
 " Maintainer:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " Last Change: 2002/02/05
-" Version: $Id: templatefile.vim,v 1.1 2002/02/05 22:41:54 host8 Exp $
+" Version: $Id: templatefile.vim,v 1.2 2002/02/06 00:43:23 host8 Exp $
 " Thanks:
 " 		Scott Urban       : First version of templatefile.vim
 " 		                    http://vim.sourceforge.net/scripts/
@@ -21,6 +21,8 @@ augroup TemplateSystem
 	au BufNewFile * call LoadTemplateFile()
 augroup END
 
+command! -nargs=0 LoadTemplateFile call LoadTemplateFile()
+command! -nargs=1 LoadFile call LoadFile(<args>)
 
 " template file loaded
 fun! LoadTemplateFile()
@@ -82,10 +84,11 @@ fun! LoadTemplateFile()
 endfun
 
 fun! LoadTemplateFileConfirm(filename)
-	if filereadable(a:filename)
+	if filereadable(expand(a:filename))
 		if exists("g:load_templates")
 			if g:load_templates == "ask"
-				let choice = confirm("NEW FILE! Load template file?:", 
+				let choice = confirm("NEW FILE! Load template file " .
+							\ expand(a:filename) . " ?:", 
 							\ "&yes\n" .
 							\ "&no\n")
 				if choice == 1
@@ -97,6 +100,28 @@ fun! LoadTemplateFileConfirm(filename)
 		else
 			execute "0r "  . a:filename
 		endif
+	endif
+endfun
+
+fun! LoadFile(filename)
+	if filereadable(expand(a:filename))
+		if exists("g:load_templates")
+			if g:load_templates == "ask"
+				let choice = confirm("Load file " .
+							\ expand(a:filename) . " ?:", 
+							\ "&yes\n" .
+							\ "&no\n")
+				if choice == 1
+					execute "0r "  . a:filename
+				endif
+			elseif g:load_templates == "yes"
+				execute "0r "  . a:filename
+			endif
+		else
+			execute "0r "  . a:filename
+		endif
+	else
+		echo "File not found!"
 	endif
 endfun
 

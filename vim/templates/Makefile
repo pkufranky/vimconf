@@ -2,7 +2,7 @@
 # Type 'make dist' for create tar-gziped archiv. 
 
 #
-# (c) rajo <host8@kepler.fmph.uniba.sk
+# Author: Lubomir Host 'rajo' <host8@kepler.fmph.uniba.sk
 #
 
 # $Id: $
