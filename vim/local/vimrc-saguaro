@@ -1,0 +1,13 @@
+" 
+" User's local vim configuration
+"  
+" Developed by Ondrej Jombik <nepto@platon.sk>
+" Copyright (c) 2005 Platon SDG, http://platon.sk/
+" All rights reserved.
+"
+" $Platon: vimconfig/vim/local/vimrc-saguaro,v 1.1 2005-01-06 13:04:18 nepto Exp $
+
+let g:author  = "Ondrej Jombik"
+let g:email   = "ondrej@symmetry.com"
+let g:company = "Symmetry Software Corp., http://www.symmetry.com/"
+
