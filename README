@@ -4,7 +4,7 @@ vimconfig
 Project of powerful ViM configuration files. ViM is a quality text
 editor with huge set of features.
 
-See FEATURES.txt file for getting help. Read this file with ViM for
+See vim/doc/FEATURES.txt file for getting help. Read this file with ViM for
 better reading.
 
 This document is fast howto install this vimconfig.
@@ -37,6 +37,7 @@ Please e-mail them to the following address: <platon AT pobox.sk>
 
 The latest official release of vimconfig is available from:
 http://www.platon.sk/projects/vimconfig/
+http://vim.sourceforge.net/script.php?script_id=204
 
 This document was written by Ondrej Jombik in 28th March 2002.
 
