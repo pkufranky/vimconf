@@ -3,11 +3,11 @@
 " Maintainer:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " Bugs Report:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " Copyright:	GNU GPL
-" Last Change:	2001 Oct 23 15:28:19
+" Last Change:	2001 Oct 23 15:56:41
 " Version:		01.09.08
 " Language Of Comments:	Slovak
 
-" $Id: vimrc,v 1.9 2001/10/16 16:22:48 host8 Exp $
+" $Id: vimrc,v 1.10 2001/10/23 13:31:12 host8 Exp $
 
 " Settings {{{1
 " ... to be secure & Vi nocompatible
@@ -27,6 +27,8 @@
 " History and viminfo settings {{{2
 :set history=10000
 :set viminfo=!,%,'5000,\"10000,:10000,/10000,n~/.vim/viminfo
+" Don't save backups of files.
+:set nobackup
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
 " Status line settings {{{2
 ":set ruler
