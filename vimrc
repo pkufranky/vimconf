@@ -19,7 +19,7 @@
 " Send corrections to
 "        Lubomir Host 'rajo' <rajo AT platon.sk>
 
-" Version: $Platon: vimconfig/vimrc,v 1.81 2003-03-06 21:08:06 rajo Exp $
+" Version: $Platon: vimconfig/vimrc,v 1.82 2003-03-06 22:53:55 rajo Exp $
 
 " Settings {{{
 " To be secure & Vi nocompatible
@@ -68,7 +68,7 @@ let c_space_errors=1
 " }}}
 
 " History and viminfo settings {{{
-if has("history") 
+if has("cmdline_hist") 
 	set history=10000
 endif
 if has("viminfo")
