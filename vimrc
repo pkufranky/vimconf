@@ -20,7 +20,7 @@
 "
 "        Lubomir Host 'rajo' <rajo AT platon.sk>
 
-" Version: $Platon: vimconfig/vimrc,v 1.97 2003-12-03 10:45:42 rajo Exp $
+" Version: $Platon: vimconfig/vimrc,v 1.98 2003-12-03 10:52:44 rajo Exp $
 
 " Debian uses compressed helpfiles. We must inform vim that the main
 " helpfiles is compressed. Other helpfiles are stated in the tags-file.
@@ -224,6 +224,11 @@ set timeout timeoutlen=1000 ttimeoutlen=100
 set wildchar=<Tab>
 set wildmenu
 set wildmode=longest:full,full
+
+" Allow specified keys that move the cursor left/right to wrap to the
+" previous/next line when the cursor is on the first/last character in the
+" line. Allowed keys are 'h' and 'l', arrow keys are not allowed to wrap.
+set whichwrap=h,l
 
 " Customize display {{{
 " lastline	When included, as much as possible of the last line
