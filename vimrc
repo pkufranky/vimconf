@@ -8,7 +8,7 @@
 " Please don't hesitate to correct my english :)
 " Send corrections to <host8@kepler.fmph.uniba.sk>
 
-" $Id: vimrc,v 1.41 2002/02/10 21:56:44 host8 Exp $
+" $Id: vimrc,v 1.42 2002/02/16 23:23:58 host8 Exp $
 
 " Settings {{{
 " To be secure & Vi nocompatible
@@ -97,6 +97,7 @@ set tags=./TAGS,./tags,tags
 
 " Don't add EOF at end of file
 set noendofline
+
 " Do case insensitive matching
 set noignorecase
 
@@ -109,6 +110,10 @@ set showcmd showmatch showmode
 " Indent of 1 tab with size of 4 spaces
 set tabstop=4 
 set shiftwidth=4 
+
+" Need more undolevels ??
+" (default 100, 1000 for Unix, VMS, Win32 and OS/2)
+set undolevels=10000
 
 " Use an indent of 4 spaces, with no tabs. This setting is recommended by PEAR
 " (PHP Extension and Application Repository) Conding Standarts. If you want
@@ -264,8 +269,8 @@ augroup END
 augroup VimConfig
 	autocmd!
 " Reread configuration of ViM if file ~/.vimrc is saved
-	autocmd BufWritePost ~/.vimrc	so ~/.vimrc
-	autocmd BufWritePost vimrc	so ~/.vimrc
+	autocmd BufWritePost ~/.vimrc	so ~/.vimrc | exec "normal zv"
+	autocmd BufWritePost vimrc   	so ~/.vimrc | exec "normal zv"
 augroup END
 " }}}
 
