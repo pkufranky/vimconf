@@ -3,7 +3,7 @@
 " File: templatefile.vim
 " Maintainer:	Lubomir Host 'rajo' <8host AT pauli.fmph.uniba.sk>
 " Last Change:	2003/01/10
-" Version: $Platon: vimconfig/vim/plugin/templatefile.vim,v 1.10 2003-01-16 12:19:32 rajo Exp $
+" Version: $Platon: vimconfig/vim/plugin/templatefile.vim,v 1.11 2003-02-28 05:43:24 rajo Exp $
 " Thanks:
 " 	Scott Urban:	First version of templatefile.vim
 " 		        	http://vim.sourceforge.net/scripts/script.php?script_id=198
@@ -100,6 +100,7 @@ function! LoadTemplateFile()
 			silent! execute ":call " . template_func . "()"
 		endif
 	endif
+	setlocal modified
 endfunction
 
 function! LoadTemplateFileConfirm(filename)
