@@ -22,6 +22,8 @@
 "			  2. planning a second release for this.
 " }}}
 
+" $ID: $
+
 if exists("b:didLocalTex")
 	finish	
 end
@@ -452,21 +454,23 @@ let g:smartBS_tex = '\(' .
 			\ '\\-'                    .
 			\ '\)' . "$"
 
-" This function comes from Benji Fisher <benji@e-math.AMS.org>
-" http://vim.sourceforge.net/scripts/download.php?src_id=409 
-" (modified/patched by Lubomir Host 'rajo' <host8 AT keplerDOTfmphDOTuniba.sk>)
-fun! s:SmartBS()
-	let init = strpart(getline("."), 0, col("."))
-	let len = strlen(matchstr(init, g:smartBS_tex)) - 1
-	if len > 0
-		execute "normal!" . len . "Xx"
+" This function comes from Benji Fisher <benji AT e-mathDOTAMSDOTorg>
+" http://vim.sourceforge.net/scripts/download.php?src_id=409
+" (modified/patched by: Lubomir Host 'rajo' <host8 AT keplerDOTfmphDOTuniba.sk>
+"                       Srinath Avadhanula  <srinath AT fastmailDOTfm> )
+function! s:SmartBS()
+	let init = strpart(getline("."), 0, col(".")-1)
+	let matchtxt = matchstr(init, g:smartBS_tex)
+	echo "SmartBS(" . matchtxt . ")"
+	if matchtxt != ''
+		let bstxt = substitute(matchtxt, '.', "\<bs>", 'g')
+		return bstxt
 	else
-		execute "normal! x"
+		return "\<bs>"
 	endif
 endfun
-"inoremap <buffer> <BS> x<Esc>:call <SID>SmartBS()<CR>a<BS><BS>
-inoremap <buffer> <BS> <Esc>:call <SID>SmartBS()<CR>a
-" }}}
+inoremap <buffer> <BS> <C-R>=<SID>SmartBS()<CR>
+" }}} 
 
 " MakeTexFolds: see ../plugin/syntaxFolds.vim for documentation {{{
 function! MakeTexFolds(force)
