@@ -8,7 +8,7 @@
 " Please don't hesitate to correct my english :)
 " Send corrections to <host8@kepler.fmph.uniba.sk>
 
-" $Id: vimrc,v 1.51 2002/04/19 16:23:12 host8 Exp $
+" $Id: vimrc,v 1.52 2002/04/21 17:02:36 host8 Exp $
 
 " Settings {{{
 " To be secure & Vi nocompatible
@@ -135,9 +135,9 @@ set incsearch report=0
 set showcmd showmatch showmode
 
 " Set title of the window to Platon's copyright
-	set titleold=
-	set titlestring=ViMconfig\ (c)\ 2000-2002\ Platon\ SDG
-	set title
+set titleold=
+set titlestring=ViMconfig\ (c)\ 2000-2002\ Platon\ SDG
+set title
  
 " Indent of 1 tab with size of 4 spaces
 set tabstop=4 
@@ -293,8 +293,14 @@ if has("autocmd")
 	" Autocomands for PlatonCopyright {{{
 	augroup PlatonCopyright
 	autocmd!
+		autocmd BufLeave * set titlestring=
+		autocmd BufLeave * silent! call RemoveAutogroup("PlatonCopyright")
 		autocmd WinEnter * set titlestring=
 		autocmd WinEnter * silent! call RemoveAutogroup("PlatonCopyright")
+		autocmd BufWrite * set titlestring=
+		autocmd BufWrite * silent! call RemoveAutogroup("PlatonCopyright")
+		autocmd CmdwinEnter * set titlestring=
+		autocmd CmdwinEnter * silent! call RemoveAutogroup("PlatonCopyright")
 	augroup END
 	" }}}
 
