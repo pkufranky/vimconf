@@ -3,11 +3,11 @@
 " Maintainer:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " Bugs Reports:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " License:		GNU GPL
-" Last Change:	2001 Nov 08 16:31:54
+" Last Change:	2001 Nov 08 17:00:34
 " Version:		01.09.08
 " Language Of Comments:	English
 
-" $Id: vimrc,v 1.15 2001/11/08 15:28:31 jombik9 Exp $
+" $Id: vimrc,v 1.16 2001/11/08 15:32:49 host8 Exp $
 
 " Settings {{{1
 " To be secure & Vi nocompatible
@@ -25,9 +25,8 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
 " History and viminfo settings {{{2
 :set history=10000
-:echo filewritable("$HOME/.vim/viminfo") . " " . filewritable("$HOME/.vim/") 
-:if filewritable("$HOME/.vim/viminfo") == 1 ||
-	\ filewritable("$HOME/.vim/") == 2
+:if filewritable(expand("$HOME/.vim/viminfo")) == 1 || 
+			\ filewritable(expand("$HOME/.vim/")) == 2
 :	set viminfo=!,%,'5000,\"10000,:10000,/10000,n~/.vim/viminfo
 :endif
 " Don't save backups of files.
@@ -58,11 +57,6 @@
 " Modification is made on line like this variable:
 :let g:autolastmodtext="Last modified: "
 " }}}
-let s:line1 = getline(1)
-if s:line1 =~ '^From [a-zA-Z][a-zA-Z_0-9\.=-]*\(@[^ ]*\)\= .*[12][09]\d\d$'
-  set ft=mail
-endif
-unlet s:line1
 
 " Automatically setting options in various files
 :set modeline
@@ -173,6 +167,13 @@ unlet s:line1
 :command! -nargs=* ReadFileAboveCursor call ReadFileAboveCursor(<f-args>)
 :command! -nargs=* R call ReadFileAboveCursor(<f-args>)
 "################################################################# }}}1
+" Filetype detect {{{
+let s:line1 = getline(1)
+if s:line1 =~ '^From [a-zA-Z][a-zA-Z_0-9\.=-]*\(@[^ ]*\)\= .*[12][09]\d\d$'
+  set filetype=mail
+endif
+unlet s:line1
+" }}}
 " Filetypes settings {{{1
 :if &filetype == "mail"
 :	setlocal textwidth=72
