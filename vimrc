@@ -8,7 +8,7 @@
 " Please don't hesitate to correct my english :)
 " Send corrections to <host8@kepler.fmph.uniba.sk>
 
-" $Id: vimrc,v 1.29 2002/02/09 02:02:58 host8 Exp $
+" $Id: vimrc,v 1.41 2002/02/10 21:56:44 host8 Exp $
 
 " Settings {{{
 " To be secure & Vi nocompatible
@@ -82,6 +82,12 @@ set suffixes+=.log
 set wildignore+=*.dvi
 " }}}
 
+" The cursor is kept in the same column (if possible).  This applies to the
+" commands: CTRL-D, CTRL-U, CTRL-B, CTRL-F, "G", "H", "M", "L", , and to the
+" commands "d", "<<" and ">>" with a linewise operator, with "%" with a count
+" and to buffer changing commands (CTRL-^, :bnext, :bNext, etc.).  Also for an
+" Ex command that only has a line number, e.g., ":25" or ":+".
+set nostartofline
 
 " Automatically setting options in various files
 set modeline
