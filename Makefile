@@ -5,7 +5,7 @@
 # (c) rajo <host8@kepler.fmph.uniba.sk>
 #
 
-# $Id: Makefile,v 1.18 2002/04/22 19:02:06 host8 Exp $
+# $Id: Makefile,v 1.19 2002/04/30 23:53:06 host8 Exp $
 
 PACKAGE = vimconfig
 VERSION = 1.7-2.unstable
@@ -48,12 +48,13 @@ DISTFILES = README FEATURES.txt tags \
 			vim/syntax/FEATURES.vim \
 			$(DISTFILES_TEMPLATE_PLUGIN)
 
+TAR      = tar
+ZIP      = zip
 
-#TAR = gtar
-TAR = tar
-ZIP = zip
-ZIP_ENV = -r9
+ZIP_ENV  = -r9
 GZIP_ENV = --best
+
+LN_S     = ln -s
 
 
 srcdir = .
@@ -136,11 +137,54 @@ distdir: $(DISTFILES)
 	    mkdir $(distdir)/$$file; \
 	  else \
 	    test -f $(distdir)/$$file \
-	    || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
-	    || cp -p $$d/$$file $(distdir)/$$file || :; \
+	      || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
+	      || cp -p $$d/$$file $(distdir)/$$file ; \
 	  fi; \
 	done
 
+install:
+	@here=`pwd`; \
+	backup="bak.`date \"+%y%m%d\"`"; \
+	if [ -d $$HOME/.vim -o -L $$HOME/.vim ]; then \
+		if [ -d $$HOME/.vim\-$$backup -o -L $$HOME/.vim\-$$backup ]; then \
+			echo "Moving           $$HOME/.vim	--->   $$HOME/.vim-`date \"+%y%m%d-%X\"`"; \
+			mv $$HOME/.vim $$HOME/.vim-`date "+%y%m%d-%X"` ; \
+			echo "Creating symlink $$HOME/.vim	--->   $$here/vim"; \
+			$(LN_S) $$here/vim $$HOME/.vim; \
+		else \
+			echo "Moving           $$HOME/.vim	--->   $$HOME/.vim-$$backup"; \
+			mv $$HOME/.vim $$HOME/.vim-$$backup; \
+			echo "Creating symlink $$HOME/.vim	--->   $$here/vim"; \
+			$(LN_S) $$here/vim $$HOME/.vim; \
+		fi \
+	else \
+		echo "Creating symlink $$HOME/.vim	--->   $$here/vim"; \
+		$(LN_S) $$here/vim $$HOME/.vim; \
+	fi; \
+	for file in vimrc gvimrc; do \
+		if [ -f $$HOME/.$$file -o -L $$HOME/.$$file ]; then \
+			if [ -f $$HOME/.$$file\-$$backup -o -L $$HOME/.$$file\-$$backup ]; then \
+				echo "Moving           $$HOME/.$$file	--->   $$HOME/.$$file-`date \"+%y%m%d-%X\"`"; \
+				mv $$HOME/.$$file $$HOME/.$$file-`date "+%y%m%d-%X"` ; \
+				echo "Creating symlink $$HOME/.$$file	--->   $$here/$$file"; \
+				$(LN_S) $$here/$$file $$HOME/.$$file; \
+			else \
+				echo "Moving           $$HOME/.$$file	--->   $$HOME/.$$file-$$backup"; \
+				mv $$HOME/.$$file $$HOME/.$$file-$$backup; \
+				echo "Creating symlink $$HOME/.$$file	--->   $$here/$$file"; \
+				$(LN_S) $$here/$$file $$HOME/.$$file; \
+			fi \
+		else \
+			echo "Creating symlink $$HOME/.$$file	--->   $$here/$$file"; \
+			$(LN_S) $$here/$$file $$HOME/.$$file; \
+		fi; \
+	done
+
+uninstall:
+	@echo "Please remove instalation files manualy:"; \
+	 echo "	$$HOME/.vim"; \
+	 echo "	$$HOME/.vimrc"; \
+	 echo "	$$HOME/.gvimrc";
 
 # Modeline {{{
 # vim:set ts=4:
