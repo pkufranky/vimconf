@@ -3,11 +3,11 @@
 " Maintainer:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " Bugs Reports:	Lubomir Host <host8@kepler.fmph.uniba.sk>
 " License:		GNU GPL
-" Last Change:	2001 Nov 01 21:36:58
+" Last Change:	2001 Nov 07 22:30:12
 " Version:		01.09.08
 " Language Of Comments:	English
 
-" $Id: vimrc,v 1.12 2001/11/02 19:13:41 jombik9 Exp $
+" $Id: vimrc,v 1.13 2001/11/07 19:41:43 host8 Exp $
 
 " Settings {{{1
 " To be secure & Vi nocompatible
@@ -137,6 +137,10 @@
 :map  :split ~/.vimrc
 :imap  :split ~/.vimrc
 
+" Safe delete line (don't add line to registers)
+":imap  "_ddi
+:imap  :call SafeLineDelete()i
+
 " Mappings for folding {{{2
 " Open one foldlevel of folds in whole file
 " Note: 'Z' works like 'z' but for all lines in file
@@ -158,6 +162,16 @@
 :command! -nargs=0 Indent call Indent()
 :command! -nargs=0 CallProg call CallProg()
 :command! -nargs=0 UnquoteMailbody call UnquoteMailbody()
+:command! -nargs=* ReadFileAboveCursor call ReadFileAboveCursor(<f-args>)
+:command! -nargs=* R call ReadFileAboveCursor(<f-args>)
+"################################################################# }}}1
+" Filetypes settings {{{1
+:if &filetype == "mail"
+:	setlocal textwidth=72
+:	setlocal noautoindent
+:	map  gqap
+:	imap  gqapi
+:endif
 "################################################################# }}}1
 " Autocomands {{{1
 " Startup autocommands {{{2
@@ -184,8 +198,10 @@
 :  autocmd!
 " Update line 'Last Change:'
 :	autocmd BufWritePre,FileWritePre ~/.vimrc	call LastMod("\" Last Change:	")
+:	autocmd BufWritePre,FileWritePre vimrc	call LastMod("\" Last Change:	")
 " Reread configuration of ViM if file ~/.vimrc is saved
 :	autocmd BufWritePost ~/.vimrc	so ~/.vimrc
+:	autocmd BufWritePost vimrc	so ~/.vimrc
 :augroup END
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
 " Autocommands for *.c, *.h, *.cc *.cpp {{{2
@@ -541,6 +557,24 @@ endfun
 fun! UnquoteMailbody()
 :	exec ":%s/\\n> \\?\\([^>]\\)/ \\1/g"
 :	exec ":%s/^>$//g"
+endfun
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
+" Function SafeLineDelete() {{{2
+"
+fun! SafeLineDelete()
+:	exec "normal \"_dd"
+endfun
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
+" Function ReadFileAboveCursor() {{{2
+"
+fun! ReadFileAboveCursor(file, ...)
+:	let str = ":" . (v:lnum - 1) . "read " . a:file
+:	let idx = 1
+:	while idx <= a:0
+:		exec "let str = str . \" \" . a:" . idx
+:		let idx = idx + 1
+:	endwhile
+:	exec str
 endfun
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}2
 "################################################################# }}}1
