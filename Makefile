@@ -5,10 +5,10 @@
 # (c) rajo <host8@kepler.fmph.uniba.sk
 #
 
-# $Id: Makefile,v 1.4 2001/12/24 23:17:07 host8 Exp $
+# $Id: Makefile,v 1.4 2002/01/04 10:37:41 host8 Exp $
 
 PACKAGE = vimconfig
-VERSION = 1.1
+VERSION = 1.2
 
 DISTFILES = Makefile vimrc vim \
 			vim/strace.vim \
@@ -17,7 +17,12 @@ DISTFILES = Makefile vimrc vim \
 			vim/ftplugin \
 			vim/ftplugin/mail.vim \
 			vim/ftplugin/perl.vim \
-			vim/ftplugin/tex.vim
+			vim/ftplugin/tex.vim \
+			vim/plugin/ \
+			vim/plugin/CmdlineCompl.vim \
+			vim/plugin/calendar.vim \
+			vim/plugin/matchit.vim
+
 
 #TAR = gtar
 TAR = tar

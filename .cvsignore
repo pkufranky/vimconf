@@ -1,4 +1,5 @@
 vim/viminfo
 viminfo
 .*.sw?
-
+*.zip
+*.tar.gz
