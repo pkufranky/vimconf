@@ -1,9 +1,10 @@
 "=============================================================================
 " File: calendar.vim
 " Author: Yasuhiro Matsumoto <mattn_jp@hotmail.com>
-" Last Change:  Mon, 29 Apr 2002
-" Version: 1.3g
+" Last Change:  Mon, 8 Apr 2002
+" Version: 1.3h
 " Thanks:
+"     Bill McCarthy       : bug fix and gave a hint
 "     Srinath Avadhanula  : bug fix
 "     Ronald Hoellwarth   : few advices
 "     Juan Orlandini      : added higlighting of days with data
@@ -28,6 +29,8 @@
 "     <Leader>ch
 "       show horizontal calendar ...
 " ChangeLog:
+"     1.3h : add option for position of displaying '*' or '+'.
+"             see Additional:
 "     1.3g : centering header
 "            add option for show name of era.
 "             see Additional:
@@ -94,6 +97,11 @@
 "            it"s about strftime("%w")
 "     1.0  : first release.
 " Additional:
+"     *if you want to place the mark('*' or '+') after the day,
+"       add the following to your .vimrc:
+"
+"       let g:calendar_rmark = ''
+"
 "     *if you want to replace calendar header,
 "       add the following in your favorite language to your .vimrc:
 "
@@ -153,7 +161,7 @@
 "
 "       :echo calendar_version
 
-let g:calendar_version = "1.3g"
+let g:calendar_version = "1.3h"
 if !exists("g:calendar_action")
   let g:calendar_action = "<SID>CalendarDiary"
 endif
@@ -259,8 +267,19 @@ function! s:CalendarDoAction()
     return
   endif
   " extracr year and month
-  let year = matchstr(substitute(sline, '/.*', '', ''), '[^0].*')
-  let month = matchstr(substitute(sline, '\d*/\(\d\d\=\).*', '\1', ""), '[^0].*')
+  if exists('g:calendar_erafmt') && g:calendar_erafmt !~ "^\s*$"
+    let year = matchstr(substitute(sline, '/.*', '', ''), '\d\+')
+    let month = matchstr(substitute(sline, '.*/\(\d\d\=\).*', '\1', ""), '[^0].*')
+    if g:calendar_erafmt =~ '.*,[+-]*\d\+'
+      let veranum=substitute(g:calendar_erafmt,'.*,\([+-]*\d\+\)','\1','')
+      if year-veranum > 0
+        let year=year-veranum
+      endif
+    endif
+  else
+    let year = matchstr(substitute(sline, '/.*', '', ''), '[^0].*')
+    let month = matchstr(substitute(sline, '\d*/\(\d\d\=\).*', '\1', ""), '[^0].*')
+  endif
   " call the action function
   exe "call " . g:calendar_action . "(day, month, year, week, dir)"
 endfunc
@@ -473,6 +492,9 @@ function! Calendar(...)
       let vwruler = strpart(vwruler,3).' '.strpart(vwruler,0,2)
     endif
     let vdisplay2 = vdisplay2.' '.vwruler."\n"
+    if exists("g:calendar_rmark")
+      let vdisplay2 = vdisplay2.' '
+    endif
 
     " build calendar
     let vinpcur = 0
@@ -488,42 +510,62 @@ function! Calendar(...)
       else
         let vsign = ''
       endif
-      if vtarget == vtoday
-        let vdisplay2=vdisplay2.'*'
-      elseif vsign != ''
-        let vdisplay2=vdisplay2.'+'
+      if !exists("g:calendar_rmark")
+        if vtarget == vtoday
+          let vdisplay2=vdisplay2.'*'
+        elseif vsign != ''
+          let vdisplay2=vdisplay2.'+'
+        else
+          let vdisplay2=vdisplay2.' '
+        endif
+        if vdaycur < 10
+          let vdisplay2=vdisplay2.' '
+        endif
+        let vdisplay2=vdisplay2.vdaycur
       else
-        let vdisplay2=vdisplay2.' '
+        if vdaycur < 10
+          let vdisplay2=vdisplay2.' '
+        endif
+        let vdisplay2=vdisplay2.vdaycur
+        if vtarget == vtoday
+          let vdisplay2=vdisplay2.'*'
+        elseif vsign != ''
+          let vdisplay2=vdisplay2.'+'
+        else
+          let vdisplay2=vdisplay2.' '
+        endif
       endif
-      if vdaycur < 10
-        let vdisplay2=vdisplay2.' '
-      endif
-      let vdisplay2=vdisplay2.vdaycur
       let vdaycur = vdaycur + 1
       let vinpcur = vinpcur + 1
       if vinpcur % 7 == 0
         if !exists('g:calendar_monday') && exists('g:calendar_weeknm')
+          if !exists("g:calendar_rmark")
+            let vdisplay2=vdisplay2.' '
+          endif
           " if given g:calendar_weeknm, show week number
           if viweek < 10
             if g:calendar_weeknm == 1
-              let vdisplay2=vdisplay2.' WK0'.viweek
+              let vdisplay2=vdisplay2.'WK0'.viweek
             elseif g:calendar_weeknm == 2
-              let vdisplay2=vdisplay2.' WK '.viweek
+              let vdisplay2=vdisplay2.'WK '.viweek
             elseif g:calendar_weeknm == 3
-              let vdisplay2=vdisplay2.' KW0'.viweek
+              let vdisplay2=vdisplay2.'KW0'.viweek
             elseif g:calendar_weeknm == 4
-              let vdisplay2=vdisplay2.' KW '.viweek
+              let vdisplay2=vdisplay2.'KW '.viweek
             endif
           else
             if g:calendar_weeknm <= 2
-              let vdisplay2=vdisplay2.' WK'.viweek
+              let vdisplay2=vdisplay2.'WK'.viweek
             else
-              let vdisplay2=vdisplay2.' KW'.viweek
+              let vdisplay2=vdisplay2.'KW'.viweek
             endif
           endif
           let viweek = viweek + 1
         endif
         let vdisplay2=vdisplay2."\n"
+        if exists("g:calendar_rmark")
+          let vdisplay2 = vdisplay2.' '
+        endif
       endif
     endwhile
 
@@ -534,21 +576,24 @@ function! Calendar(...)
         let vinpcur = vinpcur + 1
       endwhile
       if !exists('g:calendar_monday') && exists('g:calendar_weeknm')
+        if !exists("g:calendar_rmark")
+          let vdisplay2=vdisplay2.' '
+        endif
         if viweek < 10
           if g:calendar_weeknm == 1
-            let vdisplay2=vdisplay2.' WK0'.viweek
+            let vdisplay2=vdisplay2.'WK0'.viweek
           elseif g:calendar_weeknm == 2
-            let vdisplay2=vdisplay2.' WK '.viweek
+            let vdisplay2=vdisplay2.'WK '.viweek
           elseif g:calendar_weeknm == 3
-            let vdisplay2=vdisplay2.' KW0'.viweek
+            let vdisplay2=vdisplay2.'KW0'.viweek
           elseif g:calendar_weeknm == 4
-            let vdisplay2=vdisplay2.' KW '.viweek
+            let vdisplay2=vdisplay2.'KW '.viweek
           endif
         else
           if g:calendar_weeknm <= 2
-            let vdisplay2=vdisplay2.' WK'.viweek
+            let vdisplay2=vdisplay2.'WK'.viweek
           else
-            let vdisplay2=vdisplay2.' KW'.viweek
+            let vdisplay2=vdisplay2.'KW'.viweek
           endif
         endif
       endif
@@ -711,8 +756,13 @@ function! Calendar(...)
   "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   " today
   syn clear
-  syn match Directory display "\*\s*\d*"
-  syn match Identifier display "+\s*\d*"
+  if !exists("g:calendar_rmark")
+    syn match Directory display "\*\s*\d*"
+    syn match Identifier display "+\s*\d*"
+  else
+    syn match Directory display "\d*\*\s*"
+    syn match Identifier display "\d*+\s*"
+  endif
   " header
   syn match Special display "[^ ]*\d\+\/\d\+([^)]*)"
 
