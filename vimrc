@@ -18,7 +18,7 @@
 " Please don't hesitate to correct my english :)
 " Send corrections to <8host AT pauliDOTfmph.uniba.sk>
 
-" $Id: vimrc,v 1.57 2002/04/22 19:39:22 host8 Exp $
+" $Id: vimrc,v 1.58 2002/04/23 15:13:42 host8 Exp $
 
 " Settings {{{
 " To be secure & Vi nocompatible
@@ -661,37 +661,35 @@ endfunction
 " RemoveAutogroup() }}}
 " }}}
 
-" Gvim settings {{{
-if &t_Co > 2 || has("gui_running")
-	hi Normal guibg=Black guifg=White
-	hi Cursor guibg=Green guifg=NONE
-	hi NonText guibg=Black
-	hi Constant gui=NONE 
-	hi Special gui=NONE
-endif
-" }}}
 
 " Colors {{{
 set background=dark
 hi StatusLine   term=bold,reverse cterm=bold,reverse
 hi StatusLineNC term=reverse      cterm=reverse
-hi StatusLine   gui=bold          guifg=Black guibg=White
-hi StatusLineNC gui=bold,reverse  guifg=White guibg=Black
-hi User1 term=inverse,bold  cterm=inverse,bold ctermfg=Red
-hi User2 term=bold          cterm=bold         ctermfg=Yellow
-hi User3 term=inverse,bold  cterm=inverse,bold ctermfg=Blue
-hi User4 term=inverse,bold  cterm=inverse,bold ctermfg=LightBlue
-hi User5 term=inverse,bold  cterm=inverse,bold ctermfg=Red ctermbg=Green
-hi User1 gui=bold guifg=White     guibg=Red
-hi User2 gui=bold guifg=Yellow    guibg=Black
-hi User3 gui=bold guifg=Blue      guibg=White
-hi User4 gui=bold guifg=LightBlue guibg=White
-hi User5 gui=bold guifg=Green     guibg=Red
-hi Folded     term=standout cterm=bold ctermfg=4        ctermbg=Black
-hi FoldColumn term=standout            ctermfg=DarkBlue ctermbg=Black 
-hi Folded     gui=bold guibg=Black guifg=Blue
-hi FoldColumn          guibg=Black guifg=Blue
-hi Normal              guibg=Black guifg=LightGray 
+hi User1        term=inverse,bold cterm=inverse,bold ctermfg=Red
+hi User2        term=bold         cterm=bold         ctermfg=Yellow
+hi User3        term=inverse,bold cterm=inverse,bold ctermfg=Blue
+hi User4        term=inverse,bold cterm=inverse,bold ctermfg=LightBlue
+hi User5        term=inverse,bold cterm=inverse,bold ctermfg=Red       ctermbg=Green
+hi Folded       term=standout     cterm=bold         ctermfg=Blue      ctermbg=Black
+hi FoldColumn   term=standout                        ctermfg=DarkBlue  ctermbg=Black 
+" Gvim settings
+if &t_Co > 2 || has("gui_running")
+	hi StatusLine   guibg=White guifg=Black     gui=bold 
+	hi StatusLineNC guibg=Black guifg=White     gui=bold,reverse 
+	hi User1        guibg=Red   guifg=White     gui=bold 
+	hi User2        guibg=Black guifg=Yellow    gui=bold 
+	hi User3        guibg=White guifg=Blue      gui=bold 
+	hi User4        guibg=White guifg=LightBlue gui=bold 
+	hi User5        guibg=Red   guifg=Green     gui=bold 
+	hi Folded       guibg=Black guifg=Blue      gui=bold 
+	hi FoldColumn   guibg=Black guifg=Blue
+	hi Normal       guibg=Black guifg=LightGray 
+	hi Cursor       guibg=Green guifg=NONE
+	hi NonText      guibg=Black
+	hi Constant                                 gui=NONE 
+	hi Special                                  gui=NONE
+endif
 
 " }}}
 
