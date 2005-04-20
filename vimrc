@@ -20,7 +20,7 @@
 "
 "        Lubomir Host 'rajo' <rajo AT platon.sk>
 
-" Version: $Platon: vimconfig/vimrc,v 1.106 2005-03-09 20:51:54 rajo Exp $
+" Version: $Platon: vimconfig/vimrc,v 1.107 2005-04-20 22:47:38 rajo Exp $
 
 " Debian uses compressed helpfiles. We must inform vim that the main
 " helpfiles is compressed. Other helpfiles are stated in the tags-file.
@@ -722,7 +722,7 @@ endfunction
 " Function ChooseInputMethod() {{{
 function! ChooseInputMethod(method)
 	let b:disable_imap=0
-	let g:available_methods = "&none\n&Tex-universal\n&tex-iso8859-2\n&iso8859-2\n&windows-1250\nunicode-&Html"
+	let g:available_methods = "&none\n&Tex-universal\n&tex-iso8859-2\n&iso8859-2\n&windows-1250\nunicode-&Html\n&UTF-8"
 
 	if a:method == 0
 		let choice = confirm("Choose input mapping:", g:available_methods, 1)
@@ -742,6 +742,8 @@ function! ChooseInputMethod(method)
 		let b:input_method = "windows-1250"
 	elseif choice == 6
 		let b:input_method = "unicode-html"
+	elseif choice == 7
+		let b:input_method = "UTF-8"
 	endif
 	
 	if choice == 1
