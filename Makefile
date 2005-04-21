@@ -9,10 +9,10 @@
 # All rights reserved.
 #
 
-# $Platon: vimconfig/Makefile,v 1.49 2005-04-21 07:55:07 rajo Exp $
+# $Platon: vimconfig/Makefile,v 1.50 2005-04-21 07:55:37 rajo Exp $
 
 PACKAGE = vimconfig
-VERSION = 1.10
+VERSION = 1.11
 PACKAGE_TEMPLATE_PLUGIN = templatefile
 VERSION_TEMPLATE_PLUGIN = $(VERSION)
 
