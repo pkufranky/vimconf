@@ -9,7 +9,7 @@
 # All rights reserved.
 #
 
-# $Platon: vimconfig/Makefile,v 1.48 2005-04-20 22:47:38 rajo Exp $
+# $Platon: vimconfig/Makefile,v 1.49 2005-04-21 07:55:07 rajo Exp $
 
 PACKAGE = vimconfig
 VERSION = 1.10
@@ -88,6 +88,8 @@ DISTFILES = README \
 			vim/modules/ \
 			vim/modules/diacritics.vim \
 			vim/modules/diacritics-utf8.vim \
+			vim/modules/diacritics-iso8859-2.vim \
+			vim/modules/diacritics-windows-1250.vim \
 			vim/modules/database-client.vim \
 			vim/plugin \
 			vim/plugin/CmdlineCompl.vim \
