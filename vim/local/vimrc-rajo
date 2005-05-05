@@ -10,3 +10,7 @@ let g:email="rajo AT platon.sk"
 let g:company = "Platon SDG, http://platon.sk/"
 
 source ~/.vim/modules/database-client.vim
+
+set wrap
+set fileencodings=ucs-bom,utf-8,iso-8859-2,latin1
+
