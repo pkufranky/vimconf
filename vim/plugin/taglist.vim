@@ -62,8 +62,8 @@ if !exists('Tlist_Ctags_Cmd')
     elseif executable('tags')
         let Tlist_Ctags_Cmd = 'tags'
     else
-        echomsg 'Taglist: Exuberant ctags (http://ctags.sf.net) ' .
-		    \ 'not found in PATH. Plugin is not loaded.'
+"        echomsg 'Taglist: Exuberant ctags (http://ctags.sf.net) ' .
+"		    \ 'not found in PATH. Plugin is not loaded.'
 	" Taglist plugin functionality is not available
         finish
     endif
