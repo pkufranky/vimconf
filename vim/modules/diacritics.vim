@@ -2,7 +2,7 @@
 " File:			diacritics.vim
 " Maintainer:	Lubomir Host 'rajo' <rajo AT platon.sk>
 " License:		GNU GPL
-" Version:		$Platon: vimconfig/vim/modules/diacritics.vim,v 1.7 2005-04-20 22:47:41 rajo Exp $
+" Version:		$Platon: vimconfig/vim/modules/diacritics.vim,v 1.8 2005-06-16 13:18:56 rajo Exp $
 "
 " This file is sourced if some ftplugin require diacritics (IMAP() mappings)
 
@@ -230,7 +230,8 @@ if exists("b:input_method")
 		call IMAP ('=Z', "¬",      &filetype)
 		call IMAP ('+Z', "®",      &filetype)
 		" end iso8859-2(latin2) TeX mappings }}}
-	elseif b:input_method == "iso8859-2" ||
+	elseif b:input_method == "iso-8859-2" ||
+				\ b:input_method == "iso8859-2" ||
 				\ b:input_method == "latin2"
 		call Source("~/.vim/modules/diacritics-iso8859-2.vim")
 	elseif b:input_method == "windows-1250" ||
