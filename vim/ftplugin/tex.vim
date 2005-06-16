@@ -41,7 +41,11 @@ setlocal iskeyword=@,161-255,\\
 " disable IMAP() function in math environments
 let b:disabled_imap_syntax_items = "texMathZone\\|texStatement"
 
-let b:input_method = "tex-iso8859-2"
+if &encoding == 'utf-8'
+	let b:input_method = &encoding
+else
+	let b:input_method = "tex-iso8859-2"
+endif
 call UseDiacritics()
 
 " These lines come from $VIMRUNTIME/ftplugin/tex.vim (modified by Lubomir Host) {{{

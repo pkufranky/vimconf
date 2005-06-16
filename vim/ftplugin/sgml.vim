@@ -2,7 +2,7 @@
 " Language:		SGML (DocBook)
 " Maintainer:	Ondrej Jombík <nepto AT platon.sk>
 " License:		GNU GPL
-" Version:		$Platon: vimconfig/vim/ftplugin/sgml.vim,v 1.6 2005-01-13 11:32:19 rajo Exp $
+" Version:		$Platon: vimconfig/vim/ftplugin/sgml.vim,v 1.7 2005-06-16 13:30:20 rajo Exp $
 
 
 " Only do this when not done yet for this buffer
@@ -16,7 +16,8 @@ setlocal tw=78
 setlocal autoindent
 
 
-let b:input_method = "iso8859-2"
+" let b:input_method = "iso8859-2"
+let b:input_method = &encoding
 
 " turn on IMAP() input method
 call UseDiacritics()

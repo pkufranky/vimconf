@@ -2,7 +2,7 @@
 " Language:		Mail
 " Maintainer:	Lubomir Host 'rajo' <rajo AT platon.sk>
 " License:		GNU GPL
-" Version:		$Platon: vimconfig/vim/ftplugin/mail.vim,v 1.9 2005-01-13 11:32:19 rajo Exp $
+" Version:		$Platon: vimconfig/vim/ftplugin/mail.vim,v 1.10 2005-06-16 13:30:20 rajo Exp $
 
 
 " Only do this when not done yet for this buffer
@@ -27,7 +27,8 @@ setlocal tabstop=4
 setlocal shiftwidth=4
 setlocal expandtab
 
-let g:input_method = "iso8859-2"
+" let b:input_method = "iso8859-2"
+let b:input_method = &encoding
 
 " Add mappings, unless the user didn't want this.
 if !exists("no_plugin_maps") && !exists("no_mail_maps")

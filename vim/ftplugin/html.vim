@@ -2,7 +2,7 @@
 " Language:		HTML (ft=html)
 " Maintainer:	Srinath Avadhanula <srinath AT eecs.berkeley.edu>
 " License:		GNU GPL
-" Version:		$Platon: vimconfig/vim/ftplugin/html.vim,v 1.8 2003-11-03 08:20:21 rajo Exp $
+" Version:		$Platon: vimconfig/vim/ftplugin/html.vim,v 1.9 2005-06-16 13:30:20 rajo Exp $
 
 " HTML mappings {{{
 if !exists('s:doneMappings')
@@ -84,7 +84,8 @@ let g:smartBS_html = '\(' .
 inoremap <buffer> <BS> <C-R>=SmartBS()<CR>
 " }}} 
 
-let b:input_method = "iso8859-2"
+" let b:input_method = "iso8859-2"
+let b:input_method = &encoding
 call UseDiacritics()
 
 " Modeline {{{

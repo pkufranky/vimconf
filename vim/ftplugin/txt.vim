@@ -2,7 +2,7 @@
 " Language:		Plain text
 " Maintainer:	Lubomir Host 'rajo' <rajo AT platon.sk>
 " License:		GNU GPL
-" Version:		$Platon: vimconfig/vim/ftplugin/txt.vim,v 1.5 2005-01-13 11:30:21 rajo Exp $
+" Version:		$Platon: vimconfig/vim/ftplugin/txt.vim,v 1.6 2005-06-16 13:30:21 rajo Exp $
 
 
 " Only do this when not done yet for this buffer
@@ -28,7 +28,8 @@ setlocal shiftwidth=4
 setlocal expandtab
 
 
-let b:input_method = "iso8859-2"
+" let b:input_method = "iso8859-2"
+let b:input_method = &encoding
 
 " turn on IMAP() input method
 call UseDiacritics()

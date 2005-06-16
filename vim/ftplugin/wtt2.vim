@@ -3,7 +3,7 @@
 "               template for WML (WAP page) 
 " Maintainer:	Lubomir Host 'rajo' <rajo AT platon.sk>
 " License:		GNU GPL
-" Version:		$Platon: vimconfig/vim/ftplugin/wtt2.vim,v 1.3 2005-01-13 11:32:19 rajo Exp $
+" Version:		$Platon: vimconfig/vim/ftplugin/wtt2.vim,v 1.4 2005-06-16 13:30:21 rajo Exp $
 
 
 " Only do this when not done yet for this buffer
@@ -13,7 +13,11 @@ endif
 let b:did_ftplugin = 1
 
 
-let b:input_method = "unicode-html"
+if &encoding == 'utf-8'
+	let b:input_method = &encoding
+else
+	let b:input_method = "unicode-html"
+endif
 call UseDiacritics()
 
 " set regular expresion for Smart backspacing
