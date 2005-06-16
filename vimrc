@@ -20,7 +20,7 @@
 "
 "        Lubomir Host 'rajo' <rajo AT platon.sk>
 
-" Version: $Platon: vimconfig/vimrc,v 1.108 2005-05-06 08:30:35 rajo Exp $
+" Version: $Platon: vimconfig/vimrc,v 1.109 2005-06-16 11:07:30 rajo Exp $
 
 " Debian uses compressed helpfiles. We must inform vim that the main
 " helpfiles is compressed. Other helpfiles are stated in the tags-file.
@@ -831,6 +831,8 @@ augroup END
 	augroup HtmlCgiPHP
 	autocmd!
 	" Appending right part of tag in HTML files.
+	autocmd BufEnter                 *.phtml	imap <buffer> QQ </><Esc>2F<lywf>f/pF<i
+	autocmd BufWritePre,FileWritePre *.phtml	call AutoLastMod()
 	autocmd BufEnter                 *.html	imap <buffer> QQ </><Esc>2F<lywf>f/pF<i
 	autocmd BufWritePre,FileWritePre *.html	call AutoLastMod()
 	autocmd BufEnter                 *.cgi	imap <buffer> QQ </><Esc>2F<lywf>f/pF<i
