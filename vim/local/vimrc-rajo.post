@@ -5,5 +5,6 @@
 " Copyright (c) 2000-2005 Platon SDG, http://platon.sk/
 " All rights reserved.
 "
+set fileencodings=ucs-bom,utf-8,iso-8859-2,windows-1250,latin1
 let b:input_method = "utf-8"
 

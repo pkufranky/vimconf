@@ -20,7 +20,7 @@
 "
 "        Lubomir Host 'rajo' <rajo AT platon.sk>
 
-" Version: $Platon: vimconfig/vimrc,v 1.110 2005-06-16 13:30:18 rajo Exp $
+" Version: $Platon: vimconfig/vimrc,v 1.111 2005-06-28 14:08:32 rajo Exp $
 
 " Debian uses compressed helpfiles. We must inform vim that the main
 " helpfiles is compressed. Other helpfiles are stated in the tags-file.
@@ -373,7 +373,7 @@ noremap ZX mzggvGzX'z
 " Settings for IMAP input method (IMAP plugin) {{{
 
 " detect iso-8859-2 encoding before latin1
-set fileencodings=ucs-bom,utf-8,iso-8859-2,latin1
+set fileencodings=ucs-bom,utf-8,iso-8859-2,windows-1250,latin1
 
 " set variable "b:input_method" to change input method
 " let b:input_method = "latin2"
