@@ -9,7 +9,7 @@
 # All rights reserved.
 #
 
-# $Platon: vimconfig/Makefile,v 1.50 2005-04-21 07:55:37 rajo Exp $
+# $Platon: vimconfig/Makefile,v 1.51 2005-07-22 09:21:41 rajo Exp $
 
 PACKAGE = vimconfig
 VERSION = 1.11
@@ -242,7 +242,7 @@ install:
 				$(LN_S) "$$here/$$file" "$$HOME/.$$file"; \
 			else \
 				echo "Moving           $$HOME/.$$file	--->   $$HOME/.$$file-$$backup"; \
-				mv "$$HOME/.$$file" "$$HOME/.$$file-$$backup;" \
+				mv "$$HOME/.$$file" "$$HOME/.$$file-$$backup"; \
 				echo "Creating symlink $$HOME/.$$file	--->   $$here/$$file"; \
 				$(LN_S) "$$here/$$file" "$$HOME/.$$file"; \
 			fi \
