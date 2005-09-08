@@ -61,6 +61,7 @@ BEGIN
 # Function declaration
 #
 sub to_ascii($;);
+sub MyPage($;);
 
 $data_source		= 'mysql';
 $database			= 'my_database';
@@ -78,17 +79,6 @@ $template = Template->new({
 	},
 });
 
-
-
-# signal handlers {{{
-local $SIG{ALRM}= sub { $req->LastCall(); };
-local $SIG{SEGV}= sub { die "SIGSEGV received!!: $!"; };
-local $SIG{TERM}= sub { $req->LastCall(); };
-local $SIG{ABRT}= sub { $req->LastCall(); };
-local $SIG{KILL}= sub { $req->LastCall(); };
-local $SIG{XCPU}= sub { $req->LastCall(); };
-local $SIG{XFSZ}= sub { $req->LastCall(); }; 
-# }}}
 
 
 #
