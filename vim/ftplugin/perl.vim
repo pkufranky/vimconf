@@ -2,7 +2,7 @@
 " Language:		Perl
 " Maintainer:	Lubomir Host 'rajo' <rajo AT platon.sk>
 " License:		GNU GPL
-" Version:		$Platon: vimconfig/vim/ftplugin/perl.vim,v 1.7 2005-01-13 11:32:19 rajo Exp $
+" Version:		$Platon: vimconfig/vim/ftplugin/perl.vim,v 1.8 2005-09-18 11:04:57 rajo Exp $
 
 
 " Only do this when not done yet for this buffer
@@ -16,9 +16,9 @@ setlocal cinoptions=>4,e0,n0,f0,{0,}0,^0,:4,=4,p4,t4,c3,+4,(24,u4,)20,*30,g4,h4
 setlocal cinkeys=0{,0},:,0#,!,o,O,e
 
 " External program to format Perl code source.
-if executable("perltidy")
-	setlocal equalprg=perltidy\ -q\ -se\ -fnl
-endif
+"if executable("perltidy")
+"	setlocal equalprg=perltidy\ -q\ -se\ -fnl
+"endif
 
 
 " Add mappings, unless the user didn't want this.
