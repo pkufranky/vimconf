@@ -1,7 +1,7 @@
 
 # XXX XXX XXX  THIS IS A NEW FILE XXX XXX XXX
 
-#!/usr/bin/perl
+#!/usr/bin/perl -w
 
 #
 # @FILE_EXT@
