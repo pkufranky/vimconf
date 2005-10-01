@@ -7,12 +7,12 @@ EXAMPLE:
 --------
 
       At server platon.sk will user 'rajo' set variable 'g:company'
-      to "Platon SDG". He don't will change anything in '~/.vimrc',
+      to "Platon Group". He don't will change anything in '~/.vimrc',
       because he is using the same config file at server orbital.sk.
       Therefore he creates file '~/.vim/local/vimrc-platon' and put
       in then:
 
-          let g:company="Platon SDG"
+          let g:company="Platon Group"
 
       If user 'ondrej' at server maxim.sk will set 'g:company' to
       "Condy Software", he put in '~/.vim/local/vimrc-ondrej' (or
@@ -20,5 +20,5 @@ EXAMPLE:
 
           let g:company="Condy Software"
 
-# Version: $Platon: vimconfig/vim/local/README,v 1.2 2003-11-03 08:20:22 rajo Exp $
+# Version: $Platon: vimconfig/vim/local/README,v 1.3 2005-10-01 18:02:11 nepto Exp $
 

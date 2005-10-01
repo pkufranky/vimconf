@@ -2,7 +2,7 @@
 " User's local vim configuration
 "  
 " Developed by Lubomir Host 'rajo' <rajo AT platon.sk>
-" Copyright (c) 2000-2005 Platon SDG, http://platon.sk/
+" Copyright (c) 2000-2005 Platon Group, http://platon.sk/
 " All rights reserved.
 "
 set fileencodings=ucs-bom,utf-8,iso-8859-2,windows-1250,latin1
