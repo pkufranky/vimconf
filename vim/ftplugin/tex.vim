@@ -21,7 +21,9 @@
 "			  2. planning a second release for this.
 " }}}
 
-" $ID: $
+" $Id: $
+
+set fileencoding=latin2
 
 if exists("b:didLocalTex")
 	finish	
