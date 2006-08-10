@@ -5,7 +5,7 @@
 " Copyright (c) 2000-2005 Platon Group, http://platon.sk/
 " All rights reserved.
 "
-" $Platon: vimconfig/vim/local/vimrc,v 1.6 2005-10-01 18:02:11 nepto Exp $
+" $Platon: vimconfig/vim/local/vimrc,v 1.7 2006-08-10 09:25:57 rajo Exp $
 
 let g:company = "Platon Group, http://platon.sk/"
-
+let g:tex_flavor = "tex"
