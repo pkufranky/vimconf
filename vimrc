@@ -20,7 +20,7 @@
 "
 "        Lubomir Host 'rajo' <rajo AT platon.sk>
 
-" Version: $Platon: vimconfig/vimrc,v 1.112 2006-03-06 11:39:54 rajo Exp $
+" Version: $Platon: vimconfig/vimrc,v 1.113 2006-11-22 21:15:20 rajo Exp $
 
 " Debian uses compressed helpfiles. We must inform vim that the main
 " helpfiles is compressed. Other helpfiles are stated in the tags-file.
@@ -918,6 +918,9 @@ hi User5        term=inverse,bold cterm=inverse,bold ctermfg=Red       ctermbg=G
 hi Folded       term=standout     cterm=bold         ctermfg=Blue      ctermbg=Black
 hi FoldColumn   term=standout                        ctermfg=DarkBlue  ctermbg=Black 
 hi Comment      term=bold                            ctermfg=DarkCyan
+" Parenthesis checking
+hi MatchParen   term=bold         cterm=bold,reverse ctermfg=DarkBlue  ctermbg=Black
+
 " }}}
 
 call Source(VIMRC_EXTRA.".post")
