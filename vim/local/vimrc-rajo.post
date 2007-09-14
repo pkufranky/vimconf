@@ -6,5 +6,6 @@
 " All rights reserved.
 "
 set fileencodings=ucs-bom,utf-8,iso-8859-2,windows-1250,latin1
-let b:input_method = "utf-8"
+" let b:input_method = "utf-8"
+let b:disable_imap=1
 
