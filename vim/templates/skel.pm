@@ -21,9 +21,9 @@ use strict;
 use Carp;
 use vars qw($VERSION @ISA @EXPORT $AUTOLOAD);
 
-@ISA     = qw(Exporter);
-@EXPORT  = qw( );
-$VERSION = '0.1';
+@ISA		= qw(Exporter);
+@EXPORT		= qw( );
+$VERSION	= $VERSION = do { [ q$Revision: 0.1 $ =~ /([\d.a-z]+)\s*$/gi ]->[0]; };
 
 sub new
 { #{{{
@@ -32,7 +32,6 @@ sub new
     my $self  = {};
 
     bless $self, $class;
-    $self->set(@_) if @_;
 
     return $self;
 } # }}}

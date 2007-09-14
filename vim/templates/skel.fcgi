@@ -26,7 +26,8 @@ umask 022;
 
 use lib qw( ./modules );
 use FCGI;
-use CGI::Lite;
+use CGI qw(-compile param cookie url_encode upload);
+#use CGI::Carp qw(fatalsToBrowser);
 use DBI qw(:sql_types);
 use Template;
 use Template::Plugin;
@@ -34,10 +35,11 @@ use Template::Exception;
 use Time::HiRes qw(gettimeofday tv_interval); 
 use Cwd;
 use File::Basename qw( basename fileparse );
+#use Data::Dumper;
 
 
 use vars qw (
-	$cgi $req
+	$req
 	$dbh $data_source $database $db_host $db_user $db_password
 	$runcount $runlimit
 	$template
@@ -68,7 +70,6 @@ $database			= 'my_database';
 $db_user			= 'my_user';
 $db_password		= 'my_secret_pass';
 
-$cgi = CGI::Lite->new();
 $req = FCGI::Request();
 
 $template = Template->new({
@@ -98,9 +99,26 @@ while ( ($runcount++ < $runlimit) && ($req->Accept() >= 0) ) {
 
 	my %query;
 	my %cookie;
+	#
+	# Parse query and cookies
+	# {{{
+	CGI::_reset_globals;
+	my $cgi = CGI->new();
 
-	%query = $cgi->parse_new_form_data();
-	%cookie = $cgi->parse_cookies(); 
+	foreach my $key ($cgi->param()) {
+		my @val = $cgi->param($key);
+		$query{$key} = scalar(@val) > 1 ? \@val : $val[0];
+		$query_orig{$key} = scalar(@val) > 1 ? \@val : $val[0];
+		#$query{$key} = $val[0];
+		#$query_orig{$key} = $val[0];
+	}
+
+	foreach my $key ($cgi->cookie()) {
+		my @val = $cgi->cookie($key);
+		$cookie{$key} = $val[0];
+	}
+	#warn Dumper(\%query, \%cookie);
+	# }}}
 
 	foreach (keys(%query)) { # simplify query if they are arrays
 		$query{$_} = $query{$_}[0] if (ref $query{$_});
