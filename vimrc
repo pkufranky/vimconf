@@ -20,7 +20,7 @@
 "
 "        Lubomir Host 'rajo' <rajo AT platon.sk>
 
-" Version: $Platon: vimconfig/vimrc,v 1.113 2006-11-22 21:15:20 rajo Exp $
+" Version: $Platon: vimconfig/vimrc,v 1.114 2007-09-28 22:36:15 rajo Exp $
 
 " Debian uses compressed helpfiles. We must inform vim that the main
 " helpfiles is compressed. Other helpfiles are stated in the tags-file.
@@ -296,6 +296,10 @@ endif
 
 " Keybord mappings {{{
 "
+" backspace fix
+noremap 	
+inoremap 	
+cnoremap 	
 " start of line
 "noremap <C-A>		i<Home>
 inoremap <C-A>		<Home>
