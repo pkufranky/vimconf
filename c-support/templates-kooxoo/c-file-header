@@ -1,0 +1,10 @@
+/*** Copyright (c) By KOOXOO INC.
+ * @author  |AUTHOR| (|EMAIL|)
+ * @version 1.0
+ * @date    |DATE|
+ */
+
+ int main(int argc, char **argv) {
+    return 0;
+ }
+

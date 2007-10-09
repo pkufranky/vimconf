@@ -1,0 +1,859 @@
+*intellisense.txt*	For Vim version 6.3.	Last change: Tue Oct 12 2004 10:03:25 PM
+
+
+		  VIM REFERENCE MANUAL    by Ravi Shankar
+
+This is intellisense for Vim 6.3.			*intellisense* 
+1. Introduction						|intellisense-intro|
+2. Compatible Languages					|intellisense-lang|
+3. Setup						|intellisense-setup|
+4. Options						|intellisense-configure|
+5. Develop for your own languages			|intellisense-build|
+6. Intellisense Future					|intellisense-future|
+7. Acknowledgement					|intellisense-ack|
+This is intellisense version 1.30
+
+{Vi does not have any of these features}
+{only available when compiled with the |+ole| |+client-server| feature}
+
+==============================================================================
+1. Introduction						*intellisense-intro*
+
+Vim has many features and and thats why we all love it. But many features
+available in the IDE are still not present in our editor. As it is said many
+times, IDE are usually built for specific languages (not true always), and
+bulky. Thats why we use Vim, because it is light and fast. Still there are a
+few features are needed when we develop our applications, like integrated
+debugger and features like intellisense. Intellisense helps incredibly,
+especially in languages like Java,C#, C++ , et al. since there are so many
+APIs and remembering them is not easy. If there is an integrated help for languages
+then the development of applications can improve incredibly. Though
+intellisense means alot, in conventional ideas, like inline compilation,
+integrated help, listing methods, attributues, etc., but here we confine
+ourselves with only listing methods, attributes, showing online help, and
+tooltips. Inline compliation is beyond the scope of this project.
+
+This works only in Windows 2000/XP/NT(as of now). It needs Internet Explorer
+5.0 or above. IE is needed for showing help.
+Though it may work in Windows 95/98 it is not tested. 
+
+==============================================================================
+2. Compatible Languages					*intellisense-lang*
+
+Intellisense for Vim is built to be compatible with any language. But as of
+now it works for:
+Java
+XML
+HTML
+Baan
+Jsp
+CSharp
+SQL
+C++
+
+If you are interested, you can develop for your languages. In the later
+sections it is described how to develop intellisense for various languages.
+==============================================================================
+3. Setup						*intellisense-setup*
+	Setup is available for intellisense. This is packaged as
+self-extracting executable built with NSIS. Follow the steps while
+installing and that should work fine. If things didnt show up please let me
+know. There is a detailed installation guide at
+http://insenvim.sourceforge.net/
+Once setup is completed it includes a entry in the Add/Remove Programs. You
+can uninstall the intellisense from there.
+
+Setup General						*intellisense-gen*
+-------------
+If you want to know what setup is doing or to setup manually read on.
+The core files(core-files) of Intellisense are
+1. insenvim.exe
+2. vimhelper.dll
+3. intellisense.vim
+
+There are other files which are filetype specific. For java (java-files) you
+need:
+1. javaft.dll
+2. javaft.jar
+3. java_vis.vim
+and for XML (xml-files), you need,
+1. xmlft.dll
+2. xml_vis.vim
+
+Intellisense is available as |plugin|; partly as |ftplugin|. Common script for
+all the languages are availabe as plugin and mapping and other file-type
+specific options are available as fpplugin.
+
+The core-files,except intellisense.vim can be copied into any location, but it
+is typically copied into $VIM\Intellisense. After you copy your files, you
+need to set the environment variable VIM_INTELLISENSE, which is pointing to
+this directory. The file intellisense.vim should go to $VIM\vimfiles\plugin\.
+You can even add the line in the vimrc file, rather than adding into the
+environment variable. >
+	let $VIM_INTELLISNESE=C:\Vim\Intellisense
+
+The vim files which are specific to file-types should go to the directory
+$VIM\vimfiles\ftplugin. So you would copy the files java_vis.vim and xml_vis.vim
+to $VIM\vimfiles\ftplugin. 
+
+Setting up for Java					*intellisense-java*
+-------------------
+To setup for java, you need to do the above steps(Setup General), and then
+do the following steps:
+
+1. Copy your javaft.dll and javaft.jar in to $VIM_INTELLISENSE directory.
+2. Set the CLASSPATH pointing to $VIM_INTELLISENSE\javaft.jar.
+3. Set the directory which contains jvm.dll in to $PATH. (Typically this will
+be $JAVA_HOME\jre\bin\server. You can also use $JAVA_HOME\jre\bin\classic.)
+4. Create an environment variable JAVA_DOCPATH pointing to you java docs. This
+typically will be $JAVA_HOME\docs\api. Note: Dont just stop with
+$JAVA_HOME\docs, notice it is $JAVA_HOME\docs\api.
+5. Copy the file java_vis.vim to your $VIM\vimfiles\ftplugin directory.
+
+
+You can also do optionally if you dont want to set the environment variables.
+Do the following in your vimrc (which is an option to the above steps 2-5).
+This assumes you have a $JAVA_HOME environment variable set.
+This allows you to copy your vimfiles directory to different machines
+without having to modify the PATH. >
+	if has('win32')
+	    let g:intellisense_root_dir = expand('$VIM/Intellisense')
+   	    if isdirectory(expand($JAVA_HOME))
+               let g:intellisense_jvm_dir  = expand('$JAVA_HOME\jre\bin\server')
+               let g:intellisense_javaapi_dir  = expand('$JAVA_HOME\docs\api')
+            endif
+	endif
+
+You need Java SDK to run java intellisense.
+You may have to restart the system, for the environment variables to take
+effect.
+
+Setting up for C++					*intellisense-c++*
+------------------
+To setup for c++, you need to follow the Setup-General. Then do the following
+steps:
+1. Copy the file cpp_vis.vim into your $VIM\vimfiles\ftplugin directory.
+2. Copy the file cppft.dll into your $VIM\Intellisense directory.
+3. Copy the folder cppft into your $VIM\Intellisense directory.
+
+Dependencies for C++
+--------------------
+For C++ plugin to work you need to do the following:
+1. You need ActiveState Perl v5.8.4 or above.
+2. Perl.exe should be in path.
+3. You need to include the relevent files in the cpp file. Only the header
+files that is included with have intellisense.
+4. You need to set the environment variable INCLUDE. The include files are
+searched in the directories which are present in INCLUDE. If you installed
+Microsoft Visual Studio with "Register Environment Variable" option, INCLUDE
+environment variable is set already for you.
+If you didn't choose the option the do the following:
+a) Go to Command Prompt. 
+b) Type "C:\Program Files\Microsoft Visual Studio\VC98\Bin\VCVARS32.bat".
+c) Type "set include" from your prompt.
+d) Choose the value for the INCLUDE environment variable. Open Computer
+Properties->Advanced->Environment Variables. Create a new environment variable
+INCLUDE and the copy the value that you copied. Apply.
+e) Restart the system if you use Windows 98/95/NT; for 2000 or above you don't
+need to restart.
+f) Restart Vim. Type :echo $INCLUDE. This should display the values that you
+set already; if not you did something wrong; start from item a again.
+Repeat until you get it right.
+g) Intellisense for C++ should be working from now on.
+
+
+Setting up for XML					*intellisense-xml*
+------------------
+To setup for xml, you need to follow the Setup-General. Then do the following
+steps:
+1. Copy the file xml_vis.vim into your $VIM\vimfiles\ftplugin directory.
+2. Copy the file xmlft.dll into your $VIM_INTELLISENSE directory.
+Try <Ctrl-Space> for context sensitive completion.
+
+Setting up for HTML					*intellisense-html*
+-------------------
+To setup for html you need to follow the Setup-General. Then do the following
+steps:
+1. Copy the file html_vis.vim into your $VIM\vimfiles\ftplugin directory.
+2. Copy the file htmlft.dll into your $VIM_INTELLISENSE directory.
+3. Copy htmlgenlist.txt,htmltags.txt,htmlhelp.txt to your $VIM_INTELLISENSE
+directory.
+Try <Ctrl-Space> for context sensitive completion.
+
+Setting up for C#					*intellisense-c#*
+-------------------
+To setup for C# you need to follow the Setup-General. Then do the following
+steps:
+1. Copy the file cs_vis.vim into your $VIM\vimfiles\ftplugin directory.
+2. Copy the file csft.dll into your $VIM_INTELLISENSE directory.
+3. Copy CSVimHelper.dll,reg.bat to your $VIM_INTELLISENSE directory.
+4. Run reg.bat to register the dlls. You need to set the directory gacutil.exe
+in the path. You need the latest version of .NET SDK.
+
+
+Setting up for SQL					*intellisense-sql*
+------------------
+To setup for sql you need to follow the Setup-General. Then do the following
+steps:
+1. Copy the file sql_vis.vim into your $VIM\vimfiles\ftplugin directory.
+2. Copy the file sqlft.dll into your $VIM_INTELLISENSE directory.
+
+The first time you open a SQL file the intellisense.vim plugin will create 
+the following files in your $VIM_INTELLISENSE directory:
+    sqlall.txt, sqlfunctions.txt, sqlkeywords.txt, sqloperators.txt, 
+    sqloptions.txt, sqlstatements.txt, sqltypes.txt
+
+These files are generated based on the entries within your SQL syntax file.
+The syntax file included in the Vim distribution is for Oracle.  There are
+other SQL syntax files for other databases available at www.vim.org.
+For example:
+    sql.vim : Syntax file for Sybase Adaptive Server Anywhere 
+    http://www.vim.org/scripts/script.php?script_id=498
+
+If there are entries missing from the popups, simply edit your syntax\sql.vim
+syntax file and add the entries in the appropriate syntax groups.  Delete the
+sql*.txt files from the $VIM_INTELLISENSE directory.  Restart Vim and these
+files will be regenerated.
+
+
+SQL Usage
+---------
+
+The default mappings work only in INSERT mode.
+
+There are two modes to the SQL plugin, static and dynamic.  The static mode
+populates the lists with the data generated from the SQL syntax file.  The
+contents of the lists is created when you first edit a SQL file after
+installing Intellisense.  When the plugin initializes it checks for the
+existence of the sql*.txt files listed above.  If these files do not exist, 
+they will be created.
+
+The static lists created contain the following items (the items vary depending
+on your syntax file and the database it was created for):
+    Statements
+        - Select, Insert, Update, Delete, Create, Alter, ...
+    Functions
+        - Min, Max, Trim, Round, Date, ...
+    Keywords
+        - Index, Database, Having, Group, With
+    Types
+        - Integer, Char, Varchar, Date, DateTime, Timestamp, ...
+    Operators
+        - Like, Where, And, Or, In, Exists, ...
+    Options
+        - Isolation_level, On_error, Qualify_owners, Fire_triggers
+    All
+        - Contains the contents of all above groups
+
+To enable the popup, while in INSERT mode, use the following key combinations
+for each group (where <C-Space> means hold the CTRL key down while pressing 
+the space bar):
+    Statements - <C-Space>s
+    Functions  - <C-Space>f
+    Keywords   - <C-Space>k
+    Types      - <C-Space>T
+    Operators  - <C-Space>O
+    Options    - <C-Space>P
+    All        - <C-Space>a
+
+
+Dynamic mode populates the lists with data directly from a database.  In order
+for the dynamic feature to be enabled you must have the dbext.vim plugin
+installed, (http://vim.sourceforge.net/script.php?script_id=356).
+
+Dynamic mode is used by several features of the SQL Intellisense plugin.  A
+list of tables, procedures, views as well as column lists and the description
+of tables and procedures.
+    Table List
+        - All tables for all schema owners
+    Procedure List
+        - All stored procedures for all schema owners
+    View List
+        - All stored procedures for all schema owners
+    Column List
+        - For the selected table, the columns that are part of the table
+
+To enable the popup, while in INSERT mode, use the following key combinations
+for each group (where <C-Space> means hold the CTRL key down while pressing 
+the space bar):
+    Table List             - <C-Space>t
+    Stored Procedure List  - <C-Space>p
+    View List              - <C-Space>v
+    Column List            - <C-Space>c
+                           - When viewing a popup window displaying the list
+                             of tables, you can press <C-Right>, this will
+                             replace the table currently highlighted with
+                             the column list for that table.
+    Table Description      - When viewing a popup window displaying the list
+                             of tables, you can press <Right>, this will
+                             open a second popup beside the first with a
+                             description of the table currently highlighted.
+    Procedure Description  - When viewing a popup window displaying the list
+                             of procedures, you can press <Right>, this will
+                             open a second popup beside the first with a
+                             description of the procedures currently 
+                             highlighted.
+
+
+SQL Tutorial					*intellisense-sql-tutorial*
+------------
+
+This tutorial is designed to take you through the common features of 
+the SQL Intellisense plugin so that:
+    a) You gain familiarity with the plugin
+    b) Introduced to some of the more common features
+    c) Show to customize it to your preferences
+    d) Demonstrate "Best of Use" of the plugin (easiest way to configure).
+
+First, create a new buffer: >
+    :e tutorial.sql
+
+To take you through the various lists, simple enter insert mode, hit:
+   <C-Space>s
+Now type (without the quotes) "se" then press <Enter> assuming "select" 
+is highlighted in the popup list.  Now type " * <C-Space>a" choose "from"
+from the popup list.
+
+Note, this time you use the "a" list, which includes "all" static items.  The
+various different lists have different icons associated with them to make it
+easier to distinguish between them.  Using the "a" list is often easier 
+since you do not need to remember which key combination is necessary for
+each list.
+
+When writing stored procedures using the "type" list is useful:
+    BEGIN
+       DECLARE customer_id <C-Space>T <-- Choose a type from the list
+
+To take advantage of the dynamic features you must first install the 
+dbext.vim plugin.  It also comes with a tutorial.  From the Intellisense
+SQL plugin's perspective, the main feature dbext provides is a connection
+to a database.  dbext connection profiles are the most efficient mechanism to
+define connection information.  Once connections have been setup, 
+the SQL Intellisense plugin uses the features of dbext in the background
+to populate the popups.
+
+Assuming you have followed the dbext.vim tutorial you can press <C-Space>t 
+to display a list of tables.  When the list is displayed, press <C-Right>, 
+this will replace the list of tables, with a list of columns.  If you
+press <C-Left>, this will replace the column list with the list of tables.
+This allows you to drill down into tables and column lists very quickly.
+
+Once a list a columns has been displayed the column list is cached.  The next
+time the column list needs to be displayed, the list is populated very
+quickly.  When Vim is restarted, the cached column lists are lost.  If you 
+change the schema of a table that has been cached then you can place your
+cursor on the table name (in a Vim buffer) and press <C-Space>r, this will
+remove the table (under the cursor) from the cache list.
+
+If you wish to remove all tables from the cached list press <C-Space>R.  This
+cache also includes tables where dbext cannot find a column list.
+    
+There is also a special provision when writing SELECT statements.  Consider
+the following statement: >
+    select * 
+      from customer c,
+           contact cn,
+           department dp,
+           employee e,
+           site_options so
+     where c
+<
+In INSERT mode after typing the final "c" which is an alias for the "customer"
+table, you can press <C-Space><Space>.  This will add a "." and popup a list
+of columns for the customer table.  It does this by looking back to the
+beginning of the select statement and finding a list of the tables specified
+in the FROM clause.  In this case it notes that in the string "customer c",
+"c" is an alias for the customer table.
+
+
+
+
+Trouble Shooting				*intellisense-troubleshoot*
+----------------
+
+For up to date trouble shooting directions following the troubleshoot link
+in the left pane of the following page:
+    http://insenvim.sourceforge.net/
+
+When you first edit a file Intellisense configures itself for the
+filetype.  If configuration fails, it will display error messages.  
+Sometimes Vim will clear the error messages before you have a chance
+to read the message.  You can always view these messages using the
+following Vim command:
+    :mess
+
+If you see messages and need to copy and paste the messages, you can 
+highlight the messages with your mouse and type CTRL-Y.  This will place
+the highlighted text into the Windows clipboard.  From there you can paste
+the messages into an email or a command prompt.
+
+
+Most of the problems occur if the files are not copied into your correct
+place, and if not configured properly. Check if the files are copied into your
+proper directories. Check your environment variable by issuing the following
+command at the command prompt: >
+	C:\> set VIM_INTELLISENSE
+This should contain the proper directory. >
+	C:\> set PATH
+This should contain $JAVA_HOME\jre\bin\server. >
+	C:\> set CLASSPATH
+This should contain javaft.jar file.
+If not try setting the environment variables properly and then try again.
+
+More tips
+----------
+1. Check your temorary directory. If it contains the file VimHelperParam.txt,
+then $VIM_INTELLISENSE is set properly, if not Intellisense is not able
+to find vimhelper.dll file.
+2. If VimHelper.txt is not found, then vimhelper.dll cannot find file-type
+specific files. For java it means, it cannot find javaft.dll or javaft.jar is
+not in the classpath.
+3. If VimHelper.txt is found and empty, then most probably javaft.jar is not
+in classpath.
+
+If both VimHelperParam.txt and VimHelper.txt is found, still if you dont get
+the intellisense in your vim, check if insenvim.exe is found. If not mail me,
+you found a bug.
+
+==============================================================================
+2. Options						*intellisense-options*
+
+Intellisense does not support many options, though I would like to. But
+nevertheless there are some options to set, if you like setting options.
+The options are:
+
+OPTION					DESCRIPTION	~
+docdelay				Set the delay for the online help.
+					This is file-type specific. Different
+					values for different file-types is
+					possible.
+
+colors					Sets the colors(front,back). This is
+					global. Not file-type specific.
+
+
+ignorekeys				Typing the non-alpha and non-numeric
+					keys closes the list window, by
+					default. If you specify a set of keys
+					here, then pressing these keys will
+					not close the window. This is
+					file-type specific. Different values
+					for different file-types is possible.
+
+delimiterkey				Sets the demiliter key, This is
+					helpful in scenarios like java
+					methods. Java methods usually contain
+					the method arguments in the list
+					window. But when the user selects,
+					then you would want to type only the
+					method name not with arguments.
+					Specifying '(' as delimiter key will
+					help the intellisense to put until
+					'(', thus eliminating the arguments.
+					This is file-type specific.
+					Different values for different
+					file-types is possible.
+					
+tooltipclosekey				When tooltip is present, pressing ')'
+					closes the tooltip(in Java). By
+					specifiying the key, you can control
+					when to close the tooltip window
+					This is file-type specific.  Different
+					values for different file-types is
+					possible..
+
+ignorecase				This sets the ignorecase setting for
+					list window.  This is file-type
+					specific.  Different values for
+					different file-types is possible.
+
+helpwindowsize				This sets the size of the help window
+					shown. If you give 0x0, then help is
+					shown in the default size. If you dont
+					want help to appear then set the
+					dochelpdelay option.
+
+1. docdelay
+	To set this option, call >
+	let b:dochelpdelay=2000
+The variable takes a number as its value.. This value is delay in
+milliseconds. This is signed number, and you can give any valid integer.
+Positive number is taken as delay in milliseconds. Specifying zero(0) will
+bring the help window immediately. Negative number will not bring any help
+window. If your language cannot support help, then you can specify it as -1.
+
+2. colors
+	To avoid being bland, Intellisense supports colors. By default, the
+help window is displayed is System InfoBack for background and System Info
+Text for foreground. Similarly, Windows default is picked for list window. But
+you can change the colors if you want.
+	To set this option, call >
+	:call SetDlgColor(string,string)
+This takes two arguments, the dialog name and the color. The valid dialog
+names are >
+	listfg
+	listbg
+	helpfg
+	helpbg
+
+The valid name for color should be from $VIMRUNTIME\rgb.txt. You can specify
+any color from that place. 
+
+3. ignoreKeys
+	While list window is on, typing any non-alpha and non-numeric keys
+will close the list window.(Though there are exceptions, actually pressing
+non-character keys like Del,BackSpace will retain the window). For example,
+'_' can be part of java method name. But if you type '_' the list will close,
+and types the selected item from the list. This is not the desired behaviour
+for Java. If you want to retain the window while pressing '_' then add this
+key to the ignoreKeys. Similarly, you many want to add ':' and '/' and '_' for
+xml.  To add for xml you will add like this: >
+	let b:ignorekeys=":/_"
+
+4. delimiterkey
+	If you notice the list window for Java, it displays the method with
+the arguments. For example, it may contain a method  >
+	charAt(int)
+When you select that method, it just prints charAt. It does not print (int).
+Actually it strips anything after '('. Since the delimiter can be anything for
+various languages, you can specify what the delimiter you want. You can
+specify like  >
+	let b:demiliterkey="("
+Note that it can be just one key.
+
+5. tooltipclosekey
+	The tooltip window closes if you press ')'. You can change this
+behaviour by setting the following: >
+	let b:tooltipclosekey=")"
+Note that it can be just one key. But tooltip closes by pressing Esc also.
+
+6. ignorecase
+	This sets the ignore case setting for listwindow. The possible values
+are  >
+	0	Retain Case! Dont ignore case
+	1	Make the list Upper case, but ignore case while typing.
+	2	make the list Lower case, but ignore case while typing.
+	3	Retain the orinigal case in the list, but ignore case while
+		typing.
+To set:  >
+	let b:ignorecase=3
+
+7. helpwindowsize
+	This sets the size of the helpwindow. If you want the default size set
+it as  >
+	let b:helpwindowsize = 0x0
+where 0x0 is the height and width of the help window. You can also give the
+any positive number. For example,  >
+	let b:helpwindowsize = 120x240
+If you dont want any help window read the option 'docdelay'.
+
+==============================================================================
+5. Develop for your own languages			*intellisense-build*
+
+You can develop intellisense for your favorite languages. Intellisense was
+built in such a way to provide a list window for any type of application you
+want. It can be for languages or for specilized application like Spell Checker
+which can list the alternatives for mis-spelt word. This section helps how to
+display a list window or to show a help window from Vim.
+
+Backgrounder
+-------------
+Intellisense is layered into three components. First is the Vim layer, which
+gathers the information from Vim side. Then the UI layer, where it can display
+a list window or a help window or a tooltip. Then the backend, which actually
+gets the information for the UI layer.  >
+
+		 |  	     |
+	Vim Layer| UI Layer  | Backend
+		 |	     |
+	  
+
+Vim Layer
+	Vim Layer includes the file intellisense.vim, vimhelper.dll and
+filetype specific files like java_vis.vim. This gathers the information needed
+for the backend. This does two important things:
+1. Copies the current file into $TEMP\viminsrc.tmp. This is a well-known file,
+which means, the backend can rely this file will be present. 
+2. Creates a file called VimHelperParam.txt (in $TEMP) which contains, the
+following information:  >
+	$TEMP\viminsrc.tmp
+	<current line>
+	lineno:column no
+	yyyy-mm-dd-hh-mm-ss (this is the session id for caching)
+	<current file name with full path>
+	<vim servername>
+
+The file VimHelperParam.txt contains, the filename which contains the copy the
+current editing file, which in this case, $TEMP\viminsrc.tmp. The second line
+contains the current editing line. The third line contains row number and
+column number of the current line. The forth line contains the session id. The
+fifth line contains the current editing file name with full path. Note that
+more information might be added to the vimparamhelper file.
+If you want to see a typical file you can
+open your $TEMP\VimHelperParam.txt. The vimintellisense.vim then calls
+'ShowVisDialog' function in the VimHelper.dll. 
+This function then calls the exe insenvim.exe with appropriate arguments. This
+now trasnforms into UI Layer.
+
+UI Layer & BackEnd
+	This layer is responsible for bringing the UI elements. But actually
+the data for the UI elements are not with this component. It relys on the
+backend to produce the data and pass it across. When the exe is loaded, it
+reads the options and then finds what is the filtype associated with the
+current editing file. Then, it adds "ft.dll" to the current file-type and
+loads that dll. For example, if the user is editing java file, then file-type
+of java file is "java", so the UI loads the javaft.dll in to memory. If
+loading fails, then UI quits and no UI element is shown. The dll should export
+the following functions, in order to become the file-type dll. If not, then
+the exe quits.
+UI looks for the following methods in the dll:  >
+
+	HRESULT Init(char *param , char **result)
+	HRESULT GetMethodList(char *param,char **result)
+	HRESULT GetDoc(char *param,char **result)
+	HRESULT GetGenList(char *param,char **result)
+	HRESULT GetTooltip(char *param,char **result)
+	HRESULT CleanUp(char *param,char **result)
+	and other user defined functions.
+
+To know how to create user defined functions, look at the User Defined
+Functions, in the later sub-sections.
+These methods should be exported as WINAPI , that is __stdcall.
+Init
+-----
+  This method is called just after loading the dll. The dll can do its
+initialization routines, can cache something if needed. In the 'param', UI layer
+passes the version information as string. Typically it passes as "1.0" as of
+now. UI does not expect any thing in 'result'(for future use). If dll returns any
+non-negative value, the UI believes the Init is successful, and continues. If
+there is a negative value, the UI quits, unloading the dll. Typically you can
+return S_OK for success, E_FAIL for failure.
+
+GetMethodList
+--------------
+	This method is called when the method list is about to be shown.
+Typically when pressing '.' in java. 'param' contains nothing, and UI does not
+expect any return value from 'result'. The actual return value can anything,
+but it is better if you return S_OK.
+Here, you have to generate the list to be shown. The details of user input can
+be found at $TEMP\VimHelperParam.txt. For more information about this refer
+Vim Layer. You are free to process the input the way you like, but you should
+generate a file called VimHelper.txt in the $TEMP directory. The format of the
+file is as follows:  >
+	18:methodname(param)
+	18:methodname2(param1)
+	
+The format is the icon number followed by a colon, and then the method name.
+Also it should contain the end of line. Though it is depicted as \n here, it
+is end of line, and usually it will not be visible in the editor. Use
+something like this:  >
+	puts("18:methodname(param)\n")
+in your cpp code. 
+Each line will contain single method. For example, if there are 20 methods to
+be shown, then there will be 20 lines.
+The icon number is defined as follows:   >
+	
+    #define STATIC_ACCESS		1
+    #define METHOD			2
+    #define ACCESS_PRIVATE		4
+    #define ACCESS_PROTECTED		8
+    #define ACCESS_PUBLIC		16
+    #define ICON_PACKAGE		32
+    #define ICON_INTERFACE		64
+    #define ICON_CLASS			128
+    #define TYPED_TEXT			255 
+    #define NAMESPACE			60
+    #define EVENT			61
+    #define PROPERTY_PUBLIC		63
+    #define PROPERTY_PROTECTED		64
+    #define ENUM_PROTECTED		65
+    #define ENUM_PRIVATE		66
+    #define DELEGATE			67
+    #define TYPE			68
+    #define ENUM_PUBLIC			70
+    #define TEMPLATE			71
+    #define FILE			72
+    #define HEADERFILE			73
+    #define MACRO			74
+    #define ENUM_CONSTANTS		75
+    
+
+For example, if the item is public method, then the icon number will be 16 OR
+2 = 18. Here is the sample list:  >
+	public method	  18
+	pulic attribute   16
+	private method     6
+	private attribute 4
+
+	0 0 0 0 0 0 0 0  
+	| | | |	| | | |____ 1: Static 0 : Non Static  	
+        | | | | | | |______ 1: Method 0 : Attribute
+	| | | | | |________ 1: Private 0 : undefined
+	| | | | |__________ 1: Protected 0 : undefined
+	| | | |____________ 1: Public 0: undfined
+	| | |______________ 1: Package 0 : undefined
+	| |________________ 1: Interface 0 : undefined
+	|__________________ 1 : Class 0: undefined
+
+There is a special value, 255, which is actually not an icon, but the 'typed
+text'. More information about this later.
+
+So, if you want the icon for package just make the icon number as 32. For
+classes the icon number will be 128. Note that the access modifier is
+available only for methods and attributes. For example, there is public
+attribute, which is 16 OR 0, but there is no public class.( Ok, there is no
+icon support!).
+
+If you populate, such list in the file $TEMP\VimHelper.txt, then a list
+window appears with the following information.
+
+GetDoc
+------
+	This method is called, when the document help is required. The 'param'
+contains, the method name, The 'result' is the string, which is the dll should
+allocate, should contain the help string in the html format. Simple text is
+also OK. The UI layer adds the body tag and the color information. Dont add
+color information in the html string. UI will delete (actually use delete
+operator in cpp) the string('result'). So, allocate memory, otherwise
+insenvim.exe will crash. Note that, this will not crash Vim.
+
+GetGenList
+----------
+	This is almost like the GetMethodList, you can call it a special
+version of GetMethodList. This can be called in two situations. When the user
+want a general list (usually the list of classes, interfaces and packages) or
+when he typed partially (a method name). For example, in the following java
+code, this can be called in the following situation:  >
+
+    public class test
+    {
+	    //Main method
+	    public static void main(String [] args)
+	    {
+		    String s;
+		    <Ctrl-Space> 
+		    
+	    }
+    }
+
+<<Ctrl-Space> is what user typed, expecting the general list. In this
+situation, you will populate, list of classes, local variables, packages, etc.
+But otherwise the implementation is exactly similar to GetMethodList. You
+should populate $TEMP\VimHelper.txt with the above said format.
+
+In other situation,  >
+    public class test
+    {
+	    //Main method
+	    public static void main(String [] args)
+	    {
+		    String s;
+		    s.con<Ctrl-Space> 
+		    
+	    }
+    }
+
+Here the user typed <Ctrl-Space> after typing s.com. Here he expects the list
+of methods for string, and the first selected item will start with "con". If
+there is more than one item starting with "con" in the list, the UI will
+select the first item, and wait for the user input. If there is only one item
+starting with "con", then it prints that item, and then UI quits. If there is
+no item starting with "con", UI does nothing.
+For UI to know the "con", you have to pass that thing to UI.  Use
+VimHelperParam.txt and get the current line, and then you can get at what
+situation the user called for this method. But you have to pass the "con"
+(that till what user typed) to UI. When generating the list in VimHelper.txt,
+(each line contains iconnumber:methodname) add a last line   >
+	255:con
+
+That is till what the user typed. Note that it should NOT contain the end of
+the line after this. For example look into $TEMP\Vimhelper.txt.
+
+You have to distuingsh the two situations only by yourself.Use
+VimHelperParam.txt and get the current line, and then you can get at what
+situation the user called for this method.
+
+GetTooltip
+-----------
+	This method is called when the user is requesting the tooltip. 'param'
+is passed as null and the 'result' is not expected. The ftdll should find the
+context by parsing the VimHelperParam file. 
+This method should populate the VimHelper file with the data. Each line will
+appear as tooltip. If more than one line is present then tooltip will allow to
+cycle through them.
+
+CleanUp
+-------
+	This is called when the exe quits. You can do your clean-up activity
+here.
+
+After you make the dll, place the dll in $VIM_INTELLISENSE directory, and
+create ftplugin as necessary. For example, you can look into
+$VIMRUNTIME\ftplugin\java_vis.vim.
+
+User Defined Functions
+----------------------
+If these functions do not cater to your needs, you can create your own
+functions and make it call from the framework. Right now these user defined
+functions can only populate the list window; other functionalities are not yet
+defined. To know how to create the user defined functions, look at the sql
+plugin, which creates many user defined functions.
+
+Callbacks
+---------
+You can make a callback to the plugin. Intellisense framework can send the
+keystroke back to the plugin, and then plugin can repopulate the list window,
+by  populating the values in the Vimhelper.txt file.
+Wheneven a key is pressed, intellisense relays the key to the plugin. It
+particularly calls the function  >
+	int __stdcall OnKeyPress(MSG * msg, char * item, char ** result) 
+The actual key pressed will be coming on the msg. It also gives the value of
+the item, which you can use. The param result is not used as of now. But you
+can populate the values in the intellisense window, if you populate the values
+in the vimheler.txt
+
+
+CACHING
+	To improve speed, intellisense supports caching. It supports one level
+of caching. It will allow to cache the data, but not caching the
+connections(like database connections). This is because intellisense exe is
+restarted everytime and we cannot store anything in the memory. But there are
+plans to make it as service (as single instance). Then it should be able to
+cache database connections. Now a simple caching is implemented.
+Here is how it works:
+Every Vim instance has a intellisense session. This session is marked by time.
+The starting time for the intellisense plugin is stored in a variable and it
+is passed to VimHelperParam file. So until the user starts another session
+(that is another vim session) the VimHelperParam file is going to have the
+same session id(timestamp). The ftdlls can cache their data in a seperate file
+for that session and can refresh the cache if the timestamp is changed in the
+VimHelperParam file.  The session id is in the form   >
+ yyyy-mm-dd-hh-mm-ss
+This is present in the forth line in the VimHelperParam file.
+
+User can also refresh the cache by calling   >
+	:call IN_VisReload()
+
+
+==============================================================================
+6. Intellisense Future					*intellisense-future*
+
+	Future release, should contain intellisense for various languages.
+More options and more features are planned. But _importantly_ this should also
+support other platforms, especially Linux and Unix. 
+
+
+==============================================================================
+7. Acknowledgement					*intellisense-ack*
+
+	This program is primarily done by Madan Ganesh and Ravi Shankar. There
+were many people helped writing this software; thanks to all of them. I
+particularly want to thank David Fishburn for his help.
+
+
+Comments, Bug report
+---------------------
+	Mail your comments,bugs, etc to sravishankar@gmail.com or
+madhanganesh@gmail.com.
+
+ vim:tw=78:fo=tcq2:isk=!-~,^*,^\|,^\":ts=8:ft=help:norl:

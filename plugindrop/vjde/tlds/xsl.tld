@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+    version="2.0">
+    
+  <description>XSL defination</description>
+  <display-name>XSL core</display-name>
+  <tlib-version>1.1</tlib-version>
+  <short-name>xsl</short-name>
+  <uri>http://www.w3c.org/1999/XSL/Transform</uri>
+
+
+  <tag><name>stylesheet</name>
+    <attribute><name>version=\"1.0\"</name><require>true</require></attribute>
+    <attribute><name>xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\"</name><require>false</require></attribute>
+  </tag>
+
+  <tag><name>template</name>
+	  <attribute><name>match</name><require>true</require></attribute>
+	  <attribute><name>mode</name><require>false</require></attribute>
+  </tag>
+  <tag><name>call-template</name>
+	  <attribute><name>name</name><require>true</require></attribute>
+  </tag>
+  <tag><name>for-each</name>
+	  <attribute><name>select</name><require>true</require></attribute>
+  </tag>
+  <tag><name>value-of</name>
+	  <attribute><name>select</name><require>true</require></attribute>
+  </tag>
+  <tag><name>apply-templates</name>
+	  <attribute><name>select</name><require>true</require></attribute>
+  </tag>
+  <tag><name>attribute</name>
+	  <attribute><name>name</name><require>true</require></attribute>
+  </tag>
+  <tag><name>sort</name>
+	  <attribute><name>select</name><require>true</require></attribute>
+  </tag>
+  <tag><name>output</name>
+	  <attribute><name>method</name><require>true</require></attribute>
+	  <attribute><name>media-type</name><require>false</require></attribute>
+	  <attribute><name>omit-xml-declaration</name><require>false</require></attribute>
+	  <attribute><name>indent</name><require>false</require></attribute>
+	  <attribute><name>encoding</name><require>false</require></attribute>
+  </tag>
+  <tag><name>choose</name> </tag>
+  <tag><name>when</name>
+	  <attribute><name>test</name><require>true</require></attribute>
+  </tag>
+  <tag><name>otherwise</name> </tag>
+  <tag><name>text</name> </tag>
+  <tag><name>copy-of</name>
+	  <attribute><name>select</name><require>true</require></attribute>
+  </tag>
+  <tag><name>copy</name>
+	  <attribute><name>select</name><require>true</require></attribute>
+  </tag>
+  <tag><name>param</name>
+	  <attribute><name>name</name><require>true</require></attribute>
+	  <attribute><name>select</name><require>false</require></attribute>
+  </tag>
+  <tag><name>with-param</name>
+	  <attribute><name>name</name><require>true</require></attribute>
+	  <attribute><name>select</name><require>false</require></attribute>
+  </tag>
+  <tag><name>variable</name>
+	  <attribute><name>name</name><require>true</require></attribute>
+	  <attribute><name>select</name><require>false</require></attribute>
+  </tag>
+  <tag><name>if</name>
+	  <attribute><name>test</name><require>true</require></attribute>
+  </tag>
+  <tag><name>import</name>
+	  <attribute><name>href</name><require>true</require></attribute>
+  </tag>
+</taglib>

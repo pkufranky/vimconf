@@ -1,0 +1,20 @@
+/*** Copyright (c) By KOOXOO INC.
+ *
+ * @defgroup 
+ * @author  |AUTHOR| (|EMAIL|)
+ * @version 1.0
+ * @date    |DATE|
+ * 
+ * @brief 
+ * @see 
+ *
+ * Changelog:               
+ *  - 重大改动1   by onebird
+ * @{ 
+ * @}
+ */
+
+#ifndef  |BASENAMElegal|_INC
+#define  |BASENAMElegal|_INC
+
+#endif   /* ----- #ifndef |BASENAMElegal|_INC  ----- */

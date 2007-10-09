@@ -1,0 +1,827 @@
+*bashsupport.txt*                Bash Support                     June 17 2007
+
+bash Support                                      *bash-support* *bashsupport*
+                             Plugin version 2.2
+                        for Vim version 6.0 and above
+                       Fritz Mehner  <mehner@fh-swf.de>
+
+Bash Support implements a bash-IDE for Vim/gVim. It is written to considerably
+speed up writing code in a consistent style.  This is done by inserting
+complete statements, comments, idioms, and code snippets.  Syntax checking,
+running a script, starting a debugger  can be done with a keystroke.  There
+are many additional hints and options which can improve speed and comfort when
+writing shell scripts. 
+
+ 1.     Usage with GUI                           |bashsupport-usage-gvim|
+ 1.1     Menu 'Comments'                         |bashsupport-comments|
+ 1.1.1   Append aligned comments                 |bashsupport-aligned-comm|
+ 1.1.2   Code to comment                         |bashsupport-code-to-comm|
+ 1.1.3   Comment to code                         |bashsupport-comm-to-code|
+ 1.1.4   Frame comments, file header, ...        |bashsupport-comm-templates|
+ 1.1.5   Comment/uncomment with echo             |bashsupport-comm-echo|
+ 1.1.6   KEYWORD + comment                       |bashsupport-comm-keywords|
+ 1.2     Menu 'Statements'                       |bashsupport-statements|
+ 1.2.1    Normal mode, insert mode               |bashsupport-stat-norm-ins|
+ 1.2.2    Visual mode                            |bashsupport-stat-visual|
+ 1.2.3    Code Snippets                          |bashsupport-stat-snippets|
+ 1.3     Menu 'set'                              |bashsupport-set|
+ 1.4     Menu 'shopt'                            |bashsupport-shopt|
+ 1.5     Menu 'Regex'                            |bashsupport-regex|
+ 1.6     Menu 'Run'                              |bashsupport-run|
+ 1.6.1    Save and run                           |bashsupport-run-script|
+ 1.6.2    Save and check syntax                  |bashsupport-syntax-check|
+ 1.6.3    Command line arguments                 |bashsupport-cmdline-args|
+ 1.6.4    Start debugger                         |bashsupport-debugger|
+ 1.6.5    Hardcopy                               |bashsupport-hardcopy|
+ 1.6.6    Xterm size                             |bashsupport-xterm|
+ 1.6.7    Output redirection                     |bashsupport-output|
+ 2.     Usage without GUI                        |bashsupport-usage-vim|
+ 3.     Hot keys                                 |bashsupport-hotkeys|
+ 4.     Customization and configuration          |bashsupport-customization|
+ 4.1     Files                                   |bashsupport-custom-files|
+ 4.2     Global variables                        |bashsupport-custom-variables|
+ 4.3     The root menu                           |bashsupport-custom-root|
+ 5.     Template files and tags                  |bashsupport-tempfiles|
+ 5.1     Template files                          |bashsupport-tempfiles|
+ 5.2     Tags                                    |bashsupport-tags|
+ 6.     Bash dictionary                          |bashsupport-dictionary|
+ 7.     Release Notes                            |bashsupport-release-notes|
+
+        How to add this help file to Vim's help  |add-local-help|
+
+
+==============================================================================
+1.  USAGE with GUI  (gVim)                            *bashsupport-usage-gvim*
+==============================================================================
+
+If the menus are not visible call them with the entry "Load Bash Support"
+in the standard Tools-menu.
+
+------------------------------------------------------------------------------
+1.1  MENU 'Comments'                                    *bashsupport-comments*
+------------------------------------------------------------------------------
+
+1.1.1 APPEND ALIGNED COMMENTS TO CONSECUTIVE LINES  *bashsupport-aligned-comm*
+--------------------------------------------------
+
+In NORMAL MODE the menu entry
+ 'Line End Comm.' 
+will append a comment to the current line.
+
+In VISUAL MODE this entry will append aligned comments to all marked lines.
+Marking the 4 lines
+
+ x11=11;
+ x1111=1111;
+ 
+ x11111111=11111111;
+
+and choosing 'Line End Comm.' will yield 
+
+ x11=11;                                        # |
+ x1111=1111;                                    # 
+ 
+ x11111111=11111111;                            # 
+
+The cursor position above is marked by '|' . Empty lines will be ignored.
+
+The default starting column is 49 ( = (multiple of 2,4, or 8) + 1 ).  This can
+be changed by setting a global variable in the file .vimrc , e.g. :
+
+  let g:BASH_LineEndCommColDefault    = 45
+
+The starting column can also be set by the menu entry 'Comments->Set End Comm.
+Col.' . Just position the cursor in an arbitrary column (column number is
+shown in the Vim status line) and choose this menu entry.  This setting is
+buffer related.
+
+If the cursor was at the end of a line you will be asked for a column number
+because this position is most likely not the desired starting column.
+Your choice will be confirmed.
+
+
+1.1.2 CODE TO COMMENT                               *bashsupport-code-to-comm*
+---------------------
+
+A marked block will be changed into
+
+ #x11=11;
+ #x1111=1111;
+ #
+ #x11111111=11111111;
+
+The menu entry works also for a single line. A single line needs not to be
+marked (normal mode). 
+
+
+1.1.3 COMMENT TO CODE                               *bashsupport-comm-to-code*
+---------------------
+
+A marked block 
+
+ #x11=11;
+ x1111=1111;
+ 
+ #x11111111=11111111;
+
+will be changed into
+
+ x11=11;
+ x1111=1111;
+ 
+ x11111111=11111111;
+
+The menu entry works also for a single line. A single line needs not to be
+marked (normal mode). 
+
+
+1.1.4 FRAME COMMENTS, FILE HEADER, ...            *bashsupport-comm-templates*
+--------------------------------------
+
+Frame comments, function descriptions and file header comments are read as
+templates from the appropriate files (see |bashsupport-tempfiles|).
+
+1.1.5 COMMENT/UNCOMMENT WITH echo                      *bashsupport-comm-echo*
+---------------------------------
+
+The echo-entry in the Comments-menu can be used to put one or more statements
+in a sort of comment. This is usually done for testing:
+
+ echo "rm -f $allfiles"
+
+This can only be done in normal mode: The complete line (from the first
+non-blank to the end) is framed with  echo "..." ; the cursor will be then
+moved to the next line. Now this line can be framed and so forth.
+
+The remove-echo-entry removes an echo.  The keyword echo, the following double
+quotation mark and the last double quotation mark in the current line will be
+removed; the cursor will then be moved to the next line.
+
+Longer sections of a script are better commented out with set options
+|bashsupport-set|.
+
+1.1.6 KEYWORD+comment                              *bashsupport-comm-keywords*
+---------------------
+
+Preliminary line end comments to document (and find again) places where work
+will be resumed shortly, like
+
+   # :TODO:12.05.2004:Mn: <your comment>
+
+Usually not meant for the final documentation.
+
+------------------------------------------------------------------------------
+1.2  MENU 'Statements'                                *bashsupport-statements*
+------------------------------------------------------------------------------
+
+1.2.1  NORMAL MODE, INSERT MODE.                   *bashsupport-stat-norm-ins*
+--------------------------------
+
+An empty statement will be inserted and properly indented. The entry 'if'
+will insert an if-statement:
+
+ if 
+ then
+ fi
+
+The statements will be indented.
+
+The for-, if-, if-else-, select-, until- and while-statement can be changed
+so that the 'do' or 'then' stands on the first line:
+
+ if  ; then
+ fi
+
+This is achived by setting the global variable g:BASH_DoOnNewLine in '.vimrc': 
+
+  let g:BASH_DoOnNewLine   = 'yes'     
+
+The default value is 'no'.
+
+
+1.2.1  VISUAL MODE                                   *bashsupport-stat-visual*
+------------------
+
+The highlighted area (...) will be surrounded by a statement, parentheses,
+quotes or an echo with quotes:
+
+  for in do ... done
+  if then ... fi
+  if then ... else fi
+  select  in do ... done
+  until do ... done
+  while do ... done
+  function NAME () { ... } 
+
+  ${...}
+  $(...)
+  $((...))
+  $[[...]]
+
+  echo -e ""
+
+------------------------------------------------------------------------------
+1.2.3 CODE SNIPPETS                                *bashsupport-stat-snippets*
+------------------------------------------------------------------------------
+
+Code snippets are pieces of code which are kept in separate files in a special
+directory. File names are used to identify the snippets.  The default snippet
+directory is  $HOME/.vim/bash-support/codesnippets.  Snippets are managed with
+the 3 entries 
+
+   bash -> Statements -> read  code snippet
+   bash -> Statements -> write code snippet
+   bash -> Statements -> edit  code snippet
+
+from the Statements submenu.
+
+Creating a new snippet:  
+-----------------------
+When nothing is marked, "write code snippet" will write the whole buffer 
+to a snippet file, otherwise the marked area will be written to a file.
+
+Insert a snippet:
+-----------------
+Select the appropriate file from the snippet directory ("read  code snippet").
+The inserted lines will be indented.
+
+Indentation / no indentation
+----------------------------
+Code snippets are normally indented after insertion. To suppress indentation
+add the file extension "ni" or "noindent" to the snippet file name, e.g.
+
+  parameter_handling.sh.noindent
+
+
+------------------------------------------------------------------------------
+1.3  MENU 'set'                                              *bashsupport-set*
+------------------------------------------------------------------------------
+
+Calling a set-command (submenu "set") in NORMAL or INSERT MODE will set this
+option, e.g.
+
+ set -o posix
+
+Calling a set-command (submenu "set") for a marked block (VISUAL MODE)
+
+ rm "$alldirs"
+ echo "$alldirs gone"
+
+will set this option above this block and unset it below:
+
+set -o posix             # SetOptionNumber_1
+ rm "$alldirs"
+ echo "$alldirs gone"
+set +o posix             # SetOptionNumber_1
+
+The option numbers SetOptionNumber_xxx are automatically incremented. They can
+be searched for with the vim star command (*).
+
+
+------------------------------------------------------------------------------
+1.4  MENU 'shopt'                                          *bashsupport-shopt*
+------------------------------------------------------------------------------
+
+Calling a shopt-command (submenu "shopt") in NORMAL or INSERT MODE will set
+this option, e.g.
+
+ shopt -s shift_verbose
+
+Calling a shopt-command (submenu "shopt") for a marked block (VISUAL MODE)
+
+ function1 22 33 55
+ function2 "cc"
+
+will set this option above this block and unset it below:
+
+shopt -s shift_verbose       # ShoptOptionNumber_1
+ function1 22 33 55
+ function2 "cc"
+shopt -u shift_verbose       # ShoptOptionNumber_1
+
+The option numbers ShoptOptionNumber_xxx are automatically incremented. They
+can be searched for with the vim star command (*).
+
+------------------------------------------------------------------------------
+1.5  MENU 'Regex'                                          *bashsupport-regex*
+------------------------------------------------------------------------------
+
+These menu can be used to compose regular expressions with a few keystrokes.
+In normal mode the entries insert the shown constructs after the cursor. The
+first group ( "*(|)" , ... ) and the entry '[ ]' can enclose a marked text.
+The marked text
+  xxxxx
+will be changed into
+  *(xxxxx|)
+by the first choice. 
+
+------------------------------------------------------------------------------
+1.6  MENU 'Run'                                              *bashsupport-run*
+------------------------------------------------------------------------------
+
+1.6.1 Save and run                                    *bashsupport-run-script*
+------------------
+
+Save the current buffer to his file and run this file. The command line, the
+applied parameters and the shell return code are shown in the bottom line.
+
+ * In NORMAL MODE the whole buffer will be executed.
+ * In VISUAL MODE only the marked lines will be executed.
+
+
+1.6.2 Save and check syntax                         *bashsupport-syntax-check*
+---------------------------
+
+Save the current buffer to this file and run this file with the -n flag
+(bash: Read commands but do not execute them).
+Errors are listed in an error window; now the quickfix commands can be used.
+
+The syntax check can be influenced by shopt options. Options which shall
+always take effect can be declared in .vimrc , e.g.
+
+  let g:BASH_SyntaxCheckOptionsGlob  = "-O extglob"
+
+These options can be augmented or canceled using the menu entry 'syntax check
+options' typing for instance 
+
+  +O extglob -O nocaseglob
+
+after the prompt. The options entered this way are buffer related.  The global
+options set in .vimrc and the buffer related options are checked.  Only the
+shopts options for Bash 3.0 (GNU Bash-3.0, manual: 2004 June 26) are
+recognized:
+
+   cdable_vars        cdspell         checkhash    checkwinsize
+   cmdhist            dotglob         execfail     expand_aliases
+   extdebug           extglob         extquote     failglob
+   force_fignore      gnu_errfmt      histappend   histreedit
+   histverify         hostcomplete    huponexit    interactive_comments
+   lithist            login_shell     mailwarn     no_empty_cmd_completion
+   nocaseglob         nullglob        progcomp     promptvars
+   restricted_shell   shift_verbose   sourcepath   xpg_echo
+
+
+1.6.3 Command line arguments                        *bashsupport-cmdline-args*
+----------------------------
+
+The entry 'com. line arg.' calls an input dialog which asks for command line
+arguments. These arguments are forwarded to the script which is run by the
+'run' entry. The arguments are kept until you change them.
+
+The arguments belong to the current buffer (that is, each buffer can have its 
+own arguments).
+If the buffer gets a new name with "save as" the arguments will now belong to
+the buffer with the new name.
+
+
+1.6.4 START DEBUGGER                                    *bashsupport-debugger*
+--------------------
+
+Start the debugger 'bashdb' or the frontend 'ddd' from the menu entry
+Run->debug (GUI), with hotkey \rd or F9.  Your version of the bash must be
+prepared for debugging and the debugger must be installed (see
+http://bashdb.sourceforge.net/).
+
+(1) Using bashdb
+When using gvim or vim running under a GUI the debugger will be started in an
+independent xterm. This is done because the shell integration in gvim has
+deficiencies (see also :h shell-window).
+
+When using vim from a console terminal the debugger will be started as
+  :!bash --debugger  <command line arguments>
+The debugger now will be run inside vim. 
+
+(2) Using ddd
+The frontend ddd can be started via the menu or the hotkeys instead of bashdb
+as described above.  The preference can be set with the global variable
+g:BASH_Debugger (possible values: 'term', 'ddd' ) in '.vimrc' : 
+
+  let g:BASH_Debugger     = 'ddd'     
+
+The default is 'term'.
+
+In all cases the command line arguments from the argument setting
+(|bashsupport-cmdline-args|) are passed to the debugger.
+
+
+1.6.5 Hardcopy                                          *bashsupport-hardcopy*
+--------------
+
+Generates a PostScript file from the whole buffer or from a marked region.
+
+The print header contains date and time for the current locale. The definition
+used is
+ 
+  let s:C_Printheader = "%<%f%h%m%<  %=%{strftime('%x %X')}     Page %N"
+
+The current locale can be overwritten by changing the language, e.g. 
+
+  :language C
+
+or by setting a global variable in the file .vimrc , e.g. :
+
+  let g:C_Printheader = "%<%f%h%m%<  %=%{strftime('%x %X')}     SEITE %N"
+
+See :h printheader and :h strftime()  for more details. 
+
+
+1.6.6 Xterm size                                           *bashsupport-xterm*
+----------------
+
+The size of the xterm (see below) can be changes for the current session.  The
+size has to be specified as COLUMNS LINES (e.g. 96 32 ).
+
+1.6.7 Output redirection                                  *bashsupport-output*
+------------------------
+
+The last menu entry 'output: ... ' has 3 states:
+  'output: VIM->buffer->xterm'
+  'output: BUFFER->xterm->vim'
+  'output: XTERM->vim->buffer'
+The first state (upper-case) is the current one.
+
+Target VIM
+----------
+The script is run from the command line like  ":!./% arguments".
+* This is suitable for scripts with dialog elements and few lines of output.
+
+Target BUFFER
+-------------
+The shell output will be displayed in a window with name "Bash-Output".  This
+buffer and its content will disappear when the window is closed.  It is not
+writable and it has no file. The content could be saved with "save as".
+If the output fits completely into this window the cursor will stay in the
+script window otherwise the cursor will be set into the output window (you may
+want to scroll).
+When the script is run again and the output buffer is still open it will be
+reused.
+
+The buffer will not be opened if the script does not produce any output.
+This is for convenience; you do not have to close an empty buffer.
+
+* This is suitable for scripts without dialog elements and many lines of output
+* (e.g. from options like xtrace). Use Vim as pager (scroll, jump, search with
+* regular expressions, .. )
+
+Target XTERM
+------------
+The script will be run in a xterm-window. A wrapper script will ask you to
+close this window with Return or <C-D> (bash).
+The wrapper shows the complete command line and the return code of the script.
+
+* This is suitable for scripts with dialog elements and many lines of output.
+* The xterm is scrollable and independent from the editor window.
+
+Appearance of the xterm
+-----------------------
+The appearance of the xterm can be controlled by the global variable
+g:BASH_XtermDefaults. The assignment 
+
+  let g:BASH_XtermDefaults = "-fa courier -fs 10 -geometry 96x32"
+
+placed in .vimrc would override the defaults. The defaults are
+
+  "-fa courier -fs 12 -geometry 80x24"
+
+FreeType font 'courier', FreeType font size 12 point, window width 80
+characters, window height 24 lines.
+
+The default output method is VIM. The preferred output method can be selected
+in .vimrc by the global variable g:BASH_OutputGvim, e.g.
+
+  let g:BASH_OutputGvim            = "xterm"
+
+The methods are "vim", "buffer" and "xterm".
+
+==============================================================================
+2.  USAGE without GUI  (Vim)                           *bashsupport-usage-vim*
+==============================================================================
+
+The frequently used constructs can be inserted with key mappings.  The
+mappings are also described in the document bash-hot-keys.pdf (reference card,
+part of this package).
+
+ * All mappings (except \lbs and \ubs) are filetype specific: they are only
+ * defined for buffers with filetype 'sh' to minimize conflicts with mappings
+ * from other plugins.
+
+Hint: Typing speed matters. The combination of a leader ('\') and the
+following character(s) will only be recognized for a short time.
+
+  Legend:  (i) insert mode, (n) normal mode, (v) visual mode
+
+  -- Load / Unload bash Support -------------------------
+
+  \lbs    Load Bash Support               (n, GUI only)
+  \ubs    Unload Bash Support             (n, GUI only)
+
+  -- Comments -------------------------------------------
+
+  \cl     line end comment                (n, i, v)
+  \cs     set end comment column          (n, i, v)
+  \cfr    frame comment                   (n, i)
+  \cfu    function description            (n, i)
+  \ch     file header                     (n, i)
+  \ckb    keyword comment BUG             (n)
+  \ckt    keyword comment TODO            (n)
+  \ckr    keyword comment TRICKY          (n)
+  \ckw    keyword comment WARNING         (n)
+  \ckn    keyword comment New_Keyword     (n)
+  \cc     code to comment                 (n, v)
+  \co     comment to code                 (n, v)
+  \cd     date                            (n, i)
+  \ct     date & time                     (n, i)
+  \ce     echo "..."                      (n)
+  \cr     remove echo "..."               (n)
+  \cv     vim modeline                    (n)
+                                     
+  -- Statements ------------------------------------------
+
+  \sc     case in ... esac                (n, i)
+  \sl     elif then                       (n, i)
+  \sf     for in do done                  (n, i, v)
+  \si     if then fi                      (n, i, v)
+  \sie    if then else fi                 (n, i, v)
+  \ss     select in do done               (n, i, v)
+  \st     until do done                   (n, i, v)
+  \sw     while do done                   (n, i, v)
+  \sfu    function                        (n, i, v)
+  \se     echo -e "..."                   (n, i, v)
+
+  \nr     read code snippet               (n)
+  \nw     write code snippet              (n, v)
+  \ne     edit code snippet               (n)
+                                     
+  -- Run ------------------------------------------------
+
+  \rr     update file, run script         (n)
+  \rc     update file, check syntax       (n)
+  \ra     set command line arguments      (n)
+  \rd     start debugger                  (n)
+  \re     make script executable          (n)
+  \rh     hardcopy buffer to FILENAME.ps  (n)
+  \rs     settings and hot keys           (n)
+  \rt     set xterm size                  (n)
+  \ro     change output destination       (n)
+
+  -- bash help ------------------------------------------
+
+  \h      display help for the builtin    (n)
+          under the cursor
+
+
+File bash-hot-keys.pdf contains a reference card for these key mappings.
+Multiline inserts and code snippets will be indented after insertion.
+
+The hot keys are defined in the file type plugin sh.vim (part of this
+bash-support plugin package).
+
+
+==============================================================================
+3.  HOT KEYS                                             *bashsupport-hotkeys*
+==============================================================================
+
+The following hot keys are defined in NORMAL, VISUAL and INSERT MODE: 
+
+   Shift-F1   display help for a the built command under the cursor or ask
+               for a name
+    Ctrl-F9   run script
+     Alt-F9   run syntax check
+   Shift-F9   command line arguments (for the current buffer)
+         F9   start debugger (bashdb)
+
+See |bashsupport-usage-vim| for more hotkeys.
+
+
+==============================================================================
+4.0  CUSTOMIZATION                                 *bashsupport-customization*
+==============================================================================
+
+------------------------------------------------------------------------------
+4.1  FILES                                          *bashsupport-custom-files*
+------------------------------------------------------------------------------
+
+README.bashsupport                  Release notes, installation description.
+
+ftplugin/sh.vim                     The filetype plugin. Defines hotkeys and more.
+
+plugin/bash-support.vim             The bash plugin for Vim/gVim.
+bash-support/scripts/wrapper.sh     A wrapper script for the use of an xterm.
+
+doc/bashsupport.txt                 The help file for the local online help. 
+
+bash-support/codesnippets/*         Some code snippets as a starting point.
+
+bash-support/templates/*            bash template files (see |bashsupport-comm-templates|).
+
+bash-support/wordlists/*            Additional word lists (dictionaries).
+
+-----------------------   -------------------------------------------------------------
+-----------------------   The following files and extensions are for convenience only.
+                          bash-support.vim will work without them.
+                          -------------------------------------------------------------
+
+bash-support/rc/costumization.vimrc   Additional settings I use in .vimrc: incremental 
+                                      search, tabstop, hot keys, font, use of dictionaries, 
+                                      ...  The file is commented. Append it to your .vimrc
+                                      if you like.
+
+bash-support/rc/costumization.gvimrc  Additional settings I use in .gvimrc: hot keys, 
+                                      mouse settings, ...  The file is commented. 
+                                      Append it to your .gvimrc if you like.
+
+bash-support/doc/*                    Hotkey reference card (PDF), changelog. 
+
+
+------------------------------------------------------------------------------
+4.2  GLOBAL VARIABLES                           *bashsupport-custom-variables*
+------------------------------------------------------------------------------
+
+Several global variables are checked by the script to customize it:
+
+---------------------------------------------------------------------------------------
+global variable                default value                     tag 
+                                                               (see |bashsupport-tags|)
+---------------------------------------------------------------------------------------
+g:BASH_AuthorName              ""                                |AUTHOR|
+g:BASH_AuthorRef               ""                                |AUTHORREF|
+g:BASH_Email                   ""                                |EMAIL|
+g:BASH_Company                 ""                                |COMPANY|   
+g:BASH_Project                 ""                                |PROJECT|
+g:BASH_CopyrightHolder         ""                                |COPYRIGHTHOLDER|
+
+g:BASH_Template_Directory      $HOME."/.vim/bash-support/templates/"
+g:BASH_Template_File           "bash-file-header"
+g:BASH_Template_Frame          "bash-frame"
+g:BASH_Template_Function       "bash-function-description"
+
+g:BASH_CodeSnippets            $HOME."/.vim/bash-support/codesnippets"
+g:BASH_LoadMenus               "yes"
+g:BASH_Dictionary_File         $HOME."/.vim/bash-support/wordlists/bash.list"
+g:BASH_Root                    'B&ash.'
+
+g:BASH_DoOnNewLine             'no'     
+g:BASH_OutputGvim              "vim"
+g:BASH_XtermDefaults           "-fa courier -fs 12 -geometry 80x24"
+g:BASH_LineEndCommColDefault   49
+g:BASH_SyntaxCheckOptionsGlob  ""
+g:BASH_Printheader             "%<%f%h%m%<  %=%{strftime('%x %X')}     Page %N"
+g:BASH_Debugger                "term"
+
+--------------------------------------------------------------------------------
+
+1. group: Defines the text which will be inserted for the tags when a template  
+          is read in (see |bashsupport-tempfiles|).
+
+          g:BASH_AuthorName      : author name
+          g:BASH_AuthorRef       : author reference (e.g. acronym)
+          g:BASH_Email           : email address
+          g:BASH_Company         : name of the company / institution
+          g:BASH_Project         : project
+          g:BASH_CopyrightHolder : the copyright holder
+
+2. group: Sets the template directory and the names of the template files (see below).
+
+3. group: g:BASH_CodeSnippets    : The name of the code snippet directory 
+                                   (see |bashsupport-stat-snippets|).
+          g:BASH_LoadMenus       : Load menus and mappings ("yes", "no") at start up.
+          g:BASH_Dictionary_File : Path and file name of the bash word list used for
+                                   dictionary completion (see |bashsupport-dictionary|).
+          g:BASH_Root            : The name of the root menu entry of this plugin 
+                                   (see |bashsupport-custom-root|).
+
+4. group: g:BASH_OutputGvim             : Target for a script output 
+                                          (see |bashsupport-output|).
+          g:BASH_XtermDefaults          : The xterm defaults (see |bashsupport-xterm|).
+          g:BASH_LineEndCommColDefault  : default starting column for line end comments 
+          g:BASH_SyntaxCheckOptionsGlob : shopt options used with syntax checking
+          g:BASH_Printheader            : hardcopy header format 
+          g:BASH_Debugger               : the debugger called by F9 (term, ddd).
+          g:BASH_DoOnNewLine            : see |bashsupport-stat-norm-ins|
+          
+To override the defaults add appropriate assignments in .vimrc .
+Here are my settings as an example:
+
+  let g:BASH_AuthorName   = "Dr.-Ing. Fritz Mehner"     
+  let g:BASH_AuthorRef    = "Mn"                         
+  let g:BASH_Email        = "mehner@fh-swf.de"            
+  let g:BASH_Company      = "FH Südwestfalen, Iserlohn"    
+
+This plugin sets the global variable is_bash:
+  let is_bash             = 1
+This assignment is necessary to avoid a wrong syntax highlighting for $(..) and
+$((..)).
+
+------------------------------------------------------------------------------
+4.3  THE ROOT MENU                                   *bashsupport-custom-root*
+------------------------------------------------------------------------------
+
+The variable g:BASH_Root, if set (in .vimrc or in .gvimrc), gives the name of
+the single gVim root menu entry in which the Bash submenus will be put. 
+The default is 
+                  'B&ash.'
+Note the terminating dot. A single root menu entry is appropriate if the
+screen is limited or several plugins are in use.
+
+If g:BASH_Root is set to "", this single root menu entry will not appear.  Put
+the following line in '.vimrc'
+
+  let g:BASH_Root = ""
+
+Now all submenus are put into the gVim root menu. Nice for a
+Bash-only-programmer and Bash courses. 
+
+If you want to set the plugin root menu into another menu, e.g. 'Plugin', 
+this is done by the following line in '.vimrc'
+
+  let g:BASH_Root = "&Plugin.B&ash."
+
+
+==============================================================================
+5.  TEMPLATE FILES AND TAGS                            *bashsupport-tempfiles*
+==============================================================================
+
+------------------------------------------------------------------------------
+5.1  TEMPLATE FILES 
+------------------------------------------------------------------------------
+
+Three menu entries generate block comments:
+
+    bash -> Comments -> Frame Comment
+    bash -> Comments -> Function Description
+    bash -> Comments -> File Header
+
+The comments which will be inserted by these menu entries are read from 
+template files:
+
+------------------------------------------------------------------------------
+MENU ENTRY              FILE                          GLOBAL VARIABLE         
+------------------------------------------------------------------------------
+Frame Comment           bash-frame                    g:BASH_Template_Frame   
+Function Description    bash-function-description     g:BASH_Template_Function
+File Header             bash-file-header              g:BASH_Template_File    
+------------------------------------------------------------------------------
+
+The template files can be written or changed by the user to fulfill special
+requirements (layout for a project or work group already exists, file headers /
+blocks have to be prepared for a documentation tool, ... ).  They can hold not
+only comments but a complete file skeleton if this is necessary.  So you may
+want to lay out your own templates.
+
+------------------------------------------------------------------------------
+5.2  TAGS                                                   *bashsupport-tags*
+------------------------------------------------------------------------------
+The comments in these files do not have to be personalized but they can be.
+The text can contain the following tags which are replaced by the appropriate
+information when the file is read in:
+
+    |AUTHOR|
+    |DATE|
+    |EMAIL|
+    |FILENAME|
+    |YEAR|
+
+    |AUTHORREF|
+    |COMPANY|
+    |COPYRIGHTHOLDER|
+    |PROJECT|
+    |TIME|
+
+    |CURSOR|
+
+Each tag can occur more than once. The tag |CURSOR| may appear only once.
+The tag |CURSOR| will be the cursor position after the block is read in.
+There is no need to use any of these tags, some or all can be missing.
+
+The template files can actually be links pointing to existing templates.
+
+
+==============================================================================
+6.  BASH DICTIONARY                                   *bashsupport-dictionary*
+==============================================================================
+
+The file  bash.list  contains words used as dictionary for automatic word
+completion.  This feature is enabled by default. The default word list is
+
+  $HOME/.vim/bash-support/wordlists/bash.list
+
+If you want to use an additional list MyBash.List put the following line into
+ $HOME/.vimrc :
+
+  let g:BASH_Dictionary_File   =  "$HOME/.vim/bash-support/wordlists/bash.list,".
+                              \   "$HOME/.vim/bash-support/wordlists/MyBash.List"
+
+The right side is a comma separated list of files. Note the point at the end
+of the first line (string concatenation) and the backslash in front of the 
+second line (continuation line). 
+You can use Vim's dictionary feature CTRL-X, CTRL-K (and CTRL-P, CTRL-N).
+
+
+==============================================================================
+7.  Release Notes                                  *bashsupport-release-notes*
+==============================================================================
+
+See file README.bashsupport .
+
+==============================================================================
+vim:tw=78:noet:ts=2:ft=help:norl:

@@ -1,0 +1,355 @@
+so ~/.vim/vimconfig/vimrc
+set path=.,./**,/usr/include,,
+set runtimepath+=~/.vim/vimconfig/vim
+set autoindent
+syntax on
+
+" ctags
+set tags+=~/.vim/systags
+
+" encoding
+"set encoding=cp936
+set fileencodings=ucs-bom,utf-8,cp936,latin1
+" 修正backspace在cygwin的vim中不起作用
+":fixdel
+" set fileencoding of new file to utf-8
+setglobal fenc=utf-8
+
+
+" <space> to replace <tab>, <BS> delete softtabstop <space>
+set expandtab shiftwidth=4 softtabstop=4
+set cmdheight=2
+set report=100
+set viminfo=!,'5000,\"10000,:10000,/10000,n~/.vim/viminfo
+set wildmode=longest,list
+" Disable toolbar
+" set guioptions=
+" solve the problem that the alt key can't be used
+set winaltkeys=yes
+set noswapfile
+set winheight=10
+
+" man {{{
+runtime ftplugin/man.vim
+" }}}
+" {{{ csupport 
+let g:C_Template_Directory  = expand('$HOME/.vim/c-support/templates-kooxoo/')
+let g:C_AuthorName = "yinping"
+let g:C_AuthorRef = "franky"
+let g:C_Email= "yinping@kooxoo.com"
+let g:C_Company = "Kooxoo Corp."
+let g:C_CopyrightHolder = ""
+" }}}
+" {{{ vimgdb
+set previewheight=12		" set gdb window initial height
+run macros/gdb_mappings.vim	" source key mappings 
+silent! set asm=0				" don't show any assembly stuff
+"set gdbprg=gdb_invocation		" set GDB invocation string (default 'gdb')
+" }}}
+" {{{ for vimptate
+let Vimplate= "~/.vim/vimplate.pl" 
+" }}}
+" {{{ for crefvim
+map <silent> <unique> <Leader>cC <Plug>CRV_CRefVimInvoke
+vmap <silent> <unique> <Leader>cR <Plug>CRV_CRefVimVisual
+nmap <silent> <unique> <Leader>cR <Plug>CRV_CRefVimNormal
+" }}}
+" {{{ for A
+let g:alternateExtensions_h = "cpp,c,cxx,cc"
+let g:alternateExtensions_H = "CPP,C,CXX,CC"
+" }}}
+" Autocomands {{{
+if has("autocmd")
+	" Autocommands for vim script {{{
+	augroup VimScript
+		autocmd!
+		autocmd BufWritePost *.vim	so <afile>:p | exec "normal zv"
+		autocmd BufWritePost ~/.gvimrc	so ~/.gvimrc | exec "normal zv"
+	augroup END
+	" }}}
+endif " if has("autocmd")
+" }}} Autocomands
+" mapping {{{
+nnoremap <C-S> :w<CR>
+inoremap <C-S> <C-O>:w<CR>
+nnoremap <SPACE> <C-F>
+nnoremap <S-SPACE> <C-B>
+inoremap <C-F> <C-O><C-F>
+inoremap <C-B> <C-O><C-B>
+inoremap <C-J> <C-O>j
+inoremap <C-K> <C-O>k
+"inoremap <C-H> <C-O>h
+inoremap <C-L> <C-O>l
+noremap <C-N> :browse e<CR>
+"noremap <BS> <C-O>x
+
+" }}}
+" Global vars added by Yin Ping {{{
+let g:author = "franky"
+let g:email = "yinping@kooxoo.com"
+let g:company = "Kooxoo Corp."
+" }}}
+" For Vim Intellisense {{{
+" let $VIM_INTELLISENSE= "C:/Vim/Intellisense"
+" if has('win32')
+" 	let g:intellisense_root_dir = expand('$VIM_INTELLISENSE')
+" 	if isdirectory(expand($JAVA_HOME))
+" 		let g:intellisense_jvm_dir  = expand('$JAVA_HOME\jre\bin\server')
+" 		let g:intellisense_javaapi_dir  = expand('D:\software\Programming\Java\jdk\jdk1.4.2\j2sdk-1_4_2-doc\docs\api')
+" 	endif
+" endif
+" }}}
+" Viki {{{
+let g:vikiNameSuffix=".viki"
+augr viki
+au!
+autocmd! BufRead,BufNewFile *.viki set filetype=viki
+augr END
+" }}}
+" vtl velocity template language {{{
+au! BufRead,BufNewFile *.vm  setfiletype velocity
+"   }}}
+" JavaKit {{{
+" let g:VIMMACROSPATH = 'D:/software/JavaKit/'
+" au FileType java :exe "so " . g:VIMMACROSPATH . "Functions.vim"
+" 						\|exe "so " . g:VIMMACROSPATH . "JavaMacros.vim"
+" 						\|exe "so " . g:VIMMACROSPATH . "Javadoc.vim"
+" 						\|exe "so " . g:VIMMACROSPATH . "Javac.vim"
+" 						\|exe "so " . g:VIMMACROSPATH . "JavaSearch.vim"
+" }}}
+" JavaBrowser {{{
+"  {{{
+" 1. Unzip and untar javabrowser.tgz to get javabrowser.vim and tagindicator.xpm files. 
+" 2. Copy the javabrowser.vim script to the $HOME/.vim/plugin directory. Refer to 
+"     ':help add-plugin', ':help add-global-plugin' and ':help runtimepath' for 
+"     more details about Vim plugins. 
+" 3. Copy tagindicator.xpm and tagindicator.bmp to $VIM/pixmaps directory. NOTE: This is optional. 
+" 4. Set the JavaBrowser_Ctags_Cmd variable to point to the exuberant ctags utility 
+"     path. 
+" 5. Set Javabrowser_Use_Icon = 1 in your .vimrc file if you want to use icon provided with the script. Note: VIM must be compiled with "signs" option for this. If it is not, it will automatically be disabled and normal search highlight will be used to highlight the current tag. You can also use Javabrowser_Use_Text_Icon = 1 if you like => to indicate your current tag. Even for this, VIM needs to be compiled with "sign" support. You can also set JavaBrowser_Use_Highlight_Tag = 1 in your .vimrc if you want the current tag to be highlighted along with the icon (text or tagindicator.xpm). By default, it is OFF. 
+" 6. If you are running a terminal/console version of Vim and the terminal 
+"     doesn't support changing the window width then set the JavaBrowser_Inc_Winwidth 
+"     variable to 0. 
+" 7. Restart Vim. 
+" 8. You can use the ":JavaBrowser" command to open/close the taglist window. 
+" 9. NOTE: This script has fileformat (ff) of DOS. UNIX users, please change it to unix before using it (Use set ff=unix and save it). Thanks to Deepak for pointing that out. That's what I do for any script I find in DOS fileformat! 
+" }}}
+let JavaBrowser_Ctags_Cmd = 'D:\software\Programming\ctags\ctags554\ctags'
+let Javabrowser_Use_Icon = 1
+let JavaBrowser_Use_Highlight_Tag = 1
+let JavaBrowser_Use_Text_Icon = 1
+" }}}
+"  cd to whatever directory the current buffer is using
+com! CD cd %:p:h
+" au BufEnter * execute ":lcd " . expand("%:p:h") 
+" EditJava {{{
+" {{{
+" created by 
+" richard emberson 
+"   
+" script type 
+" utility 
+"   
+" description 
+" Place cursor over a java classname and enter the scripts map key sequence (I  map it to ",g"). The base java file name is <cword> . ".java" 
+" 
+" First if the cursor is over a package classname like 'java.util.Map', then if the cursor is over 'Map', the java/util/Map.java file is opened else if the cursor is over, say, 'util', then the java/util directory is opened. 
+" 
+" Otherwise, the script looks for a file with the filename in local directory and  if it exists, opens it. 
+" 
+" If not, it looks for an explicit import file with the filename, if it can be found  in the java source path, then it opens it. If not found, use 'locate' command to look for filename plus import package directories prepended. If found then open it. 
+" 
+" If not, it looks for a file in "$JAVA_HOME/src/java/lang" and if found opens it. 
+" 
+" If not it then looks for a match using any of the implicit import statements, those ending in * and in the java source path. If found open it. Otherwise use 'locate' command to search for filename plus import package path prepended and if found open it. 
+" 
+" Lastly, if not found by any of the above methods it then attempts to find a file using the package path. The current file might be in a parallel junit directory or in some parallel directory structure. If this is found in the java source path then it is opened otherwise it uses "locate' command to search for the file and if found opens it. 
+" 
+" EditJava plus the bufexplorer.vim script, 
+" the "edit cwd" Tip #2: 
+" map ,d :e <C-R>=expand("%:p:h")<CR><CR>   
+" and the mapping allowing one to toggle between files 
+" map gg :e#^M 
+" with the buffer edit commands (where N is an integer) 
+" :bp 
+" :bpN 
+" :bn 
+" :bpN                         
+" provide one with a collection of tools to view and navigate Java sources. 
+"  
+"   
+" install details 
+" Place script in your vim script directory: 
+" $HOME/vimscripts/javae.vim 
+
+" }}}
+" {{{
+" Set my Leader character 
+" let mapleader = "," 
+
+
+" Create a java source path in .vimrc 
+" (I currently have 17 source paths in my .vimrc): 
+let $JAVASOURCEPATH ="$JAVA_HOME/src" . 
+  \",$HOME/java/xerces/xerces/src" . 
+  \",$HOME/java/xerces/xalan/src" . 
+  \",$HOME/java/jboss/jboss" . 
+  \",$HOME/myproject/src/java" 
+
+" Creating a mapping to call the script in .vimrc: 
+" goto 
+map <Leader>g :call EditJava('e',$JAVASOURCEPATH)<CR> 
+" open horizontal 
+map <Leader>h :call EditJava('sp',$JAVASOURCEPATH)<CR> 
+" open vertical 
+map <Leader>v :call EditJava('vsp',$JAVASOURCEPATH)<CR> 
+
+" Define behavior 
+" Set g:javae_use_locate_cmd  to 0 if you do not wish to use a 'locate" command. The default is to use the 'locate' command: 
+let g:javae_use_locate_cmd = 0 
+
+" Set the name of the 'locate' command. The default value for g:javae_locate_cmd is "slocate".
+" let g:javae_locate_cmd = 'find' 
+
+" If using a 'locate' command, then one can force javae to allways prompt even when there is only one match by setting g:javae_locateopen_alwaysprompt to 1. 
+" The default is to only prompt when there is more than one file: 
+let g:javae_locateopen_alwaysprompt = 0 
+
+" Also, one can set whether or not to get an error message if in response to a prompt an incorrect value is entered. To not see any error messages set g:javae_locateopen_showerror to 0. The default is to see error messages 
+let g:javae_locateopen_showerror = 1 
+
+" When switching to another buffer the current buffer may need to be saved. The g:javae_automatic_update flag allows one to control this behavior. Setting it to 0: 
+" will not automatically update the current buffer if it needs to be saved allowing you to automatically see the new buffer, rather you must first manually save the current buffer and re-run the search. 
+" The default is to allow for automatic updates: 
+let g:javae_automatic_update = 0
+
+" Import statements do not occur after the first class or interface declaration. While searching the current file for all import statements one can either read each line of the current file or stop after the first class or interface declaration. In addition, what looks like an import statement might be in a comment. If the flag g:javae_syntax_based is set to 0: 
+" then each line in the file is read. 
+" On the other hand if it is set to 1: 
+" the default value, then the search for import statements skips comments and stops after the first class or interface declaration. The reason one might not wish to use the g:javae_syntax_based flag is that under the covers java syntax values are used to determine when one is in a comment or declaration and if the user has modified the default java syntax values found in java.vim, then the syntax base code may not work. 
+let g:javae_syntax_based = 1 
+
+" Source javae.vim 
+" source $HOME/.vim/vimscripts/javae.vim 
+" }}} 
+" }}}
+" vjde {{{
+let g:vjde_install_path = 'C:/Documents and Settings/franky.PKUFRANKY/.vim/local/plugin'
+let g:vjde_javadoc_path = 'D:/software/Programming/Java/jdk/jdk1.4.2/j2sdk-1_4_2-doc/docs/api/'
+let g:vjde_src_path = '$JAVA_HOME/src'
+let g:vjde_utils_setup=0
+let g:enable_floatingwindow=1
+" }}}
+" minibufexpl.vim{{{
+" 
+" control + the vim direction keys [hjkl] can be made to move you between windows. 
+" control + arrow keys can be made to do the same thing 
+" control + tab & shift + control + tab can be setup to switch through your open windows (like in MS Windows) 
+" control + tab & shift + control + tab can alternatively be setup to cycle forwards and backwards through your modifiable buffers in the current window 
+" You can configure things like how tabs wrap, how big or small the explorer window is, if the explorer window is horizonal or vertical, the use of single or double click for buffer selection, what colors are used for the tabs in different states, how many buffers need to be open before the explorer window opens
+" See the source file
+let g:miniBufExplMapWindowNavVim = 1 
+let g:miniBufExplMapWindowNavArrows = 1 
+let g:miniBufExplMapCTabSwitchBufs = 1 
+let g:miniBufExplModSelTarget = 1 
+let g:miniBufExplUseSingleClick = 1
+" }}}
+
+" tabbar {{{
+let g:Tb_UseSingleClick = 1
+" }}}
+" Tlist {{{
+let g:Tlist_Use_Right_Window = 0
+" }}}
+" add java import statements easily Tip #822 {{{
+noremap <F5> :call JavaInsertImport()<CR> 
+function! JavaInsertImport() 
+
+   exe "normal mz" 
+   let cur_class = expand("<cword>") 
+
+   try 
+      if search('^\s*import\s.*\.' . cur_class . '\s*;') > 0 
+         throw getline('.') . ": import already exist!" 
+      endif 
+
+      wincmd } 
+      wincmd P 
+
+      1 
+      if search('^\s*public.*\s\%(class\|interface\)\s\+' . cur_class) > 0 
+         1 
+         if search('^\s*package\s') > 0 
+            yank y 
+         else 
+            throw "Package definition not found!" 
+         endif 
+      else 
+         throw cur_class . ": class not found!" 
+      endif 
+
+      wincmd p 
+      normal G 
+
+      " insert after last import or in first line 
+      if search('^\s*import\s', 'b') > 0 
+         put y 
+      else 
+         1 
+         put! y 
+      endif 
+
+      substitute/^\s*package/import/g 
+      substitute/\s\+/ /g 
+      exe "normal 2ER." . cur_class . ";\<Esc>lD" 
+
+   catch /.*/ 
+      echoerr v:exception 
+
+   finally 
+      " wipe preview window (from buffer list) 
+      silent! wincmd P 
+      if &previewwindow 
+         bwipeout 
+      endif 
+      exe "normal `z" 
+
+   endtry 
+   
+endfunction 
+" }}}
+" Tip #935 {{{
+
+" To highlight spaces at the end of a line and spaces in front of tabs you can simply add the following command to your vimrc: 
+" let <language>_space_errors=1 
+" supported languages are: 
+" ada, c, chill, csc, icon, java, lpc, mel, nqc, nroff, ora, plm, plsql and python. So if you want to highlight space errors in lpc-files you have to write: 
+" let lpc_space_errors=1 
+" 
+" If you don't want to see the errors at the end of the line set: 
+" let <language>_no_trail_space_error=1 
+" and if you only use spaces to indent and don't want to see the space errors in front of tabs set: 
+" let <language>_no_tab_space_error=1 
+let java_space_errors=1 
+let c_space_errors=1 
+" }}}
+" ant with taglist #Tip 558
+" The follows should be add to $HOME/ctags.cnf
+" --langdef=ant
+" --langmap=ant:.xml 
+" --regex-ant=/^[ \t]*<[ \t]*project.*name="([^<"&]+)".*>/\1/p,project/i
+" --regex-ant=/^[ \t]*<[ \t]*target.*name="([^<"&]+)".*>/\1/t,target/i
+" --regex-ant=/^[ \t]*<[ \t]*property.*name="([^<"&]+)".*>/\1/r,property/i
+let g:tlist_ant_settings='ant;p:Project;r:Property;t:Target'
+
+" ant_menu.vim #Script 155
+" for details to see ant_menu.vim
+let g:buildFile = 'build.xml' 
+let g:antOption = '' 
+"let g:logFile = 'build.log' 
+" 不能使用g:logFile，否则错误只会输出到logfile里。
+"The you can use :make :class :cw and so on
+" Modeline {{{
+" vim:set ts=4:
+" vim600:fdm=marker fdl=0 fdc=3
+" }}}

@@ -1,0 +1,572 @@
+private enum BOOLEAN {
+	true,false
+}
+private tag META_TYPE {
+}
+//standard java comment tag
+
+tag author   { 
+}
+tag deprecated  { 
+}
+tag exception  { 
+}
+tag param  { 
+}
+tag return  { 
+}
+tag see  { 
+}
+tag serial  { 
+}
+tag serialData  { 
+}
+tag serialField  { 
+}
+tag since  { 
+}
+tag throws  { 
+}
+tag version  { 
+}
+
+//@axis.method
+//@axis.service
+//@bes.bean
+//@bes.cross-table
+//@bes.datasource
+//@bes.ejb-local-ref
+//@bes.ejb-ref
+//@bes.property
+//@bes.relation
+//@bes.resource-env-ref
+//@bes.resource-ref
+//@castor.class
+//@castor.field
+//@castor.field-sql
+//@castor.field-xml
+//@dao.call
+//@doc.param
+//@doc.tag
+//@easerver.ejb-ref
+//@easerver.resource-ref
+//@ejb.aggregate
+//@ejb.bean
+//@ejb.create-method
+//@ejb.dao
+//@ejb.data-object
+//@ejb.ejb-external-ref
+//@ejb.ejb-ref
+//@ejb.env-entry
+//@ejb.facade
+//@ejb.facade-method
+//@ejb.finder
+//@ejb.home
+//@ejb.home-method
+//@ejb.interface
+//@ejb.interface-method
+//@ejb.permission
+//@ejb.persistence
+//@ejb.persistent-field
+//@ejb.pk
+//@ejb.pk-field
+//@ejb.relation
+//@ejb.remote-facade
+//@ejb.resource-env-ref
+//@ejb.resource-ref
+//@ejb.security-identity
+//@ejb.security-role-ref
+//@ejb.select
+//@ejb.transaction
+//@ejb.util
+//@ejb.value-object
+//@foo:bar
+
+tag hibernate.cache { 
+	attr usage {
+		read-write,nonstrict-read-write,read-only,transactional
+	}
+}
+tag hibernate.class { 
+	attr table;
+	attr discriminator-value;
+	attr BOOLEAN mutable;
+	attr BOOLEAN dynamic-update;
+	attr BOOLEAN dynamic-insert;
+	attr BOOLEAN select-before-update;
+	attr optimistic-lock {
+		version,none,all,dirty
+	}
+	attr polymorphism {
+		explicit,implicit
+	}
+	attr schema ;
+	attr BOOLEAN lazy;
+	attr proxy;
+	attr where;
+}
+public tag hibernate.discriminator { 
+	attr column;
+	attr type;
+	attr length;
+	attr BOOLEAN not-null;
+	attr BOOLEAN force;
+	attr BOOLEAN insert;
+}
+public tag hibernate.jcs-cache { 
+	attr usage {
+		read-write,nonstrict-read-write,read-only,transactional
+	}
+}
+public tag hibernate.joined-subclass { 
+	attr BOOLEAN lazy;
+	attr proxy;
+	attr BOOLEAN dynamic-update;
+	attr BOOLEAN dynamic-insert;
+	attr schema;
+	attr table;
+}
+public tag hibernate.joined-subclass-key {
+	attr column;
+}
+public tag hibernate.mapping {
+	attr schema;
+	attr default-cascade {
+		none,save-update
+	}
+	attr BOOLEAN auto-import;
+}
+public tag hibernate.query { 
+	attr name;
+	attr query;
+}
+public tag hibernate.subclass {
+	attr table;
+	attr discriminator-value;
+	attr BOOLEAN lazy;
+	attr proxy;
+	attr BOOLEAN dynamic-update;
+	attr BOOLEAN dynamic-insert;
+}
+//method level tags
+public tag hibernate.any { 
+	attr id-type;
+	attr META_TYPE meta-type;
+	attr cascade;
+}
+public tag hibernate.any-column { 
+	attr name;
+	attr length;
+	attr BOOLEAN unique;
+	attr BOOLEAN not-null;
+	attr index;
+	attr unique-key;
+	attr sql-type;
+}
+public tag hibernate.array { 
+	attr table;
+	attr scheme;
+	attr cascade {
+		all,none,save-update,delete
+        }
+	attr where;
+}
+public tag hibernate.bag { 
+	attr BOOLEAN inverse;
+	attr table;
+	attr schema;
+	attr BOOLEAN lazy;
+	attr cascade;
+	attr order-by;
+	attr where;
+}
+public tag hibernate.collection-cache { 
+	attr usage {
+		read-write,nonstrict-read-write,read-only,transactional
+	}
+}
+public tag hibernate.collection-composite-element { 
+	attr class;
+}
+public tag hibernate.collection-element { 
+	attr column;
+	attr type;
+	attr length;
+	attr BOOLEAN not-null;
+	attr BOOLEAN unique;
+}
+public tag hibernate.collection-index { 
+	attr column;
+	attr type;
+	attr length;
+}
+public tag hibernate.collection-jcs-cache { 
+	attr usage {
+		read-write,nonstrict-read-write,read-only,transactional
+	}
+}
+public tag hibernate.collection-key { 
+	attr column;
+}
+public tag hibernate.collection-key-column { 
+	attr name;
+	attr length;
+	attr unique;
+	attr BOOLEAN not-null;
+	attr index;
+	attr unique-key;
+	attr sql-type;
+}
+public tag hibernate.collection-many-to-many { 
+	attr column;
+	attr class;
+	attr outer-join {
+		true,false,auto
+	} 
+}
+public tag hibernate.collection-one-to-many { 
+	attr class;
+}
+public tag hibernate.column { 
+	attr name;
+	attr length;
+	attr BOOLEAN unique;
+	attr BOOLEAN not-null;
+	attr index;
+	attr unique-key;
+	attr sql-type;
+	attr formula;
+}
+public tag hibernate.component { 
+	attr class;
+	attr prefix;
+}
+public tag hibernate.generator-param { 
+	attr name;
+	attr value;
+}
+public tag hibernate.id { 
+	attr column;
+	attr type;
+	attr length;
+	attr unsaved-value;
+	attr generator-class {
+		uuid.hex,uuid.string,increment,assigned,native,identity,sequence,hilo,seqhilo,foreign
+	}
+}
+public tag hibernate.index-many-to-many { 
+	attr column;
+	attr class;
+	attr foreign-key;
+}
+public tag hibernate.list { 
+	attr table;
+	attr schema;
+	attr lazy;
+	attr cascade {
+		none,all,save-update,delete,all-delete-orphan,delete-orphan
+	}
+}
+public tag hibernate.many-to-any { 
+	attr id-type;
+	attr META_TYPE meta-type;
+}
+public tag hibernate.many-to-any-column { 
+	attr name;
+	attr length;
+	attr BOOLEAN unique;
+	attr BOOLEAN not-null;
+	attr index;
+	attr unique-key;
+	attr sql-type;
+}
+public tag hibernate.many-to-one { 
+	attr column;
+	attr class;
+	attr cascade {
+		none,all,save-update,delete
+	}
+	attr BOOLEAN not-null;
+	attr BOOLEAN unique;
+	attr outer-join {
+		true,false,auto
+	}
+	attr BOOLEAN insert;
+	attr BOOLEAN update;
+	attr property-ref;
+	attr foreign-key;
+}
+public tag hibernate.map { 
+	attr table;
+	attr schema;
+	attr BOOLEAN lazy;
+	attr cascade {
+		all,save-update,delete,none,all-delete-orphan,delete-orphan
+	}
+	attr sort;
+	attr order-by;
+	attr where;
+}
+public tag hibernate.one-to-one { 
+	attr class;
+	attr property-ref;
+	attr BOOLEAN constrained;
+	attr cascade {
+		all,none,save-update,delete
+	}
+	attr foreign-key;
+}
+public tag hibernate.parent { 
+}
+public tag hibernate.primitive-array { 
+	attr table;
+	attr schema;
+	attr cascade {
+		all,none,save-update,delete
+	}
+	attr where;
+}
+public tag hibernate.property { 
+	attr column;
+	attr type;
+	attr length;
+	attr BOOLEAN not-null;
+	attr BOOLEAN unique;
+	attr BOOLEAN insert;
+	attr BOOLEAN update;
+	attr formula;
+}
+public tag hibernate.set { 
+	attr BOOLEAN inverse;
+	attr table;
+	attr schema;
+	attr BOOLEAN lazy;
+	attr cascade {
+		all,none,save-update,delete,all-delete-orphan,delete-orphan
+	}
+	attr sort;
+	attr order-by;
+	attr where;
+}
+public tag hibernate.timestamp { 
+	attr column;
+}
+public tag hibernate.version { 
+	attr column;
+	attr type {
+		integer,short,long,timestamp,calendar
+	}
+	attr access {
+		property,field,ClassName 
+	}
+	attr unsaved-value {
+		undefined,null,negative
+	}
+}
+
+//@hpas.bean
+//@hpas.ejb-ref
+//@hpas.pool
+//@javabean.attribute
+//@javabean.class
+//@javabean.icons
+//@javabean.method
+//@javabean.param
+//@javabean.property
+//@jboss.cache-invalidation
+//@jboss.cache-invalidation-config
+//@jboss.cluster-config
+//@jboss.clustered
+//@jboss.cmp-field
+//@jboss.column-name
+//@jboss.container-configuration
+//@jboss.create-table
+//@jboss.declared-sql
+//@jboss.depends
+//@jboss.destination-jndi-name
+//@jboss.dvc-property
+//@jboss.ejb-local-ref
+//@jboss.ejb-ref-jndi
+//@jboss.entity-command
+//@jboss.entity-command-attribute
+//@jboss.finder-query
+//@jboss.jdbc-type
+//@jboss.method-attributes
+//@jboss.not-persisted-field
+//@jboss.persistence
+//@jboss.query
+//@jboss.read-ahead
+//@jboss.read-only
+//@jboss.relation
+//@jboss.relation-mapping
+//@jboss.relation-read-ahead
+//@jboss.relation-table
+//@jboss.remove-table
+//@jboss.resource-env-ref
+//@jboss.resource-manager
+//@jboss.resource-ref
+//@jboss.security-proxy
+//@jboss.service
+//@jboss.sql-type
+//@jboss.subscriber
+//@jboss.target-relation
+//@jboss.unknown-pk
+//@jdo.persistence-capable
+//@jmx.managed-attribute
+//@jmx.managed-operation
+//@jmx.mbean
+//@jmx.mlet-entry
+//@jmx.notification
+//@jonas.bean
+//@jonas.cmp-field-jdbc-mapping
+//@jonas.ejb-ref
+//@jonas.finder-method-jdbc-mapping
+//@jonas.is-modified-method-name
+//@jonas.jdbc-mapping
+//@jonas.max-cache-size
+//@jonas.message-driven-destination
+//@jonas.min-pool-size
+//@jonas.passivation-timeout
+//@jonas.resource
+//@jonas.resource-env
+//@jonas.session-timeout
+//@jonas.shared
+//@jrun.always-dirty
+//@jrun.cluster-home
+//@jrun.cluster-object
+//@jrun.commit-option
+//@jrun.ejb-local-ref
+//@jrun.ejb-ref
+//@jrun.instance-pool
+//@jrun.jdbc-mappings
+//@jrun.jndi-name
+//@jrun.message-driven-destination
+//@jrun.message-driven-subscription
+//@jrun.resource-env-ref
+//@jrun.resource-ref
+//@jrun.timeout
+//@jrun.tx-domain
+//@jsp.attribute
+//@jsp.tag
+//@jsp.validator-init-param
+//@jsp.variable
+//@kodo.table
+//@lido.future
+//@mock.generate
+//@msg.bundle
+//@mvcsoft.col-name
+//@mvcsoft.entity
+//@mvcsoft.exclude-from-optimistic-lock
+//@mvcsoft.fault-group
+//@mvcsoft.high-low-key
+//@mvcsoft.jdbc-type
+//@mvcsoft.lightweight
+//@mvcsoft.query
+//@mvcsoft.relation
+//@mvcsoft.sql-type
+//@mvcsoft.unknown-key
+//@mvcsoft.uuid-key
+//@mvcsoft.wrap
+//@oc4j.bean
+//@oc4j.field-persistence-manager
+//@oc4j.field-persistence-manager-property
+//@oc4j.persistence
+//@orion.bean
+//@orion.field-persistence-manager-property
+//@orion.persistence
+//@portlet.portlet
+//@portlet.portlet-info
+//@portlet.portlet-init-param
+//@portlet.preference
+//@portlet.preferences-validator
+//@portlet.security-role-ref
+//@portlet.supports
+//@pramati.bean
+//@pramati.destination-mapping
+//@pramati.ejb-local-ref
+//@pramati.ejb-ref
+//@pramati.persistence
+//@pramati.resource-env-ref
+//@pramati.resource-mapping
+//@pramati.server-session
+//@pramati.thread-pool
+//@resin-ejb.cmp-field
+//@resin-ejb.entity-bean
+//@resin-ejb.entity-method
+//@resin-ejb.message-bean
+//@resin-ejb.relation
+//@soap.method
+//@soap.service
+//@spring.bean
+//@spring.constructor-arg
+//@spring.property
+//@sql.table
+//@struts.action
+//@struts.action-exception
+//@struts.action-forward
+//@struts.form
+//@struts.form-field
+//@struts.validator
+//@struts.validator-args
+//@struts.validator-var
+//@sunone.bean
+//@sunone.bean-cache
+//@sunone.bean-pool
+//@sunone.consistency
+//@sunone.fetched-with
+//@sunone.finder
+//@sunone.persistence-manager
+//@sunone.pool-manager
+//@sunone.relation
+//@web.ejb-local-ref
+//@web.ejb-ref
+//@web.env-entry
+//@web.filter
+//@web.filter-init-param
+//@web.filter-mapping
+//@web.listener
+//@web.resource-env-ref
+//@web.resource-ref
+//@web.security-role
+//@web.security-role-ref
+//@web.servlet
+//@web.servlet-init-param
+//@web.servlet-mapping
+//@weblogic.allow-concurrent-calls
+//@weblogic.automatic-key-generation
+//@weblogic.cache
+//@weblogic.cache-ref
+//@weblogic.clustering
+//@weblogic.column-map
+//@weblogic.data-source-name
+//@weblogic.dbms-column-type
+//@weblogic.delay-database-insert-until
+//@weblogic.ejb-local-reference-description
+//@weblogic.ejb-reference-description
+//@weblogic.enable-call-by-reference
+//@weblogic.enable-dynamic-queries
+//@weblogic.enable-tuned-updates
+//@weblogic.field-group
+//@weblogic.finder
+//@weblogic.invalidation-target
+//@weblogic.lifecycle
+//@weblogic.message-driven
+//@weblogic.persistence
+//@weblogic.pool
+//@weblogic.pool-name
+//@weblogic.relation
+//@weblogic.resource-description
+//@weblogic.resource-env-description
+//@weblogic.run-as-identity-principal
+//@weblogic.select
+//@weblogic.target-column-map
+//@weblogic.transaction-descriptor
+//@weblogic.transaction-isolation
+//@websphere.bean
+//@websphere.finder-query
+//@websphere.mapping
+//@websphere.mapping-constraint
+//@webwork.action
+//@webwork.command
+//@xdoclet.merge-file
+//@xdoclet.taghandler

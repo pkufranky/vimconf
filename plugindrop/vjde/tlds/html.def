@@ -1,0 +1,1762 @@
+
+//const amp;
+//const lt;
+//const gt;
+//const quot;
+//const le;
+//const ge;
+//const radic;
+//const AElig;
+//const Aacute;
+//const Acirc;
+//const Agrave;
+//const Aring;
+//const Atilde;
+//const Auml;
+//const Ccedil;
+//const ETH;
+//const Eacute;
+//const Ecirc;
+//const Egrave;
+//const Euml;
+//const Iacute;
+//const Icirc;
+//const Igrave;
+//const Iuml;
+//const Ntilde;
+//const Oacute;
+//const Ocirc;
+//const Ograve;
+//const Oslash;
+//const Otilde;
+//const Ouml;
+//const THORN;
+//const Uacute;
+//const Ucirc;
+//const Ugrave;
+//const Uuml;
+//const Yacute;
+//const aacute;
+//const acirc;
+//const aelig;
+//const agrave;
+//const aring;
+//const atilde;
+//const auml;
+//const ccedil;
+//const eacute;
+//const ecirc;
+//const egrave;
+//const eth;
+//const euml;
+//const iacute;
+//const icirc;
+//const igrave;
+//const iuml;
+//const ntilde;
+//const oacute;
+//const ocirc;
+//const ograve;
+//const oslash;
+//const otilde;
+//const ouml;
+//const szlig;
+//const thorn;
+//const uacute;
+//const ucirc;
+//const ugrave;
+//const uuml;
+//const yacute;
+//const yuml;
+//const acute;
+//const brvbar;
+//const cedil;
+//const cent;
+//const copy;
+//const curren;
+//const deg;
+//const divide;
+//const frac12;
+//const frac14;
+//const frac34;
+//const iexcl;
+//const iquest;
+//const laquo;
+//const macr;
+//const micro;
+//const middot;
+//const nbsp;
+//const not;
+//const ordf;
+//const ordm;
+//const para;
+//const plusmn;
+//const pound;
+//const raquo;
+//const reg;
+//const sect;
+//const shy;
+//const sup1;
+//const sup2;
+//const sup3;
+//const times;
+//const uml;
+//const yen;
+//const trade;
+//const ensp;
+//const emsp;
+//const endash;
+//const emdash;
+//const zwnj;
+//const zwj;
+//const lrm;
+//const rlm;
+
+
+private enum MIME_TYPE {
+   application,
+   audio,
+   message,
+   model,
+   multipart,
+   text,
+   video,
+   text/plain,
+   text/richtext,
+   text/html,
+   text/sgml,
+   text/css,
+   text/xml,
+   text/rtf,
+   text/directory,
+   text/calendar,
+   multipart/mixed,
+   multipart/alternative,
+   multipart/digest,
+   multipart/parallel,
+   multipart/related,
+   multipart/report,
+   multipart/voice-message,
+   multipart/signed,
+   multipart/encrypted,
+   multipart/byteranges,
+   message/rfc822,
+   message/partial,
+   message/news,
+   message/http,
+   applicatation/octet-stream,
+   application/postscript,
+   application/oda,
+   application/atomicmail,
+   application/rtf,
+   application/pdf,
+   application/zip,
+   application/msword,
+   application/mathematica,
+   application/sgml,
+   application/cals-1840,
+   image/jpeg,
+   image/gif,
+   image/g3fax,
+   image/tiff,
+   image/cgm,
+   image/png,
+   audio/basic,
+   video/mpeg,
+   video/quicktime,
+   model/iges,
+   model/vrml,
+   model/mesh
+}
+
+private enum HTML_STYLE{
+}
+
+private enum HTML_COLOR {
+   antiquewhite,
+   aqua,
+   aquamarine,
+   azure,
+   beige,
+   bisque,
+   black,
+   blanchedalmond,
+   blue,
+   blueviolet,
+   brown,
+   burlywood,
+   cadetblue,
+   chartreuse,
+   chocolate,
+   coral,
+   cornflowerblue,
+   cornsilk,
+   crimson,
+   cyan,
+   darkblue,
+   darkcyan,
+   darkgoldenrod,
+   darkgray,
+   darkgreen,
+   darkkhaki,
+   darkmagenta,
+   darkolivegreen,
+   darkorange,
+   darkorchid,
+   darkred,
+   darksalmon,
+   darkseagreen,
+   darkslateblue,
+   darkslategray,
+   darkturquoise,
+   darkviolet,
+   deeppink,
+   deepskyblue,
+   dimgray,
+   dodgerblue,
+   firebrick,
+   floralwhite,
+   forestgreen,
+   Fuchsia,
+   gainsboro,
+   ghostwhite,
+   gold,
+   goldenrod,
+   gray,
+   green,
+   greenyellow,
+   honeydew,
+   hotpink,
+   indianred,
+   indigo,
+   ivory,
+   khaki,
+   lavender,
+   lavenderblush,
+   lawngreen,
+   lemonchiffon,
+   lightblue,
+   lightcoral,
+   lightcyan,
+   lightgoldenrodyellow,
+   lightgreen,
+   lightgrey,
+   lightpink,
+   lightsalmon,
+   lightseagreen,
+   lightskyblue,
+   lightslategray,
+   lightsteelblue,
+   lightyellow,
+   lime,
+   limegreen,
+   linen,
+   magenta,
+   maroon,
+   mediumaquamarine,
+   mediumblue,
+   mediumorchid,
+   mediumpurple,
+   mediumseagreen,
+   mediumslateblue,
+   mediumspringgreen,
+   mediumturquoise,
+   mediumvioletred,
+   midnightblue,
+   mintcream,
+   mistyrose,
+   moccasin,
+   navajowhite,
+   navy,
+   oldlace,
+   olive,
+   olivedrab,
+   orange,
+   orangered,
+   orchid,
+   palegoldenrod,
+   palegreen,
+   paleturquoise,
+   palevioletred,
+   papayawhip,
+   peachpuff,
+   peru,
+   pink,
+   plum,
+   powderblue,
+   purple,
+   red,
+   rosybrown,
+   royalblue,
+   saddlebrown,
+   salmon,
+   sandybrown,
+   seagreen,
+   seashell,
+   sienna,
+   silver,
+   skyblue,
+   slateblue,
+   slategray,
+   snow,
+   springgreen,
+   steelblue,
+   tan,
+   teal,
+   thistle,
+   tomato,
+   turquoise,
+   violet,
+   wheat,
+   white,
+   whitesmoke,
+   yellow,
+   yellowgreen
+}
+
+private tag classid_styletitle {
+   attr class;
+   attr id;
+   attr style;
+   attr title;
+}
+
+private tag lang_dir {
+   attr dir {
+   }
+   attr lang;
+}
+
+private tag intrin_onevents{
+   attr onclick;
+   attr ondblclick;
+   attr onkeydown;
+   attr onkeypress;
+   attr onkeyup;
+   attr onmousedown;
+   attr onmousemove;
+   attr onmouseout;
+   attr onmouseover;
+   attr onmouseup;
+
+}
+
+tag %  {
+}
+
+tag %=  {
+}
+
+tag %@  {
+   attr include;
+   attr file;
+   attr page;
+   attr language {
+      Java,
+      JavaScript,
+      VBScript,
+      PHP
+   }
+   attr extends;
+   attr import;
+   attr session {
+      true,false;
+   }
+   attr buffer {
+      none, 8kb,
+   }
+   attr autoFlush {
+      true,false,
+   }
+   attr isThreadSafe {
+      true,false,
+   }
+   attr info;
+   attr errorPage;
+   attr contentType;
+   attr charset {
+      text/html,ISO-8859-1
+   }
+   attr isErrorPage {
+      true,false
+   }
+   attr taglib;
+   attr uri;
+   attr prefix;
+
+}
+
+tag %!  {
+}
+
+tag ?  {
+}
+
+tag java {
+   attr MIME_TYPE type;
+}
+tag servlet : name_attr {
+   attr code;
+   attr codebase;
+   attr initparam;
+
+}
+tag param {
+   attr name;
+   attr MIME_TYPE type;
+   attr value;
+   attr valuetype {
+      data,
+      ref,
+      object,
+   }
+   attr id;
+
+}
+
+tag jsp:getProperty {
+   attr name;
+   attr property;
+
+}
+tag jsp:setProperty {
+   attr name;
+   attr property;
+   attr param;
+   attr value;
+
+}
+
+tag jsp:forward {
+   attr page;
+
+}
+tag jsp:include {
+   attr page;
+   attr flush {
+      true,false
+   }
+
+}
+tag jsp:plugin {
+   attr type {
+      bean,applet
+   }
+   attr code;
+   attr codebase;
+   attr name;
+   attr archive;
+   attr align {
+      top,
+      bottom,
+      middle,
+      left,
+      right
+   }
+   attr height;
+   attr width;
+   attr hspace;
+   attr vspace;
+   attr jreversion {
+      1.1,1.2
+   }
+   attr nspluginurl;
+   attr iepluginurl;
+
+}
+tag jsp:useBean {
+   attr MIME_TYPE type;
+   attr id;
+   attr scope {
+      page,request,session,application
+   }
+   attr class;
+   attr beanName;
+
+}
+tag jsp:params {
+}
+tag jsp:param {
+   attr name;
+   attr value;
+
+}
+tag jsp:fallback {
+}
+tag jsp:attribute {
+    attr name;
+    attr trim {
+        true,false
+    }
+}
+tag jsp:body {
+}
+tag jsp:invoke {
+    attr fragment;
+    attr var;
+    attr varReader;
+    attr scope {
+      page,request,session,application
+    }
+}
+tag jsp:doBody {
+    attr var;
+    attr varReader;
+    attr scope {
+      page,request,session,application
+    }
+}
+tag jsp:element {
+    attr name;
+}
+tag jsp:text {
+}
+tag jsp:output {
+    attr omit-xml-dclaration {
+        yes,no,true,false
+    }
+    attr doctype-root-element;
+    attr doctype-public;
+    attr doctype-system;
+}
+tag jsp:root {
+    attr xmlns:jsp {
+        http://java.sun.com/JSP/Page
+    }
+    attr version {
+        1.2,2.0
+    }
+}
+tag jsp:declaration {
+}
+tag jsp:scriptlet {
+}
+tag jsp:expression{
+}
+
+tag a < classid_styletitle, lang_dir, intrin_onevents {
+   attr MIME_TYPE type;
+   attr href;
+   attr name;
+   attr rel;
+   attr rev;
+   attr charset;
+   attr urn;
+   attr methods;
+   attr hreflang;
+   attr md;
+   attr target;
+   attr shape {
+      rect,
+      circle,
+      poly,
+      default
+   }
+   attr coords;
+   attr type;
+   attr accesskey;
+   attr onblur;
+   attr onfocus;
+   attr tabindex;
+
+}
+tag abbr < classid_styletitle, lang_dir, intrin_onevents {
+}
+tag abbrev < classid_styletitle, lang_dir, intrin_onevents {
+}
+tag acronym < classid_styletitle, lang_dir, intrin_onevents {
+}
+tag address < classid_styletitle, lang_dir, intrin_onevents {
+   attr align {
+      center,right,left,justify,char,top,middle,bottom,baseline
+   }
+   attr clear;
+   attr nowrap;
+
+}
+tag app < classid_styletitle, lang_dir, intrin_onevents {
+   attr code;
+   attr width;
+   attr height;
+   attr codebase;
+   attr alt;
+   attr name;
+   attr align {
+      center,right,left,justify,char,top,middle,bottom,baseline
+   }
+   attr vspace;
+   attr hspace;
+   attr archive;
+   attr mayscript;
+
+}
+tag applet < classid_styletitle {
+   attr code;
+   attr width;
+   attr height;
+   attr codebase;
+   attr alt;
+   attr name;
+   attr align {
+      top,
+      middle,
+      bottom,
+      left,
+      right
+   }
+   attr vspace;
+   attr hspace;
+   attr archive;
+   attr mayscript;
+   attr object;
+
+}
+tag area < classid_styletitle, lang_dir, intrin_onevents {
+   attr coords;
+   attr shape {
+      rect,
+      circle,
+      poly,
+      default,
+   }
+   attr href;
+   attr nohref;
+   attr alt;
+   attr target;
+   attr name;
+   attr accesskey;
+   attr onblur;
+   attr onfocus;
+   attr tabindex;
+
+}
+tag au < classid_styletitle, lang_dir, intrin_onevents {
+}
+tag b < classid_styletitle, lang_dir, intrin_onevents {
+}
+
+tag banner < classid_styletitle, lang_dir, intrin_onevents {
+}
+tag base {
+   attr href;
+   attr target;
+
+}
+tag basefont {
+   attr size;
+   attr color;
+   attr face;
+   attr id;
+
+}
+tag bdo < classid_styletitle {
+   attr lang;
+}
+tag bgsound < classid_styletitle, lang_dir, intrin_onevents {
+   attr src;
+   attr loop;
+
+}
+tag big < classid_styletitle, lang_dir, intrin_onevents {
+}
+tag blink < classid_styletitle, lang_dir, intrin_onevents {
+}
+
+tag blockquote < classid_styletitle, lang_dir, intrin_onevents {
+   attr align {
+      center,right,left,justify,char,top,middle,bottom,baseline
+   }
+   attr cite;
+
+}
+tag body < classid_styletitle, lang_dir, intrin_onevents {
+   attr HTML_COLOR bgcolor;
+   attr background;
+   attr bgproperties;
+   attr HTML_COLOR fgcolor;
+   attr HTML_COLOR text;
+   attr HTML_COLOR link;
+   attr HTML_COLOR vlink;
+   attr HTML_COLOR alink;
+   attr onload;
+   attr onunload;
+   attr onblur;
+   attr onfocus;
+   attr topmargin;
+   attr leftmargin;
+   attr bottommargin;
+   attr rightmargin;
+
+}
+tag bq < classid_styletitle, lang_dir, intrin_onevents {
+   attr clear;
+   attr nowrap;
+
+}
+tag br < classid_styletitle {
+   attr clear {
+      left,all,right,none
+   }
+
+}
+tag caption < classid_styletitle, lang_dir, intrin_onevents {
+   attr align {
+      top,bottom,left,right
+   }
+
+}
+tag center < classid_styletitle, lang_dir, intrin_onevents {
+}
+tag cite < classid_styletitle, lang_dir, intrin_onevents {
+}
+tag code < classid_styletitle, lang_dir, intrin_onevents {
+}
+
+tag col < classid_styletitle, lang_dir, intrin_onevents {
+   attr span;
+   attr width;
+   attr align {
+      left,
+      center,
+      right,
+      justify,
+      char
+   }
+   attr char;
+   attr charoff;
+   attr valign {
+      top,
+      middle,
+      bottom,
+      baseline
+   }
+
+}
+tag colgroup < classid_styletitle, lang_dir, intrin_onevents {
+   attr align {
+      left,
+      center,
+      right,
+      justify,
+      char
+   }
+   attr char;
+   attr charoff;
+   attr valign {
+      top,
+      middle,
+      bottom,
+      baseline
+   }
+   attr span;
+   attr width;
+
+}
+tag credit < classid_styletitle, lang_dir, intrin_onevents {
+}
+tag dd < classid_styletitle, lang_dir, intrin_onevents {
+}
+tag del < classid_styletitle, lang_dir, intrin_onevents {
+   attr cite;
+   attr datetime;
+
+}
+tag dfn < classid_styletitle, lang_dir, intrin_onevents {
+}
+tag dir < classid_styletitle, lang_dir, intrin_onevents {
+   attr compact;
+   attr align {
+      center,right,left,justify,char,top,middle,bottom,baseline
+   }
+
+}
+tag div < classid_styletitle, lang_dir, intrin_onevents {
+   attr align {
+      center,
+      right,
+      left,
+      justify
+   }
+   attr nowrap;
+   attr clear;
+
+}
+
+tag dl < classid_styletitle, lang_dir, intrin_onevents {
+   attr compact;
+   attr clear;
+
+}
+tag dt < classid_styletitle, lang_dir, intrin_onevents {
+}
+tag em < classid_styletitle, lang_dir, intrin_onevents {
+}
+
+tag embed < classid_styletitle, lang_dir, intrin_onevents {
+   attr MIME_TYPE type;
+   attr src;
+   attr height;
+   attr width;
+   attr attribute_1;
+   attr attribute_2;
+   attr attribute_3;
+   attr attribute_4;
+   attr attribute_5;
+   attr attribute_6;
+   attr pluginspage;
+   attr pluginurl;
+   attr align {
+      center,right,left,justify,char,top,middle,bottom,baseline,
+   }
+   attr border;
+   attr frameborder {
+      1 0
+   }
+   attr units;
+   attr hidden;
+   attr hspace;
+   attr vspace;
+   attr name;
+   attr palette;
+
+}
+tag fieldset < classid_styletitle, lang_dir, intrin_onevents {
+}
+tag fn < lang_dir{
+}
+tag fig < classid_styletitle, lang_dir, intrin_onevents {
+   attr src;
+   attr clear;
+   attr noflow;
+   attr md;
+   attr align {
+      center,right,left,justify,char,top,middle,bottom,baseline
+   }
+   attr width;
+   attr height;
+   attr units;
+   attr imagemap;
+
+}
+tag font < classid_styletitle, lang_dir {
+   attr size;
+   attr HTML_COLOR color;
+   attr face;
+   attr point-size;
+   attr weight;
+
+}
+tag form < classid_styletitle, lang_dir, intrin_onevents {
+   attr MIME_TYPE type;
+   attr action;
+   attr method {
+      get,post
+   }
+   attr accept-charset;
+   attr accept;
+   attr script;
+   attr name;
+   attr onreset;
+   attr onsubmit;
+   attr target;
+   attr enctype;
+
+}
+tag frame < classid_styletitle {
+   attr align {
+      top,middle,bottom,left,right
+   }
+   attr src;
+   attr name;
+   attr marginwidth;
+   attr marginheight;
+   attr scrolling {
+      yes,
+      no,
+      auto
+   }
+   attr noresize;
+   attr bordercolor;
+   attr frameborder {
+      1,
+      0
+   }
+   attr noresize;
+   attr scrolling {
+      yes,no,auto
+   }
+   attr longdesc;
+
+}
+tag frameset < classid_styletitle {
+   attr rows;
+   attr cols;
+   attr border;
+   attr bordercolor;
+   attr frameborder {
+      1,0,
+   }
+   attr onblur;
+   attr onfocus;
+   attr onload;
+   attr onunload;
+
+}
+tag h 1 < classid_styletitle, lang_dir, intrin_onevents {
+   attr align {
+      center,
+      right,
+      left,
+      justify
+   }
+   attr clear;
+   attr seqnum;
+   attr skip;
+   attr dingbat;
+   attr src;
+   attr md;
+   attr nowrap;
+
+}
+tag h 2 < classid_styletitle, lang_dir, intrin_onevents {
+   attr align {
+      center,
+      right,
+      left,
+      justify
+   }
+   attr clear;
+   attr seqnum;
+   attr skip;
+   attr dingbat;
+   attr src;
+   attr md;
+   attr nowrap;
+
+}
+tag h 3 < classid_styletitle, lang_dir, intrin_onevents {
+   attr align {
+      center,
+      right,
+      left,
+      justify
+   }
+   attr clear;
+   attr seqnum;
+   attr skip;
+   attr dingbat;
+   attr src;
+   attr md;
+   attr nowrap;
+
+}
+tag h 4 < classid_styletitle, lang_dir, intrin_onevents {
+   attr align {
+      center,
+      right,
+      left,
+      justify
+   }
+   attr clear;
+   attr seqnum;
+   attr skip;
+   attr dingbat;
+   attr src;
+   attr md;
+   attr nowrap;
+
+}
+
+tag h 5 < classid_styletitle, lang_dir, intrin_onevents {
+   attr align {
+      center,
+      right,
+      left,
+      justify
+   }
+   attr clear;
+   attr seqnum;
+   attr skip;
+   attr dingbat;
+   attr src;
+   attr md;
+   attr nowrap;
+
+}
+tag h 6 < classid_styletitle, lang_dir, intrin_onevents {
+   attr align {
+      center,
+      right,
+      left,
+      justify
+   }
+   attr clear;
+   attr seqnum;
+   attr skip;
+   attr dingbat;
+   attr src;
+   attr md;
+   attr nowrap;
+
+}
+tag head < lang_dir {
+   attr profile;
+
+}
+tag hr < classid_styletitle, lang_dir, intrin_onevents {
+   attr align {
+      left,center,right
+   }
+   attr clear;
+   attr src;
+   attr md;
+   attr size;
+   attr width;
+   attr noshade;
+
+}
+tag html < lang_dir {
+   attr version;
+
+}
+tag i < classid_styletitle, lang_dir, intrin_onevents {
+}
+tag iframe < classid_styletitle {
+   attr longdesc;
+   attr name;
+   attr src;
+   attr frameborder {
+      1,
+      0,
+   }
+   attr marginwidth;
+   attr marginheight;
+   attr scrolling {
+      yes,
+      no,
+      auto
+   }
+   attr align {
+      center,
+      right,
+      left,
+      justify,
+      char,
+      top,
+      middle,
+      bottom,
+      baseline
+   }
+   attr height;
+   attr width;
+
+}
+tag img < classid_styletitle, lang_dir, intrin_onevents {
+   attr src;
+   attr alt;
+   attr ismap;
+   attr md;
+   attr align {
+      top,
+      middle,
+      bottom,
+      left,
+      right
+   }
+   attr height;
+   attr width;
+   attr units;
+   attr border;
+   attr lowsrc;
+   attr hspace;
+   attr vspace;
+   attr usemap;
+   attr dynsrc;
+   attr start;
+   attr controls;
+   attr loop;
+   attr loopdelay;
+   attr name;
+   attr onabort;
+   attr onerror;
+   attr onload;
+   attr supress;
+   attr longdesc;
+
+}
+tag input < classid_styletitle, lang_dir, intrin_onevents {
+   attr MIME_TYPE type;
+   attr MIME_TYPE accept;
+   attr type {
+      text,password,checkbox,radio,submit,reset,file,hidden,image,button
+   }
+   attr name;
+   attr value;
+   attr src;
+   attr checked;
+   attr size;
+   attr maxlength;
+   attr align {
+      top,
+      middle,
+      bottom,
+      left,
+      right
+   }
+   attr disabled;
+   attr error;
+   attr min;
+   attr max;
+   attr md;
+   attr onselect;
+   attr onblur;
+   attr onchange;
+   attr onfocus;
+   attr alt;
+   attr readonly;
+   attr usemap;
+   attr accesskey;
+   attr ismap;
+   attr tabindex;
+
+}
+tag button < classid_styletitle, lang_dir, intrin_onevents {
+   attr type {
+      button,
+      submit,
+      reset
+   }
+   attr name;
+   attr value;
+   attr accesskey;
+   attr disabled;
+   attr blur;
+   attr onfocus;
+   attr tabindex;
+
+}
+tag ins < classid_styletitle, lang_dir, intrin_onevents {
+   attr cite;
+   attr datetime;
+
+}
+tag isindex < classid_styletitle, lang_dir {
+   attr action;
+   attr prompt;
+
+}
+tag kbd < classid_styletitle, lang_dir, intrin_onevents {
+
+}
+
+tag keygen < classid_styletitle, lang_dir, intrin_onevents {
+   attr name;
+   attr challenge;
+
+}
+tag label < classid_styletitle, lang_dir, intrin_onevents {
+   attr for;
+   attr accesskey;
+   attr onblur;
+   attr onfocus;
+
+}
+tag lang < classid_styletitle, lang_dir, intrin_onevents {
+
+}
+tag layer < classid_styletitle, lang_dir, intrin_onevents {
+   attr HTML_COLOR bgcolor;
+   attr left;
+   attr top;
+   attr pagex;
+   attr page;
+   attr src;
+   attr z-index;
+   attr above;
+   attr below;
+   attr width;
+   attr height;
+   attr clip;
+   attr visibility;
+   attr background;
+   attr onfocus;
+   attr onblur;
+   attr onload;
+
+}
+tag legend < classid_styletitle, lang_dir, intrin_onevents {
+   attr align {
+      top,bottom,left,right
+   }
+   attr accesskey;
+
+}
+tag lh < classid_styletitle, lang_dir, intrin_onevents {
+}
+tag li < classid_styletitle, lang_dir, intrin_onevents {
+   attr align {
+      center,right,left,justify,char,top,middle,bottom,baseline
+   }
+   attr type {
+      disc,
+      square,
+      circle,
+      1,
+      a,
+      A,
+      i,
+      I,
+   }
+   attr value;
+       +,
+}
+tag link < classid_styletitle, lang_dir, intrin_onevents {
+   attr MIME_TYPE type;
+   attr href;
+   attr rel;
+   attr rev;
+   attr charset;
+   attr urn;
+   attr methods;
+   attr src;
+   attr hreflang;
+   attr media;
+   attr type;
+   attr target;
+
+}
+tag listing < classid_styletitle, lang_dir, intrin_onevents {
+   attr width;
+
+}
+tag map < classid_styletitle, lang_dir, intrin_onevents {
+   attr name;
+
+}
+tag marquee < classid_styletitle, lang_dir, intrin_onevents {
+   attr HTML_COLOR bgcolor;
+   attr align {
+      center right left justify char top middle bottom baseline,
+   }
+   attr behavior;
+   attr direction {
+      ltr,rtl,
+   }
+   attr height;
+   attr hspace;
+   attr loop;
+   attr scrollamount;
+   attr scrolldelay;
+   attr vspace;
+
+}
+tag menu < classid_styletitle, lang_dir, intrin_onevents {
+   attr compact;
+   attr align {
+      center,right,left,justify,char,top,middle,bottom,baseline
+   }
+
+}
+tag meta < lang_dir {
+   attr http-equiv;
+   attr name;
+   attr content;
+   attr url;
+   attr scheme;
+
+}
+tag multicol < classid_styletitle, lang_dir, intrin_onevents {
+   attr cols;
+   attr gutter;
+   attr width;
+
+}
+
+tag nextid {
+   attr n;
+
+}
+tag nobr {
+}
+tag noembed {
+}
+tag noframes < classid_styletitle, lang_dir, intrin_onevents {
+}
+tag nolayer {
+}
+tag noscript < classid_styletitle, lang_dir, intrin_onevents {
+}
+tag note < classid_styletitle, lang_dir {
+   attr clear;
+   attr src;
+   attr md;
+
+}
+tag object < classid_styletitle, lang_dir, intrin_onevents {
+   attr MIME_TYPE type;
+   attr classid;
+   attr data;
+   attr codebase;
+   attr codetype;
+   attr align {
+      top,
+      middle,
+      bottom,
+      left,
+      right
+   }
+   attr height;
+   attr width;
+   attr MIME_TYPE codetype;
+   attr archive;
+   attr border;
+   attr declare;
+   attr hspace;
+   attr name;
+   attr standby;
+   attr usemap;
+   attr vspace;
+   attr tabindex;
+
+}
+tag ol < classid_styletitle, lang_dir, intrin_onevents {
+   attr compact;
+   attr align {
+      center,right,left,justify,char,top,middle,bottom,baseline
+   }
+   attr clear;
+   attr continue;
+   attr seqnum;
+   attr start;
+   attr type {
+      1,
+      a,
+      A,
+      i,
+      I,
+   }
+
+}
+tag optgroup < classid_styletitle, lang_dir, intrin_onevents {
+   attr label;
+   attr disabled;
+
+}
+tag option < classid_styletitle, lang_dir, intrin_onevents {
+   attr selected;
+   attr value;
+   attr disabled;
+   attr error;
+   attr shape {
+      rect,circle,poly,default
+   }
+   attr label;
+
+}
+
+tag overlay , intrin_onevents {
+   attr src;
+   attr md;
+   attr units;
+   attr x;
+   attr y;
+   attr width;
+   attr height;
+   attr imagemap;
+
+}
+tag p < classid_styletitle, lang_dir, intrin_onevents {
+   attr align {
+      center,
+      right,
+      left,
+      justify
+   }
+   attr wrap;
+   attr nowrap;
+   attr clear;
+
+}
+tag person < classid_styletitle, lang_dir, intrin_onevents {
+}
+tag plaintext < lang_dir, intrin_onevents {
+   attr width;
+}
+tag pre < classid_styletitle, lang_dir, intrin_onevents {
+   attr width;
+   attr clear;
+
+}
+tag q < classid_styletitle, lang_dir, intrin_onevents {
+   attr cite;
+
+}
+tag s < classid_styletitle, lang_dir, intrin_onevents {
+}
+tag samp < classid_styletitle, lang_dir, intrin_onevents {
+}
+tag script {
+   attr src;
+   attr language {
+      Java,JavaScript,VBScript,php,PerlScript,Object,REXX
+   }
+   attr runat;
+   attr type {
+      code,
+      message,
+      print,
+      text,
+      text/plain,
+      text/html,
+      text/sgml,
+      text/css,
+      text/xml,
+      text/rtf,
+      text/javascript,
+      text/perlscript,
+      text/vbscript,
+      text/php,
+      text/cfscript,
+      text/csharp,
+      text/speedscript,
+   }
+   attr charset;
+   attr defer;
+}
+
+tag select < classid_styletitle, lang_dir, intrin_onevents {
+   attr name;
+   attr size;
+   attr multiple;
+   attr align {
+      center,right,left,justify,char,top,middle,bottom,baseline
+   }
+   attr disabled;
+   attr error;
+   attr src;
+   attr md;
+   attr width;
+   attr height;
+   attr units;
+   attr onblur;
+   attr onchange;
+   attr onfocus;
+   attr tabindex;
+
+}
+tag server , intrin_onevents {
+}
+tag small < classid_styletitle, lang_dir, intrin_onevents {
+}
+tag spacer {
+   attr MIME_TYPE type;
+   attr align {
+      center,right,left,justify,char,top,middle,bottom,baseline
+   }
+   attr height;
+   attr width;
+   attr size;
+
+}
+tag span < classid_styletitle, lang_dir, intrin_onevents {
+}
+tag strike < classid_styletitle, lang_dir, intrin_onevents {
+}
+tag strong < classid_styletitle, lang_dir, intrin_onevents {
+}
+tag style < lang_dir {
+   attr type {
+      text/css,
+      text/xml,
+      text/rtf,
+   }
+   attr media;
+   attr title;
+
+}
+tag sub < classid_styletitle, lang_dir, intrin_onevents {
+}
+tag sup < classid_styletitle, lang_dir, intrin_onevents {
+}
+tag tab {
+   attr id;
+   attr indent;
+   attr to;
+   attr align {
+      center,right,left,justify,char,top,middle,bottom,baseline
+   }
+   attr dp;
+
+}
+tag table < classid_styletitle, lang_dir, intrin_onevents {
+   attr HTML_COLOR bgcolor;
+   attr align {
+      left,center,right
+   }
+   attr width;
+   attr cols;
+   attr frame {
+   }
+   attr rules {
+      none,
+      group,
+      rows,
+      cols,
+      all,
+   }
+   attr cellspacing;
+   attr cellpadding;
+   attr clear;
+   attr noflow;
+   attr units;
+   attr colspec;
+   attr dp;
+   attr nowrap;
+   attr height;
+   attr border;
+   attr cellpadding;
+   attr cellspacing;
+   attr hspace;
+   attr vspace;
+   attr summary;
+
+}
+
+tag tbody < classid_styletitle, lang_dir, intrin_onevents {
+   attr align {
+      left,
+      center,
+      right,
+      justify,
+      char,
+   }
+   attr char;
+   attr charoff;
+   attr valign {
+      top,
+      middle,
+      bottom,
+      baseline,
+   }
+
+}
+tag td < classid_styletitle, lang_dir, intrin_onevents {
+   attr HTML_COLOR bgcolor;
+   attr abbr;
+   attr axis;
+   attr axes;
+   attr nowrap;
+   attr rowspan;
+   attr colspan;
+   attr align {
+      left,
+      center,
+      right,
+      justify,
+      char,
+   }
+   attr char;
+   attr charoff;
+   attr dp;
+   attr valign {
+      top,
+      middle,
+      bottom,
+      baseline,
+   }
+   attr width;
+   attr height;
+   attr headers;
+   attr scope{
+      row,
+      col,
+      rowgroup,
+      colgroup,
+   }
+
+}
+tag textarea < classid_styletitle, lang_dir, intrin_onevents {
+   attr name;
+   attr rows;
+   attr cols;
+   attr wrap;
+   attr align {
+      center,right,left,justify,char,top,middle,bottom,baseline
+   }
+   attr disabled;
+   attr error;
+   attr onblur;
+   attr onchange;
+   attr onfocus;
+   attr onselect;
+   attr readonly;
+   attr accesskey;
+   attr tabindex;
+
+}
+tag tfoot < classid_styletitle, lang_dir, intrin_onevents {
+   attr align {
+      left,
+      center,
+      right,
+      justify,
+      char
+   }
+   attr char;
+   attr charoff;
+   attr valign {
+      top,
+      middle,
+      bottom,
+      baseline
+   }
+
+}
+tag th < classid_styletitle, lang_dir, intrin_onevents {
+   attr HTML_COLOR bgcolor;
+   attr abbr;
+   attr axis;
+   attr axes;
+   attr nowrap;
+   attr rowspan;
+   attr colspan;
+   attr align {
+      left,
+      center,
+      right,
+      justify,
+      char
+   }
+   attr char;
+   attr charoff;
+   attr dp;
+   attr valign {
+      top,
+      middle,
+      bottom,
+      baseline
+   }
+   attr width;
+   attr height;
+   attr headers;
+   attr scope{
+      row,
+      col,
+      rowgroup,
+      colgroup
+   }
+
+}
+tag thead < classid_styletitle, lang_dir, intrin_onevents {
+   attr align {
+      left,
+      center,
+      right,
+      justify,
+      char
+   }
+   attr char;
+   attr charoff;
+   attr valign {
+      top,
+      middle,
+      bottom,
+      baseline
+   }
+
+}
+tag title < lang_dir {
+}
+tag tr < classid_styletitle, lang_dir, intrin_onevents {
+   attr HTML_COLOR bgcolor;
+   attr align {
+      left,
+      center,
+      right,
+      justify,
+      char
+   }
+   attr char;
+   attr charoff;
+   attr valign {
+      top,
+      middle,
+      bottom,
+      baseline
+   }
+   attr dp;
+
+}
+tag tt < classid_styletitle, lang_dir, intrin_onevents {
+}
+tag u < classid_styletitle, lang_dir, intrin_onevents {
+}
+tag ul < classid_styletitle, lang_dir, intrin_onevents {
+   attr compact;
+   attr align {
+      center,right,left,justify,char,top,middle,bottom,baseline
+   }
+   attr clear;
+   attr plain;
+   attr src;
+   attr md;
+   attr dingbat;
+   attr wrap;
+   attr type {
+      disc,square,circle,
+   }
+
+}
+
+tag var < classid_styletitle, lang_dir, intrin_onevents {
+}
+tag wbr < lang_dir, intrin_onevents {
+}
+tag xmp < lang_dir, intrin_onevents {
+   attr width;
+   attr style;
+   attr class;
+   attr id;
+
+}
+
+tag usebean {
+   attr MIME_TYPE type;
+   attr name;
+   attr lifespan;
+
+}
+tag setoncreate {
+   attr beanproperty;
+   attr value;
+
+}
+tag setfromrequest {
+   attr beanproperty;
+   attr paramname;
+
+}
+tag display {
+   attr property;
+   attr placeholder;
+
+}
+tag loop {
+   attr property;
+   attr propertyelement;
+
+}
+tag includeif {
+   attr property;
+   attr value;
+   attr case;
+   attr match;
+
+}
+tag excludeif {
+   attr property;
+   attr value;
+   attr case;
+   attr match;
+
+}
