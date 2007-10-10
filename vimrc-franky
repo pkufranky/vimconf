@@ -20,7 +20,7 @@ setglobal fenc=utf-8
 set expandtab shiftwidth=4 softtabstop=4
 set cmdheight=2
 set report=100
-set viminfo=!,'5000,\"10000,:10000,/10000,n~/.vim/viminfo
+set viminfo=!,'5000,\"10000,:10000,/10000,n~/.viminfo
 set wildmode=longest,list
 " Disable toolbar
 " set guioptions=
