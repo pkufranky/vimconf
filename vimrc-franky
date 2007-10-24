@@ -1,0 +1,20 @@
+so ~/.vim/vimrc-common
+
+" {{{ csupport 
+let g:C_Template_Directory  = expand('$HOME/.vim/c-support/templates-kooxoo/')
+let g:C_AuthorName = "yinping"
+let g:C_AuthorRef = "franky"
+let g:C_Email= "yinping@kooxoo.com"
+let g:C_Company = "Kooxoo Corp."
+let g:C_CopyrightHolder = ""
+" }}}
+" Global vars added by Yin Ping {{{
+let g:author = "franky"
+let g:email = "yinping@kooxoo.com"
+let g:company = "Kooxoo Corp."
+" }}}
+
+" Modeline {{{
+" vim:set ts=4:
+" vim600:fdm=marker fdl=2 fdc=3
+" }}}

@@ -15,7 +15,6 @@ set fileencodings=ucs-bom,utf-8,cp936,latin1
 " set fileencoding of new file to utf-8
 setglobal fenc=utf-8
 
-
 " <space> to replace <tab>, <BS> delete softtabstop <space>
 set noexpandtab shiftwidth=4 softtabstop=4 ts=4
 set cmdheight=2
@@ -31,14 +30,6 @@ set winheight=10
 
 " man {{{
 runtime ftplugin/man.vim
-" }}}
-" {{{ csupport 
-let g:C_Template_Directory  = expand('$HOME/.vim/c-support/templates-kooxoo/')
-let g:C_AuthorName = "yinping"
-let g:C_AuthorRef = "franky"
-let g:C_Email= "yinping@kooxoo.com"
-let g:C_Company = "Kooxoo Corp."
-let g:C_CopyrightHolder = ""
 " }}}
 " {{{ vimgdb
 set previewheight=12		" set gdb window initial height
@@ -83,11 +74,6 @@ inoremap <C-L> <C-O>l
 noremap <C-N> :browse e<CR>
 "noremap <BS> <C-O>x
 
-" }}}
-" Global vars added by Yin Ping {{{
-let g:author = "franky"
-let g:email = "yinping@kooxoo.com"
-let g:company = "Kooxoo Corp."
 " }}}
 " For Vim Intellisense {{{
 " let $VIM_INTELLISENSE= "C:/Vim/Intellisense"
