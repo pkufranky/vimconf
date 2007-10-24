@@ -27,7 +27,7 @@ set wildmode=longest,list
 set winaltkeys=yes
 set noswapfile
 set winheight=10
-set nu!
+set nonu
 
 " man {{{
 runtime ftplugin/man.vim
