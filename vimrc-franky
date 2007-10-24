@@ -5,7 +5,7 @@ set autoindent
 syntax on
 
 " ctags
-set tags+=~/.vim/systags
+"set tags+=~/.vim/systags
 
 " encoding
 "set encoding=cp936
@@ -17,7 +17,7 @@ setglobal fenc=utf-8
 
 
 " <space> to replace <tab>, <BS> delete softtabstop <space>
-set expandtab shiftwidth=4 softtabstop=4
+set noexpandtab shiftwidth=4 softtabstop=4 ts=4
 set cmdheight=2
 set report=100
 set viminfo=!,'5000,\"10000,:10000,/10000,n~/.viminfo
@@ -255,9 +255,6 @@ let g:miniBufExplModSelTarget = 1
 let g:miniBufExplUseSingleClick = 1
 " }}}
 
-" tabbar {{{
-let g:Tb_UseSingleClick = 1
-" }}}
 " Tlist {{{
 let g:Tlist_Use_Right_Window = 0
 " }}}
