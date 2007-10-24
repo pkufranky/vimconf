@@ -2765,7 +2765,6 @@ vimplate-installation	vimplate.txt	/*vimplate-installation*
 vimplate-requirements	vimplate.txt	/*vimplate-requirements*
 vimplate-subroutines	vimplate.txt	/*vimplate-subroutines*
 vimplate-usage	vimplate.txt	/*vimplate-usage*
-vimtips.txt	../plugin/vimtips/vimtips.txt	/*vimtips.txt*
 visual-mode-environment-mapings	latex-suite.txt	/*visual-mode-environment-mapings*
 vjde	vjde.txt	/*vjde*
 vjde-auto-comp	vjde.txt	/*vjde-auto-comp*
