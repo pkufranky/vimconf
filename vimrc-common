@@ -28,6 +28,7 @@ set winaltkeys=yes
 set noswapfile
 set winheight=10
 set nonu
+set hlsearch
 
 " man {{{
 runtime ftplugin/man.vim
@@ -74,6 +75,15 @@ inoremap <C-K> <C-O>k
 inoremap <C-L> <C-O>l
 noremap <C-N> :browse e<CR>
 "noremap <BS> <C-O>x
+"
+map <F11> :call SetEncodingUTF8() <CR>
+imap <F11> <Esc>:call SetEncodingUTF8() <CR>
+func SetEncodingUTF8()
+	:set enc=utf-8
+	:set tenc=gb2312
+endfunc
+map  <F10>      :set wrap <CR><C-W><C-W>  :set wrap <CR><C-W><C-W>
+imap  <F10>     :set wrap <CR><C-W><C-W>  :set wrap <CR><C-W><C-W>
 
 " }}}
 " For Vim Intellisense {{{
