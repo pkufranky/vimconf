@@ -312,7 +312,7 @@ function! JavaInsertImport()
    
 endfunction 
 " }}}
-" Tip #935 {{{
+" Tip #935 highlight trailing spaces or spaces in front of tabs {{{
 
 " To highlight spaces at the end of a line and spaces in front of tabs you can simply add the following command to your vimrc: 
 " let <language>_space_errors=1 
@@ -326,6 +326,11 @@ endfunction
 " let <language>_no_tab_space_error=1 
 let java_space_errors=1 
 let c_space_errors=1 
+" }}}
+" highlight trailing spaces or spaces in front of tabs {{{
+hi def link cSpaceError		Error
+syn match	cSpaceError	display excludenl "\s\+$"
+syn match	cSpaceError	display " \+\t"me=e-1
 " }}}
 " ant with taglist #Tip 558
 " The follows should be add to $HOME/ctags.cnf
