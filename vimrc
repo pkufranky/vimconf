@@ -239,6 +239,9 @@ set wildmode=longest:full,full
 " line. Allowed keys are 'h' and 'l', arrow keys are not allowed to wrap.
 set whichwrap=h,l
 
+set hlsearch
+set nonu
+
 " Customize display {{{
 " lastline	When included, as much as possible of the last line
 "			in a window will be displayed.  When not included, a
