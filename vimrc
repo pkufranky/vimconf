@@ -425,6 +425,8 @@ command! -nargs=* ReadFileAboveCursor	call ReadFileAboveCursor(<f-args>)
 command! -nargs=* R						call ReadFileAboveCursor(<f-args>)
 command! -nargs=0 DiacriticsOn			call ChooseInputMethod(0)
 command! -nargs=0 DiacriticsOff			let b:disable_imap=1
+" cd to whatever directory the current buffer is using
+command! CD cd %:p:h
 " }}}
 
 " Functions {{{
