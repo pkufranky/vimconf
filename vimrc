@@ -130,6 +130,9 @@ let g:autolastmod=1
 " Modification is made on line like this variable (regular expression!):
 let g:autolastmodtext="^\\([ 	]*Last modified: \\)"
 " }}}
+" Settings for Tlist {{{
+let g:Tlist_Use_Right_Window = 0
+" }}}
 
 
 " Priority between files for file name completion (suffixes) {{{
