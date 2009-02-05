@@ -156,6 +156,23 @@ set wildignore+=*.bbl
 set wildignore+=*.blg
 " }}}
 
+" Tip #935 hightlight space errors {{{
+
+" To highlight spaces at the end of a line and spaces in front of tabs you can simply add the following command to your vimrc:
+" let <language>_space_errors=1
+" supported languages are:
+" ada, c, chill, csc, icon, java, lpc, mel, nqc, nroff, ora, plm, plsql and python. So if you want to highlight space errors in lpc-files you have to write:
+" let lpc_space_errors=1
+"
+" If you don't want to see the errors at the end of the line set:
+" let <language>_no_trail_space_error=1
+" and if you only use spaces to indent and don't want to see the space errors in front of tabs set:
+" let <language>_no_tab_space_error=1
+let java_space_errors=1
+let c_space_errors=1
+let python_space_errors=1
+" }}}
+
 " The cursor is kept in the same column (if possible).  This applies to the
 " commands: CTRL-D, CTRL-U, CTRL-B, CTRL-F, "G", "H", "M", "L", , and to the
 " commands "d", "<<" and ">>" with a linewise operator, with "%" with a count
