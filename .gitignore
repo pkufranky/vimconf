@@ -5,3 +5,4 @@ viminfo
 *.tar.gz
 vimrc-local*
 *.md5sums
+doc/tags
