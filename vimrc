@@ -228,14 +228,6 @@ set nomousefocus
 set mousehide
 set mousemodel=popup
 
-" Cursor always in the middle of the screen if GUI is not running
-if ! has("gui_running")
-	set scrolloff=999
-endif
-set sidescroll=5
-set sidescrolloff=1
-
-
 " Make window maximalized
 set winheight=100
 
