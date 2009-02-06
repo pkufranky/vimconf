@@ -338,9 +338,6 @@ set remap
 map <C-O><C-O> :split 
 imap <C-O><C-O> <Esc>:split 
 
-" diakritika 
-":map <C-D><C-D> :so ~/.vim/diakritika.vim
-":imap <C-D><C-D> <Esc>:so ~/.vim/diakritika.vim
 
 " Open new window with file ~/.vimrc (ViM configuration file)
 map <C-O><C-K> :split ~/.vimrc<CR>
@@ -357,6 +354,18 @@ imap <C-D> <Esc>:call SafeLineDelete()<CR>i
 vmap S y/<C-R>=escape(@",'/\')<CR>
 " replace selected text with text in register
 vnoremap p <Esc>:let current_reg = @"<CR>gvdi<C-R>=current_reg<CR><Esc>
+
+nnoremap <C-S> :w<CR>
+inoremap <C-S> <C-O>:w<CR>
+nnoremap <SPACE> <C-F>
+nnoremap <S-SPACE> <C-B>
+inoremap <C-F> <C-O><C-F>
+inoremap <C-B> <C-O><C-B>
+inoremap <C-J> <C-O>j
+inoremap <C-K> <C-O>k
+"inoremap <C-H> <C-O>h
+inoremap <C-L> <C-O>l
+noremap <C-N> :browse e<CR>
 
 " Good pasting toggle {{{
 " From  Christopher Swingley <cswingle AT iarc.uaf.edu>
