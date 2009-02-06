@@ -228,9 +228,6 @@ set nomousefocus
 set mousehide
 set mousemodel=popup
 
-" Make window maximalized
-set winheight=100
-
 " The screen will not be redrawn while executing macros, registers
 " and other commands that have not been typed. To force an updates use |:redraw|.
 set lazyredraw
