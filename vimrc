@@ -133,6 +133,10 @@ let g:autolastmodtext="^\\([ 	]*Last modified: \\)"
 " Settings for Tlist {{{
 let g:Tlist_Use_Right_Window = 0
 " }}}
+" Settings for NERD Commenter {{{
+" Prevent NERD Commenter from complaining about unknown file types
+  let NERDShutUp=1
+" }}}
 
 
 " Priority between files for file name completion (suffixes) {{{
