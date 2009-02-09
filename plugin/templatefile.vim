@@ -114,9 +114,7 @@ function! LoadTemplateFile()
 	if exists ("*" . template_func)
 		if exists("g:load_templates")
 			if g:load_templates == "ask"
-				let choice = confirm("Call function " . template_func . "() ?:", 
-							\ "&yes\n" .
-							\ "&no\n")
+				let choice = confirm("Call function " . template_func . "() ?:", "&yes\n&no\n")
 				if choice == 1
 					silent! execute ":call " . template_func . "()"
 				endif
@@ -140,20 +138,17 @@ function! <SID>_LoadFile(question, filename)
 	if filereadable(expand(a:filename))
 		if exists("g:load_templates")
 			if g:load_templates == "ask"
-				let choice = confirm(a:question .
-							\ expand(a:filename) . " ?:", 
-							\ "&yes\n" .
-							\ "&no\n")
+				let choice = confirm(a:question . expand(a:filename) . " ?:", "&yes\n&no\n")
 				if choice == 1
-					silent execute "0r "  . a:filename
+					silent execute "0r " . fnameescape(a:filename)
 					setlocal modified
 				endif
 			elseif g:load_templates == "yes"
-				silent execute "0r "  . a:filename
+				silent execute "0r "  . fnameescape(a:filename)
 				setlocal modified
 			endif
 		else
-			silent execute "0r "  . a:filename
+			silent execute "0r "  . fnameescape(a:filename)
 			setlocal modified
 		endif
 	else
