@@ -173,6 +173,7 @@ endfunction
 " function from Hojin Choi <pynoos AT naver.com>
 " Function TryLoadTemplateInUpperDir(skelfile) {{{
 fun! TryLoadTemplateInUpperDir(skelfile)
+	return 0
 	let savewd = getcwd()
 	while (getcwd() != "/")
 		if filereadable(a:skelfile)
