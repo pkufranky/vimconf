@@ -255,6 +255,8 @@ set whichwrap=h,l
 set hlsearch
 set nonu
 
+set ambiwidth=double
+
 " Customize display {{{
 " lastline	When included, as much as possible of the last line
 "			in a window will be displayed.  When not included, a
