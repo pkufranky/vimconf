@@ -31,6 +31,7 @@ if !filereadable(expand("$VIMRUNTIME/doc/help.txt"))
 endif
 
 " Settings {{{
+" Basic settings {{{
 " To be secure & Vi nocompatible
 :set secure nocompatible
 :if version < 600
@@ -70,6 +71,7 @@ call Source(VIMRC_EXTRA."-".machine."-".user)
 
 " used for searching documentation (~/.vim/doc/FEATURES.txt) etc.
 set runtimepath+=~/.vim
+" }}}
 
 " Settings for C language {{{
 let c_gnu=1
@@ -138,7 +140,6 @@ let g:Tlist_Use_Right_Window = 0
   let NERDShutUp=1
 " }}}
 
-
 " Priority between files for file name completion (suffixes) {{{
 " Do not give .h low priority in command-line filename completion.
 set suffixes-=.h
@@ -176,6 +177,7 @@ let java_space_errors=1
 let c_space_errors=1
 let python_space_errors=1
 " }}}
+" Basic2 {{{
 
 " The cursor is kept in the same column (if possible).  This applies to the
 " commands: CTRL-D, CTRL-U, CTRL-B, CTRL-F, "G", "H", "M", "L", , and to the
@@ -309,6 +311,7 @@ endif
 if !exists("g:fold_long_lines")
 	let g:fold_long_lines=300
 endif
+"}}}
 
 " }}}
 
