@@ -139,6 +139,9 @@ let g:Tlist_Use_Right_Window = 0
 " Prevent NERD Commenter from complaining about unknown file types
   let NERDShutUp=1
 " }}}
+" Haskell {{{
+let g:haddock_browser = "firefox"
+" }}}
 
 " Priority between files for file name completion (suffixes) {{{
 " Do not give .h low priority in command-line filename completion.
@@ -898,6 +901,11 @@ augroup END
 	" Autocomands for *.tt2 {{{
 	augroup Tt2
 	autocmd BufNewFile,BufRead  *.tt2   setf tt2
+	augroup END
+	" }}}
+	" *.hs {{{
+	augroup hs
+	autocmd Bufenter *.hs compiler ghc
 	augroup END
 	" }}}
 
