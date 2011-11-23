@@ -142,6 +142,10 @@ let g:Tlist_Use_Right_Window = 0
 " Haskell {{{
 let g:haddock_browser = "firefox"
 " }}}
+" pathogen {{{
+runtime bundle/vim-pathogen/autoload/pathogen.vim
+call pathogen#infect()
+" }}}
 
 " Priority between files for file name completion (suffixes) {{{
 " Do not give .h low priority in command-line filename completion.
