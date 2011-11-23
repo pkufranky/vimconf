@@ -146,6 +146,13 @@ let g:haddock_browser = "firefox"
 runtime bundle/vim-pathogen/autoload/pathogen.vim
 call pathogen#infect()
 " }}}
+" vim-coffee-script {{{
+" see https://github.com/kchmck/vim-coffee-script
+au BufWritePost *.coffee silent CoffeeMake! -b | cwindow | redraw!
+au BufNewFile,BufReadPost *.coffee setl shiftwidth=2 expandtab
+au BufNewFile,BufReadPost *.coffee setl foldmethod=indent nofoldenable
+" }}}
+
 
 " Priority between files for file name completion (suffixes) {{{
 " Do not give .h low priority in command-line filename completion.
