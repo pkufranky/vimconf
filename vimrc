@@ -159,6 +159,16 @@ if has('unix')
 end
 map <leader>p :Hammer<CR>
 " }}}
+" vim-colors-solarized
+" see https://github.com/altercation/vim-colors-solarized
+if has('gui_running')
+	set background=light
+else
+	set background=dark
+endif
+colorscheme solarized
+" }}}
+
 
 
 " Priority between files for file name completion (suffixes) {{{
