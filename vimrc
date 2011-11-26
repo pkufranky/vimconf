@@ -152,6 +152,13 @@ au BufWritePost *.coffee silent CoffeeMake! -b | cwindow | redraw!
 au BufNewFile,BufReadPost *.coffee setl shiftwidth=2 expandtab
 au BufNewFile,BufReadPost *.coffee setl foldmethod=indent nofoldenable
 " }}}
+" hammer.vim {{{
+" see https://github.com/robgleeson/hammer.vim
+if has('unix')
+	let g:HammerBrowser = 'w3m'
+end
+map <leader>p :Hammer<CR>
+" }}}
 
 
 " Priority between files for file name completion (suffixes) {{{
