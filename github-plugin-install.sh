@@ -30,7 +30,7 @@ github_branch=${3:-master}
 
 test -z "$1" -o "$1" = '-h' && usage
 
-message="Add bundle/$bundle_name from github $github_name $github_branch
+message="bundle/$bundle_name from github $github_name $github_branch
 
 from https://github.com/$github_name
 
@@ -41,16 +41,16 @@ Install or update
 
 if test -d bundle/$bundle_name
 then
-	echo "Update $github_name"
-	git subtree pull \
-		--prefix=bundle/$bundle_name \
-		--squash \
-		https://github.com/$github_name.git $github_branch
+	cmd=pull
+	action=Update
 else
-	echo "Add $github_name"
-	git subtree add \
-		--prefix=bundle/$bundle_name \
-		-m "$message" \
-		--squash \
-		https://github.com/$github_name.git $github_branch
+	cmd=add
+	action=Add
 fi
+
+echo "$action $github_name"
+git subtree $cmd \
+	--prefix=bundle/$bundle_name \
+	--squash \
+	-m "$action $message" \
+	https://github.com/$github_name.git $github_branch
