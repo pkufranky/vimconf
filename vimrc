@@ -169,6 +169,12 @@ endif
 colorscheme solarized
 " }}}
 
+" VimRepress {{{
+" see https://github.com/vim-scripts/VimRepress
+let VIMPRESS = [{'username':'pkufranky',
+                \'blog_url':'http://blog.pkufranky.com/'
+                \}]
+" }}}
 
 
 " Priority between files for file name completion (suffixes) {{{
