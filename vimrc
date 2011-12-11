@@ -174,6 +174,7 @@ colorscheme solarized
 let VIMPRESS = [{'username':'pkufranky',
                 \'blog_url':'http://blog.pkufranky.com/'
                 \}]
+map <leader>P :BlogPreview<CR>
 " }}}
 
 
