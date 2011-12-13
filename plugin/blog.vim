@@ -99,13 +99,10 @@ import urllib, urllib2, vim, xml.dom.minidom, xmlrpclib, sys, string, re, os, mi
 try:
     import markdown
 except ImportError:
-    try:
-        import markdown2 as markdown
-    except ImportError:
-        class markdown_stub(object):
-            def markdown(self, n):
-                raise VimPressException("The package python-markdown is required and is either not present or not properly installed.")
-        markdown = markdown_stub()
+    class markdown_stub(object):
+        def markdown(self, n):
+            raise VimPressException("The package python-markdown is required and is either not present or not properly installed.")
+    markdown = markdown_stub()
 
 image_template = '<a href="%(url)s"><img title="%(file)s" alt="%(file)s" src="%(url)s" class="aligncenter" /></a>'
 blog_username = None
@@ -131,6 +128,12 @@ class VimPressException(Exception):
 
 class VimPressFailedGetMkd(VimPressException):
     pass
+
+def markdown2html(rawtext):
+    # see http://www.freewisdom.org/projects/python-markdown/Available_Extensions
+    exts = ['meta', 'toc(marker=$TOC$)', 'def_list', 'abbr', 'footnotes', 'tables', 'codehilite', 'fenced_code']
+    html = markdown.markdown(rawtext.decode('utf-8'), exts).encode('utf-8')
+    return html
 
 def blog_meta_parse():
     """
@@ -321,7 +324,7 @@ def blog_save(pub = "draft"):
         attach = blog_upload_markdown_attachment(
                 meta["strid"], meta["textattach"], rawtext)
         blog_meta_area_update(textattach = attach["file"])
-        text = markdown.markdown(rawtext.decode('utf-8')).encode('utf-8')
+        text = markdown2html(rawtext)
 
         # Add tag string at the last of the post.
         text += tag_string % attach
@@ -649,7 +652,7 @@ def blog_preview(pub = "local"):
 
     if pub == "local":
         if meta["editformat"].strip().lower() == "markdown":
-            html = markdown.markdown(rawtext.decode('utf-8')).encode('utf-8')
+            html = markdown2html(rawtext)
             html_preview(html, meta)
         else:
             html_preview(rawtext, meta)
@@ -664,6 +667,7 @@ def blog_preview(pub = "local"):
             sys.stdout.write("\nYou have to login in the browser to preview the post when save as draft.")
     else:
         raise VimPressException("Invalid option: %s " % pub)
+    vim.command('redraw!')
 
 
 @__exception_check
