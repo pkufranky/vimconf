@@ -144,7 +144,7 @@ let g:haddock_browser = "firefox"
 " }}}
 " pathogen {{{
 runtime bundle/vim-pathogen/autoload/pathogen.vim
-call pathogen#infect()
+call pathogen#infect('~/.vim/bundle')
 " }}}
 " vim-coffee-script {{{
 " see https://github.com/kchmck/vim-coffee-script
