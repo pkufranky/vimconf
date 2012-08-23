@@ -168,6 +168,26 @@ let VIMPRESS = [{'username':'pkufranky',
 map <leader>P :BlogPreview<CR>
 " }}}
 
+" vim-jsbeautify {{{
+" https://github.com/maksimr/vim-jsbeautify
+" set path to js-beautify file
+let s:rootDir = expand("$HOME/.vim")
+let g:jsbeautify_file = fnameescape(s:rootDir."/bundle/js-beautify/beautify.js")
+let g:htmlbeautify_file = fnameescape(s:rootDir."/bundle/js-beautify/beautify-html.js")
+let g:cssbeautify_file = fnameescape(s:rootDir."/bundle/js-beautify/beautify-css.js")
+
+let g:jsbeautify = {'indent_size': 4, 'indent_char': '\t'}
+let g:htmlbeautify = {'indent_size': 4, 'indent_char': ' ', 'max_char': 120, 'brace_style': 'expand', 'unformatted': ['a', 'sub', 'sup', 'b', 'i', 'u']}
+let g:cssbeautify = {'indent_size': 4, 'indent_char': ' '}
+
+" for js
+autocmd FileType javascript noremap <buffer>  <c-f> :call JsBeautify()<cr>
+" for html
+autocmd FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
+" for css or scss
+autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
+" }}}
+
 
 " Priority between files for file name completion (suffixes) {{{
 " Do not give .h low priority in command-line filename completion.
