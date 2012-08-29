@@ -12,17 +12,19 @@ from ConfigParser import SafeConfigParser
 try:
     import markdown
 except ImportError:
-    try:
-        import markdown2 as markdown
-    except ImportError:
-        class markdown_stub(object):
-            def markdown(self, n):
-                raise VimPressException("The package python-markdown is "
-                        "required and is either not present or not properly "
-                        "installed.")
+    class markdown_stub(object):
+        def markdown(self, n):
+            raise VimPressException("The package python-markdown is "
+                    "required and is either not present or not properly "
+                    "installed.")
 
-        markdown = markdown_stub()
+    markdown = markdown_stub()
 
+def markdown2html(rawtext):
+    # see http://www.freewisdom.org/projects/python-markdown/Available_Extensions
+    exts = ['meta', 'toc(marker=$TOC$)', 'def_list', 'abbr', 'footnotes', 'tables', 'codehilite', 'fenced_code']
+    html = markdown.markdown(rawtext, exts)
+    return html
 
 def exception_check(func):
     def __check(*args, **kwargs):
@@ -419,7 +421,7 @@ class ContentStruct(object):
                 field = dict(key=G.CUSTOM_FIELD_KEY, value=rawtext)
                 struct["custom_fields"].append(field)
 
-            struct["description"] = self.html_text = markdown.markdown(rawtext)
+            struct["description"] = self.html_text = markdown2html(rawtext)
         else:
             struct["description"] = self.html_text = rawtext
 
