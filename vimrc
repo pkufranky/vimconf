@@ -465,7 +465,7 @@ let b:input_method = &encoding
 " you may disable actions of IMAP plugin with variable b:disable_imap
 " 0 - enabled
 " 1 - disabled
-let b:disable_imap = 0
+let b:disable_imap = 1
 
 call Source("~/.vim/plugin/imaps.vim")
 
